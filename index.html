@@ -24,6 +24,8 @@
     <meta name="apple-mobile-web-app-status-bar" content="#db4938">
     <meta name="theme-color" content="#db4938">
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <script src="https://unpkg.com/react/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone/babel.min.js"></script>
@@ -44,10 +46,22 @@
             --card-shadow: 0 8px 30px rgba(0,0,0,0.12);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-body {
-    font-size: 1.2rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+body.dark-mode {
+    background-color: #1a1a1a;
+    color: #f8f9fa;
 }
+
+body.dark-mode .driver-card {
+    background-color: #2a2a2a;
+    color: #f8f9fa;
+    border: 1px solid #444;
+}
+
+body.dark-mode .btn {
+    background: #444;
+    color: #f8f9fa;
+}
+
 
 .driver-card .driver-name {
     font-size: 1.4rem;
@@ -67,9 +81,9 @@ body {
     padding: 0; /* إزالة الحشوات الزائدة */
 }
 
-.drivers-grid {
-    gap: 1rem; /* تقليل المسافات بين البطاقات */
-}
+..drivers-grid {
+    padding: 1rem;
+    overflow: hidden; /* منع ا
 
 #map {
     height: 400px; /* تأكد من بقاء الارتفاع ثابتًا */
@@ -102,6 +116,30 @@ html, body {
     padding: 0;
     max-width: 100%;
 }
+.view-mode {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin: 1rem;
+}
+
+.view-mode .btn {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+    border: none;
+    padding: 0.7rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    font-size: 1.5rem;
+}
+
+.view-mode .btn:hover {
+    transform: scale(1.1);
+    background: var(--primary-color);
+    color: var(--secondary-color);
+}
+
 
 #map {
     margin: 0;
@@ -488,6 +526,15 @@ html, body {
                 <i class="fas fa-taxi"></i>
                 تاكسي الباشا
             </a>
+            <div class="view-mode">
+    <button id="toggleView" class="btn">
+        <i class="fas fa-th-large"></i> <!-- أيقونة لتبديل العرض -->
+    </button>
+    <button id="toggleTheme" class="btn">
+        
+    </button>
+</div>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -548,7 +595,9 @@ html, body {
                     <i class="fas fa-map-marker-alt"></i>
                     الموصل
                 </span>
+                
             </div>
+            
         </div>
 
         <!-- Drivers Grid -->
@@ -585,6 +634,7 @@ html, body {
                             <label class="form-label">رابط موقع السائق</label>
                             <input type="url" class="form-control" id="driverMapLink" placeholder="أدخل رابط الموقع (Google Maps)">
                         </div>
+                        
                         
 
                         <div class="row g-3">
@@ -665,6 +715,28 @@ html, body {
         let userMarker;
         let userLocation = null;
         let markerLayer;
+        
+        let isLoading = false; // علامة للتحقق من الحالة
+
+function safeLoadDrivers(location = 'all') {
+    if (isLoading) {
+        console.log("التحميل جارٍ بالفعل، يتم تجاهل الطلب.");
+        return;
+    }
+
+    isLoading = true; // تعيين العلامة لمنع التكرار
+    console.log("بدء تحميل البيانات...");
+
+    // تنفيذ الوظيفة الرئيسية
+    loadDrivers(location);
+
+    // إعادة تعيين العلامة بعد انتهاء العملية (بإمكانك تعديل الزمن إذا كانت العملية تحتاج وقتًا أطول)
+    setTimeout(() => {
+        isLoading = false;
+        console.log("تم الانتهاء من تحميل البيانات.");
+    }, 1000); // 1000ms = 1 ثانية
+}
+
 
         function initMap() {
             // الإحداثيات الافتراضية
@@ -745,12 +817,172 @@ html, body {
             // تحميل السائقين أو أي بيانات إضافية
             loadDrivers();
         }
-        
+        document.addEventListener('DOMContentLoaded', () => {
+    const toggleViewButton = document.getElementById('toggleView');
+    const driversGrid = document.getElementById('driversGrid');
+
+    // الوضع الافتراضي
+    let isVertical = true;
+
+    toggleViewButton.addEventListener('click', () => {
+        if (isVertical) {
+            driversGrid.classList.remove('vertical');
+            driversGrid.classList.add('horizontal');
+            toggleViewButton.innerHTML = '<i class="fas fa-bars"></i>'; // أيقونة العرض الأفقي
+        } else {
+            driversGrid.classList.remove('horizontal');
+            driversGrid.classList.add('vertical');
+            toggleViewButton.innerHTML = '<i class="fas fa-th-large"></i>'; // أيقونة العرض العمودي
+        }
+        isVertical = !isVertical;
+    });
+
+    // تعيين الوضع الافتراضي
+    driversGrid.classList.add('vertical');
+});
+const toggleThemeButton = document.getElementById('toggleTheme');
+
+// الوضع الافتراضي: النهاري
+let isDarkMode = false;
+
+toggleThemeButton.addEventListener('click', () => {
+    if (isDarkMode) {
+        document.body.classList.remove('dark-mode');
+        toggleThemeButton.innerHTML = '<i class="fas fa-moon"></i>'; // أيقونة الوضع الليلي
+    } else {
+        document.body.classList.add('dark-mode');
+        toggleThemeButton.innerHTML = '<i class="fas fa-sun"></i>'; // أيقونة الوضع النهاري
+    }
+    isDarkMode = !isDarkMode;
+});
+
         function handleLocationError(error) {
             // التعامل مع خطأ في الموقع الجغرافي
             console.error('خطأ في تحديد الموقع:', error);
             showToast('تعذر الوصول إلى موقعك الحالي. الرجاء التحقق من إعدادات الموقع.', 'error');
         }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+    const toggleViewButton = document.getElementById('toggleView');
+    const driversGrid = document.getElementById('driversGrid');
+
+    let isVertical = true;
+
+    toggleViewButton.addEventListener('click', () => {
+        if (isVertical) {
+            driversGrid.style.display = "flex";
+            driversGrid.style.flexWrap = "nowrap"; // وضع البطاقات في صف أفقي
+            driversGrid.style.overflowX = "auto"; // تمرير أفقي عند وجود بطاقات كثيرة
+            toggleViewButton.innerHTML = '<i class="fas fa-bars"></i>';
+        } else {
+            driversGrid.style.display = "grid";
+            driversGrid.style.gridTemplateColumns = "repeat(2, 1fr)"; // شبكتان عموديتان
+            driversGrid.style.overflowX = "unset";
+            toggleViewButton.innerHTML = '<i class="fas fa-th-large"></i>';
+        }
+        isVertical = !isVertical;
+    });
+});
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleViewButton = document.getElementById('toggleView');
+    const driversGrid = document.getElementById('driversGrid');
+
+    let isVertical = true;
+
+    toggleViewButton.addEventListener('click', () => {
+        if (isVertical) {
+            // العرض الأفقي
+            driversGrid.style.display = "grid";
+            driversGrid.style.gridTemplateColumns = "repeat(2, 1fr)"; // شبكتان أفقيتان
+            toggleViewButton.innerHTML = '<i class="fas fa-bars"></i>'; // أيقونة الوضع الأفقي
+        } else {
+            // العرض العمودي
+            driversGrid.style.display = "flex";
+            driversGrid.style.flexDirection = "column"; // وضع البطاقات عمودياً
+            driversGrid.style.gap = "1rem"; // مسافة بين البطاقات
+            toggleViewButton.innerHTML = '<i class="fas fa-th-large"></i>'; // أيقونة الوضع العمودي
+        }
+        isVertical = !isVertical;
+    });
+});
+
+function showAddFilterModal() {
+    const modal = new bootstrap.Modal(document.getElementById('addFilterModal'));
+    modal.show();
+}
+
+function loadAreas(province) {
+    const areas = {
+        "بغداد": ["الكرادة", "المنصور", "مدينة الصدر"],
+        "البصرة": ["الزبير", "أبو الخصيب"],
+        "النجف": ["الكوفة", "الحيدرية"]
+    };
+    const areaSelect = document.getElementById('filterArea');
+    areaSelect.innerHTML = '<option value="">اختر المنطقة</option>';
+    if (province && areas[province]) {
+        areas[province].forEach(area => {
+            areaSelect.innerHTML += `<option value="${area}">${area}</option>`;
+        });
+    }
+}
+
+async function handleAddFilter(event) {
+    event.preventDefault();
+    showLoading();
+
+    try {
+        const filterName = document.getElementById('filterName').value;
+        const province = document.getElementById('filterProvince').value;
+        const area = document.getElementById('filterArea').value;
+
+        if (!filterName || !province || !area) {
+            throw new Error('يرجى ملء جميع الحقول');
+        }
+
+        const filterData = {
+            name: filterName,
+            province: province,
+            area: area,
+            createdAt: firebase.database.ServerValue.TIMESTAMP,
+        };
+
+        await database.ref('filters').push(filterData);
+
+        showToast('تم إضافة الفلتر بنجاح');
+        loadFilters(); // إعادة تحميل الفلاتر إلى الواجهة
+        const modal = bootstrap.Modal.getInstance(document.getElementById('addFilterModal'));
+        modal.hide();
+        document.getElementById('addFilterForm').reset();
+    } catch (error) {
+        console.error('Error adding filter:', error);
+        showToast(error.message, 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+function loadFilters() {
+    showLoading();
+    database.ref('filters').once('value', snapshot => {
+        const filtersContainer = document.getElementById('filtersContainer');
+        filtersContainer.innerHTML = '';
+        snapshot.forEach(childSnapshot => {
+            const filter = childSnapshot.val();
+            filtersContainer.innerHTML += `
+                <div class="filter-item">
+                    <h5>${filter.name}</h5>
+                    <p>${filter.province} - ${filter.area}</p>
+                </div>
+            `;
+        });
+        hideLoading();
+    }).catch(error => {
+        console.error("Error loading filters:", error);
+        hideLoading();
+        showToast('حدث خطأ أثناء تحميل الفلاتر', 'error');
+    });
+}
+
         
 
         function createDriverCard(driver, key) {
