@@ -81,7 +81,7 @@ body.dark-mode .btn {
     padding: 0; /* إزالة الحشوات الزائدة */
 }
 
-..drivers-grid {
+.drivers-grid {
     padding: 1rem;
     overflow: hidden; /* منع ا
 
@@ -634,9 +634,7 @@ html, body {
                             <label class="form-label">رابط موقع السائق</label>
                             <input type="url" class="form-control" id="driverMapLink" placeholder="أدخل رابط الموقع (Google Maps)">
                         </div>
-                        
-                        
-
+                    
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">اسم السائق</label>
@@ -654,10 +652,10 @@ html, body {
                                 <label class="form-label">موديل السيارة</label>
                                 <input type="number" class="form-control" id="carModel" required>
                             </div>
-                            <div class="col-md-12">
-                                <label class="form-label">المنطقة</label>
-                                <select class="form-control" id="driverLocation" required>
-                                    <option value="">اختر المنطقة</option>
+                            <div class="col-md-6">
+                                <label class="form-label">المحافظة</label>
+                                <select class="form-control" id="provinceSelect" onchange="updateAreas()" required>
+                                    <option value="">اختر المحافظة</option>
                                     <option value="بغداد">بغداد</option>
                                     <option value="البصرة">البصرة</option>
                                     <option value="النجف">النجف</option>
@@ -665,20 +663,26 @@ html, body {
                                     <option value="الموصل">الموصل</option>
                                 </select>
                             </div>
+                            <div class="col-md-6">
+                                <label class="form-label">المنطقة</label>
+                                <select class="form-control" id="areaSelect" required>
+                                    <option value="">اختر المنطقة</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-secondary w-100" onclick="updateMapWithLocation()">تحديد الموقع على الخريطة</button>
+                            </div>
                             <div class="col-12">
                                 <label class="form-label">معلومات إضافية</label>
                                 <textarea class="form-control" id="driverBio" rows="3"></textarea>
                             </div>
                         </div>
-
+                    
                         <div class="mt-4">
                             <button type="submit" class="btn btn-primary w-100">إضافة السائق</button>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
+                    
 
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
@@ -889,20 +893,26 @@ function showAddFilterModal() {
     modal.show();
 }
 
-function loadAreas(province) {
-    const areas = {
+function updateAreas() {
+    const areasByProvince = {
         "بغداد": ["الكرادة", "المنصور", "مدينة الصدر"],
         "البصرة": ["الزبير", "أبو الخصيب"],
-        "النجف": ["الكوفة", "الحيدرية"]
+        "النجف": ["الكوفة", "الحيدرية"],
+        "كربلاء": ["الحر", "حي المعلمين"],
+        "الموصل": ["حي النور", "الزهور"]
     };
-    const areaSelect = document.getElementById('filterArea');
+
+    const provinceSelect = document.getElementById("provinceSelect").value;
+    const areaSelect = document.getElementById("areaSelect");
     areaSelect.innerHTML = '<option value="">اختر المنطقة</option>';
-    if (province && areas[province]) {
-        areas[province].forEach(area => {
+
+    if (areasByProvince[provinceSelect]) {
+        areasByProvince[provinceSelect].forEach(area => {
             areaSelect.innerHTML += `<option value="${area}">${area}</option>`;
         });
     }
 }
+
 
 async function handleAddFilter(event) {
     event.preventDefault();
@@ -1198,23 +1208,37 @@ function updateRequiredTrips(driverId, count) {
     });
 }
 
-        async function getCoordinatesForLocation(location) {
-            try {
-                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location},Iraq`);
-                const data = await response.json();
-                
-                if (data && data.length > 0) {
-                    return {
-                        lat: parseFloat(data[0].lat),
-                        lng: parseFloat(data[0].lon)
-                    };
-                }
-                throw new Error('لم يتم العثور على الموقع');
-            } catch (error) {
-                console.error('Error getting coordinates:', error);
-                throw new Error('فشل في العثور على الإحداثيات');
+async function updateMapWithLocation() {
+    const province = document.getElementById("provinceSelect").value;
+    const area = document.getElementById("areaSelect").value;
+
+    if (province && area) {
+        const query = `${area}, ${province}, العراق`;
+        try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`);
+            const data = await response.json();
+
+            if (data && data.length > 0) {
+                const coords = {
+                    lat: parseFloat(data[0].lat),
+                    lng: parseFloat(data[0].lon)
+                };
+
+                map.setView([coords.lat, coords.lng], 13);
+                L.marker([coords.lat, coords.lng]).addTo(map)
+                  .bindPopup(`الموقع: ${area}, ${province}`).openPopup();
+            } else {
+                showToast("تعذر العثور على الإحداثيات.", "error");
             }
+        } catch (error) {
+            console.error("Error fetching coordinates:", error);
+            showToast("تعذر العثور على الموقع.", "error");
         }
+    } else {
+        showToast("يرجى اختيار المحافظة والمنطقة.", "error");
+    }
+}
+
 
         async function handleAddDriver(event) {
             event.preventDefault();
