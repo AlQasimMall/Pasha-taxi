@@ -641,35 +641,12 @@
         }
         
         function handleLocationError(error) {
-            let errorMessage;
-        
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    errorMessage = "تم رفض إذن الوصول إلى الموقع الجغرافي. يرجى السماح للتطبيق باستخدام الموقع.";
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    errorMessage = "معلومات الموقع غير متوفرة. تأكد من أن الموقع الجغرافي قيد التشغيل.";
-                    break;
-                case error.TIMEOUT:
-                    errorMessage = "انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.";
-                    break;
-                default:
-                    errorMessage = "حدث خطأ غير متوقع أثناء تحديد الموقع.";
-            }
-        
-            console.error('خطأ في تحديد الموقع:', errorMessage);
-            showToast(errorMessage, 'error');
-        }
-        if (navigator.geolocation) {
-            navigator.geolocation.watchPosition(
-                updateUserLocation,
-                handleLocationError,
-                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-            );
-        } else {
-            showToast('الموقع الجغرافي غير مدعوم على هذا الجهاز.', 'error');
+            // التعامل مع خطأ في الموقع الجغرافي
+            console.error('خطأ في تحديد الموقع:', error);
+            showToast('تعذر الوصول إلى موقعك الحالي. الرجاء التحقق من إعدادات الموقع.', 'error');
         }
         
+
         function createDriverCard(driver, key) {
             const distance = userLocation ? calculateDistance(userLocation, driver.coordinates) : null;
         
@@ -729,85 +706,81 @@
                 </div>
             `;
         }
-        function scrollToMap() {
-            const mapElement = document.getElementById('map');
-            if (mapElement) {
-                mapElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-        function createDriverCard(driver, key) {
-            return `
-                <div class="driver-card animate__animated animate__fadeIn">
-                    <div class="driver-image-container">
-                        <img src="${driver.imageUrl}" alt="${driver.name}" class="driver-image">
-                        <div class="driver-status ${driver.active ? 'status-active' : 'status-inactive'}">
-                            ${driver.active ? 'متاح' : 'مشغول'}
-                        </div>
-                    </div>
-                    <div class="driver-info">
-                        <h5 class="driver-name">${driver.name}</h5>
-                        <div class="text-muted">
-                            <p class="mb-2">
-                                <i class="fas fa-car me-2"></i>
-                                ${driver.carType} ${driver.carModel}
-                            </p>
-                            <p class="mb-0">
-                                <i class="fas fa-map-marker-alt me-2"></i>
-                                ${driver.location}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="driver-actions">
-                        <button class="action-btn primary" onclick="viewDriverLocation('${key}')">
-                            <i class="fas fa-map-marker-alt"></i>
-                            عرض الموقع
-                        </button>
-                        <button class="action-btn secondary" onclick="messageDriver('${key}')">
-                            <i class="fas fa-comment"></i>
-                            مراسلة
-                        </button>
-                    </div>
+        
+       function viewDriverLocation(driverId) {
+    database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
+        const driver = snapshot.val();
+        if (driver && driver.coordinates) {
+            // نقل الخريطة إلى موقع السائق
+            const { lat, lng } = driver.coordinates;
+            map.setView([lat, lng], 15); // تكبير الخريطة عند موقع السائق
+
+            // إضافة أو تحديث علامة موقع السائق
+            const driverMarker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    html: `<i class="fas fa-taxi" style="color: #FFD700;"></i>`,
+                    className: 'driver-marker',
+                    iconSize: [30, 30],
+                }),
+            }).addTo(markerLayer);
+
+            driverMarker.bindPopup(`
+                <div style="text-align: center;">
+                    <h6>${driver.name}</h6>
+                    <p>${driver.carType} - ${driver.carModel}</p>
+                    <p><button class="btn btn-primary btn-sm mt-2" onclick="messageDriver('${driverId}')">
+                        مراسلة السائق
+                    </button></p>
                 </div>
-            `;
+            `).openPopup();
+        } else {
+            showToast('لم يتم إضافة موقع للسائق', 'error');
         }
-                
-        
-        function viewDriverLocation(driverId) {
-            database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
-                const driver = snapshot.val();
-                if (driver && driver.coordinates) {
-                    // تحديد موقع السائق على الخريطة
-                    const { lat, lng } = driver.coordinates;
-                    map.setView([lat, lng], 15); // تكبير الخريطة عند موقع السائق
-        
-                    // إضافة أو تحديث علامة موقع السائق
-                    const driverMarker = L.marker([lat, lng], {
-                        icon: L.divIcon({
-                            html: `<i class="fas fa-taxi" style="color: #FFD700;"></i>`,
-                            className: 'driver-marker',
-                            iconSize: [30, 30],
-                        }),
-                    }).addTo(markerLayer);
-        
-                    driverMarker.bindPopup(`
-                        <div style="text-align: center;">
-                            <h6>${driver.name}</h6>
-                            <p>${driver.carType} - ${driver.carModel}</p>
-                            <button class="btn btn-primary btn-sm mt-2" onclick="messageDriver('${driverId}')">
-                                مراسلة السائق
-                            </button>
-                        </div>
-                    `).openPopup();
-        
-                    // التمرير إلى قسم الخريطة
-                    scrollToMap();
-                } else {
-                    showToast('لم يتم إضافة موقع للسائق', 'error');
-                }
-            });
+    });
+}
+
+function viewDriverLocation(driverId) {
+    database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
+        const driver = snapshot.val();
+        if (driver && driver.coordinates) {
+            // تحديد موقع السائق على الخريطة
+            const { lat, lng } = driver.coordinates;
+            map.setView([lat, lng], 15); // تكبير الخريطة عند موقع السائق
+
+            // إضافة أو تحديث علامة موقع السائق
+            const driverMarker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    html: `<i class="fas fa-taxi" style="color: #FFD700;"></i>`,
+                    className: 'driver-marker',
+                    iconSize: [30, 30],
+                }),
+            }).addTo(markerLayer);
+
+            driverMarker.bindPopup(`
+                <div style="text-align: center;">
+                    <h6>${driver.name}</h6>
+                    <p>${driver.carType} - ${driver.carModel}</p>
+                    <button class="btn btn-primary btn-sm mt-2" onclick="messageDriver('${driverId}')">
+                        مراسلة السائق
+                    </button>
+                </div>
+            `).openPopup();
+
+            // التمرير إلى قسم الخريطة
+            scrollToMap();
+        } else {
+            showToast('لم يتم إضافة موقع للسائق', 'error');
         }
-        
-        
+    });
+}
+function scrollToMap() {
+    const mapElement = document.getElementById('map');
+    if (mapElement) {
+        mapElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+
         
         
 function updateRequiredTrips(driverId, count) {
