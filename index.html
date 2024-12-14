@@ -737,6 +737,21 @@ function safeLoadDrivers(location = 'all') {
     }, 1000); // 1000ms = 1 ثانية
 }
 
+function debounce(func, delay) {
+    let debounceTimer;
+    return function (...args) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func(...args), delay);
+    };
+}
+document.addEventListener('submit', (event) => {
+    event.preventDefault(); // منع إعادة التحميل
+});
+
+
+// تطبيق debounce
+const debouncedLoadDrivers = debounce(safeLoadDrivers, 500);
+
 
         function initMap() {
             // الإحداثيات الافتراضية
