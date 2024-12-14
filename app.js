@@ -3,15 +3,15 @@ const container = document.querySelector(".container");
 
 // بيانات القهوة مع روابط الصور
 const coffees = [
-  { name: "Perspiciatis", image: "https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737" },
-  { name: "Voluptatem", image: "https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737" },
-  { name: "Explicabo", image: "https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737" },
-  { name: "Rchitecto", image: "https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737" },
-  { name: "Beatae", image: "https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737" },
-  { name: "Vitae", image: "https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737" },
-  { name: "Inventore", image: "https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737" },
-  { name: "Veritatis", image: "https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737" },
-  { name: "Accusantium", image: "https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737" },
+  { name: "Perspiciatis", image: "https://github.com/AlQasimMall/Pasha-taxi/blob/main/Photoroom-%D9%A2%D9%A0%D9%A2%D9%A4%D9%A1%D9%A2%D9%A1%D9%A4_%D9%A0%D9%A9%D9%A4%D9%A6%D9%A5%D9%A1.png" },
+  { name: "Voluptatem", image: "https://github.com/AlQasimMall/Pasha-taxi/blob/main/Photoroom-%D9%A2%D9%A0%D9%A2%D9%A4%D9%A1%D9%A2%D9%A1%D9%A4_%D9%A0%D9%A9%D9%A4%D9%A6%D9%A5%D9%A1.png" },
+  { name: "Explicabo", image: "https://github.com/AlQasimMall/Pasha-taxi/blob/main/Photoroom-%D9%A2%D9%A0%D9%A2%D9%A4%D9%A1%D9%A2%D9%A1%D9%A4_%D9%A0%D9%A9%D9%A4%D9%A6%D9%A5%D9%A1.png" },
+  { name: "Rchitecto", image: "https://github.com/AlQasimMall/Pasha-taxi/blob/main/Photoroom-%D9%A2%D9%A0%D9%A2%D9%A4%D9%A1%D9%A2%D9%A1%D9%A4_%D9%A0%D9%A9%D9%A4%D9%A6%D9%A5%D9%A1.png" },
+  { name: "Beatae", image: "https://github.com/AlQasimMall/Pasha-taxi/blob/main/Photoroom-%D9%A2%D9%A0%D9%A2%D9%A4%D9%A1%D9%A2%D9%A1%D9%A4_%D9%A0%D9%A9%D9%A4%D9%A6%D9%A5%D9%A1.png" },
+  { name: "Vitae", image: "https://github.com/AlQasimMall/Pasha-taxi/blob/main/Photoroom-%D9%A2%D9%A0%D9%A2%D9%A4%D9%A1%D9%A2%D9%A1%D9%A4_%D9%A0%D9%A9%D9%A4%D9%A6%D9%A5%D9%A1.png" },
+  { name: "Inventore", image: "https://github.com/AlQasimMall/Pasha-taxi/blob/main/Photoroom-%D9%A2%D9%A0%D9%A2%D9%A4%D9%A1%D9%A2%D9%A1%D9%A4_%D9%A0%D9%A9%D9%A4%D9%A6%D9%A5%D9%A1.png" },
+  { name: "Veritatis", image: "https://github.com/AlQasimMall/Pasha-taxi/blob/main/Photoroom-%D9%A2%D9%A0%D9%A2%D9%A4%D9%A1%D9%A2%D9%A1%D9%A4_%D9%A0%D9%A9%D9%A4%D9%A6%D9%A5%D9%A1.png" },
+  { name: "Accusantium", image: "https://github.com/AlQasimMall/Pasha-taxi/blob/main/Photoroom-%D9%A2%D9%A0%D9%A2%D9%A4%D9%A1%D9%A2%D9%A1%D9%A4_%D9%A0%D9%A9%D9%A4%D9%A6%D9%A5%D9%A1.png" },
 ];
 
 // وظيفة لعرض القهوة
