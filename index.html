@@ -44,12 +44,82 @@
             --card-shadow: 0 8px 30px rgba(0,0,0,0.12);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+body {
+    font-size: 1.2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-top: 70px;
-        }
+.driver-card .driver-name {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.driver-card .stat-value {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.driver-card .stat-label {
+    font-size: 1rem; /* تكبير النصوص المساعدة */
+}
+
+.container {
+    padding: 0; /* إزالة الحشوات الزائدة */
+}
+
+.drivers-grid {
+    gap: 1rem; /* تقليل المسافات بين البطاقات */
+}
+
+#map {
+    height: 400px; /* تأكد من بقاء الارتفاع ثابتًا */
+    border-radius: 15px;
+    margin-bottom: 1rem;
+}
+
+.floating-action-btn {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 1000;
+}
+
+
+#map {
+    margin: 0; /* إزالة الحشوات حول الخريطة */
+}
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 0;
+    max-width: 100%;
+}
+
+#map {
+    margin: 0;
+    width: 100%;
+    height: auto;
+}
+
+
+.driver-card .driver-info {
+    text-align: center; /* توسيط النصوص */
+    padding: 1rem;
+}
+
+.driver-card .stat-value {
+    color: var(--primary-color); /* استخدام اللون الرئيسي */
+    font-weight: bold;
+}
+
 
         .app-header {
             background: var(--secondary-color);
