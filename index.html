@@ -715,43 +715,6 @@ html, body {
         let userMarker;
         let userLocation = null;
         let markerLayer;
-        
-        let isLoading = false; // علامة للتحقق من الحالة
-
-function safeLoadDrivers(location = 'all') {
-    if (isLoading) {
-        console.log("التحميل جارٍ بالفعل، يتم تجاهل الطلب.");
-        return;
-    }
-
-    isLoading = true; // تعيين العلامة لمنع التكرار
-    console.log("بدء تحميل البيانات...");
-
-    // تنفيذ الوظيفة الرئيسية
-    loadDrivers(location);
-
-    // إعادة تعيين العلامة بعد انتهاء العملية (بإمكانك تعديل الزمن إذا كانت العملية تحتاج وقتًا أطول)
-    setTimeout(() => {
-        isLoading = false;
-        console.log("تم الانتهاء من تحميل البيانات.");
-    }, 1000); // 1000ms = 1 ثانية
-}
-
-function debounce(func, delay) {
-    let debounceTimer;
-    return function (...args) {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => func(...args), delay);
-    };
-}
-document.addEventListener('submit', (event) => {
-    event.preventDefault(); // منع إعادة التحميل
-});
-
-
-// تطبيق debounce
-const debouncedLoadDrivers = debounce(safeLoadDrivers, 500);
-
 
         function initMap() {
             // الإحداثيات الافتراضية
