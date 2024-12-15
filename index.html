@@ -57,11 +57,88 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-top: 70px;
-        }
+      body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    padding: 0 1rem; /* قلل الحشوة الجانبية */
+}
+
+.driver-card {
+    margin: 0; /* أزل الفراغات الخارجية */
+    padding: 1rem; /* حشوة داخلية بسيطة */
+    gap: 0.5rem; /* فراغ بسيط بين العناصر داخل البطاقة */
+}
+
+.drivers-grid {
+    gap: 1rem; /* قلل المسافة بين البطاقات */
+}
+
+.location-filter {
+    margin: 0.5rem 0; /* تقليل المسافة الخارجية */
+    padding: 0.5rem 1rem; /* تقليل الحشوة */
+}
+body {
+    font-size: 1.2rem; /* تكبير النص الأساسي */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* تأكد من تناسق الخط */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 1.5rem; /* تكبير العناوين */
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+    font-size: 1rem; /* تكبير الروابط */
+}
+
+.driver-name {
+    font-size: 1.4rem; /* تكبير اسم السائق */
+}
+
+.driver-stats .stat-value {
+    font-size: 1.2rem; /* تكبير القيم الإحصائية */
+}
+
+.driver-stats .stat-label {
+    font-size: 1rem; /* تكبير النصوص التوضيحية */
+}
+
+.toast-container .custom-toast {
+    font-size: 1.2rem; /* تكبير رسائل الإشعارات */
+}
+@media (max-width: 768px) {
+    body {
+        font-size: 1rem; /* حجم أصغر للخطوط على الشاشات الصغيرة */
+    }
+
+    .drivers-grid {
+        grid-template-columns: 1fr; /* عمود واحد للبطاقات على الهواتف */
+        gap: 0.5rem;
+    }
+
+    .location-filter {
+        padding: 0.5rem; /* تقليل الحشوة */
+    }
+}
+
+@media (min-width: 1024px) {
+    body {
+        font-size: 1.5rem; /* حجم أكبر للخطوط على الشاشات الكبيرة */
+    }
+
+    .drivers-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 أعمدة للبطاقات */
+    }
+
+    .location-filter {
+        padding: 1rem; /* حشوة أكبر قليلاً */
+    }
+}
+
 
         .app-header {
             background: var(--secondary-color);
@@ -1240,4 +1317,3 @@ async function handleAddDriver(event) {
     <script src="js/app.js"></script>
 </body>
 </html>
-صثقغعهه
