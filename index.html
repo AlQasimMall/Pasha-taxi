@@ -222,6 +222,9 @@ html, body {
             background: rgba(255, 255, 255, 0.1);
             color: var(--primary-color);
         }
+       
+       
+
 
         #map {
             height: 400px;
@@ -271,6 +274,16 @@ html, body {
             gap: 0.7rem;
             font-weight: 500;
         }
+        .location-filter {
+    font-size: 1.5rem; /* تكبير النصوص */
+    padding: 1.5rem; /* زيادة الحشوة الداخلية */
+}
+
+.location-chip {
+    font-size: 1.2rem; /* تكبير النصوص داخل الأزرار */
+    padding: 1rem 2rem; /* تكبير حجم الأزرار */
+}
+
 
         .location-chip:hover,
         .location-chip.active {
@@ -491,9 +504,9 @@ html, body {
             100% { transform: rotate(360deg); }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 868px) {
             .drivers-grid { grid-template-columns: 1fr; }
-            #map { height: 300px; }
+            #map { height: 500px; }
         }
 
         .modal-content {
