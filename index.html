@@ -624,6 +624,42 @@
         let userMarker;
         let userLocation = null;
         let markerLayer;
+        let isLoadingDrivers = false;
+
+function loadDrivers(location = 'all') {
+    if (isLoadingDrivers) return;
+    isLoadingDrivers = true;
+
+    showLoading();
+    const driversRef = database.ref('drivers');
+    
+    driversRef.once('value').then((snapshot) => {
+        const driversGrid = document.getElementById('driversGrid');
+        driversGrid.innerHTML = '';
+        markerLayer.clearLayers();
+
+        snapshot.forEach((childSnapshot) => {
+            const driver = childSnapshot.val();
+            if (location === 'all' || driver.location === location) {
+                driversGrid.innerHTML += createDriverCard(driver, childSnapshot.key);
+                if (driver.coordinates) {
+                    L.marker([driver.coordinates.lat, driver.coordinates.lng], {
+                        icon: L.divIcon({
+                            html: `<i class="fas fa-taxi" style="color: ${driver.active ? '#FFD700' : '#ccc'};"></i>`,
+                            className: 'driver-marker',
+                            iconSize: [25, 25]
+                        })
+                    }).addTo(markerLayer);
+                }
+            }
+        });
+
+        hideLoading();
+    }).finally(() => {
+        isLoadingDrivers = false;
+    });
+}
+
 
         function initMap() {
             // الإحداثيات الافتراضية
