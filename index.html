@@ -48,6 +48,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     
     <!-- App Scripts -->
     <script src="firebase-config.js"></script>
@@ -1705,6 +1707,7 @@ async function handleAddDriver(event) {
     });
 }
 
+
 function viewDriverLocation(driverId) {
     database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
         const driver = snapshot.val();
@@ -1946,52 +1949,75 @@ function createDriverCard(driver, key) {
     `;
 }
 
-// دالة تأكيد الحذف
+// دالة تأكيد الحذف مع نافذة تأكيد محسنة
 function confirmDeleteDriver(driverId) {
-    if (confirm('هل أنت متأكد من حذف هذا السائق؟')) {
-        deleteDriver(driverId);
-    }
+    // استخدام نافذة تأكيد محسنة
+    Swal.fire({
+        title: 'تأكيد الحذف',
+        text: 'هل أنت متأكد من حذف هذا السائق؟',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'نعم، احذف',
+        cancelButtonText: 'إلغاء'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteDriver(driverId); // استدعاء دالة الحذف إذا وافق المستخدم
+        }
+    });
 }
 
 // دالة حذف السائق
 async function deleteDriver(driverId) {
     try {
+        // عرض مؤشر التحميل
         showLoading();
-        
+
+        // الوصول إلى مرجع بيانات السائق
         const driverRef = database.ref(`drivers/${driverId}`);
         const snapshot = await driverRef.once('value');
         const driverData = snapshot.val();
 
-        if (driverData) {
-            // حذف الصورة من التخزين
-            if (driverData.imageUrl) {
-                try {
-                    const imageRef = storage.refFromURL(driverData.imageUrl);
-                    await imageRef.delete();
-                } catch (error) {
-                    console.error('Error deleting image:', error);
-                }
-            }
-
-            // حذف بيانات السائق
-            await driverRef.remove();
-
-            // حذف البطاقة من الواجهة
-            const card = document.querySelector(`[data-driver-id="${driverId}"]`);
-            if (card) {
-                card.classList.add('animate__fadeOut');
-                setTimeout(() => card.remove(), 300);
-            }
-
-            showToast('تم حذف السائق بنجاح');
+        if (!driverData) {
+            // إذا لم يتم العثور على بيانات السائق
+            showToast('لم يتم العثور على السائق', 'error');
+            return;
         }
+
+        // حذف الصورة من التخزين إذا كانت موجودة
+        if (driverData.imageUrl) {
+            try {
+                const imageRef = storage.refFromURL(driverData.imageUrl);
+                await imageRef.delete();
+            } catch (error) {
+                console.error('Error deleting image:', error);
+                showToast('حدث خطأ أثناء حذف صورة السائق', 'error');
+            }
+        }
+
+        // حذف بيانات السائق من قاعدة البيانات
+        await driverRef.remove();
+
+        // إزالة بطاقة السائق من الواجهة
+        const card = document.querySelector(`[data-driver-id="${driverId}"]`);
+        if (card) {
+            // إضافة تأثير حذف قبل الإزالة
+            card.classList.add('animate__fadeOut');
+            setTimeout(() => card.remove(), 300);
+        }
+
+        // عرض رسالة نجاح
+        showToast('تم حذف السائق بنجاح', 'success');
     } catch (error) {
         console.error('Error deleting driver:', error);
         showToast('حدث خطأ أثناء حذف السائق', 'error');
     } finally {
+        // إخفاء مؤشر التحميل
         hideLoading();
     }
 }
+
 
 // دالة إظهار نافذة التعديل
 function showEditDriverModal(driverId) {
