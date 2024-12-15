@@ -1529,6 +1529,68 @@ async function handleAddDriver(event) {
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
+        function messageDriver(driverId) {
+    database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
+        const driver = snapshot.val();
+        if (driver && userLocation) {
+            const phoneNumber = driver.phone.replace(/[^0-9]/g, '');
+            
+            // إنشاء رابط Google Maps مع موقع المستخدم
+            const googleMapsLink = `https://www.google.com/maps?q=${userLocation.lat},${userLocation.lng}`;
+            
+            // إنشاء نص الرسالة مع رابط الموقع
+            const message = `السلام عليكم، موقعي الحالي: ${googleMapsLink}`;
+            
+            // تشفير النص للرابط
+            const encodedMessage = encodeURIComponent(message);
+            
+            // فتح رابط WhatsApp مع الرسالة المجهزة
+            const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            window.open(whatsappLink, '_blank');
+        } else if (!userLocation) {
+            showToast('لم نتمكن من تحديد موقعك. يرجى السماح بالوصول إلى الموقع.', 'error');
+        } else {
+            showToast('عذراً، لا يمكن العثور على معلومات السائق.', 'error');
+        }
+    });
+}
+
+// دالة مساعدة للتحقق من صلاحيات الموقع
+function checkLocationPermission() {
+    if (navigator.permissions) {
+        navigator.permissions.query({ name: 'geolocation' })
+            .then(permission => {
+                if (permission.state === 'denied') {
+                    showToast('يرجى تفعيل خدمة الموقع للحصول على أفضل تجربة.', 'error');
+                }
+            });
+    }
+}
+
+// تحديث دالة updateUserLocation لتخزين الموقع الأخير
+function updateUserLocation(position) {
+    userLocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+    };
+    
+    if (!userMarker) {
+        const userIcon = L.divIcon({
+            html: '<i class="fas fa-user-circle fa-2x" style="color: #007bff;"></i>',
+            className: 'user-marker',
+            iconSize: [30, 30]
+        });
+        
+        userMarker = L.marker([userLocation.lat, userLocation.lng], { icon: userIcon })
+            .bindPopup('موقعك الحالي')
+            .addTo(map);
+    } else {
+        userMarker.setLatLng([userLocation.lat, userLocation.lng]);
+    }
+    
+    // تحديث مركز الخريطة
+    map.setView([userLocation.lat, userLocation.lng], map.getZoom());
+}
 
         function showLoading() {
             document.getElementById('loadingSpinner').style.display = 'flex';
@@ -1542,6 +1604,14 @@ async function handleAddDriver(event) {
             const modal = new bootstrap.Modal(document.getElementById('addDriverModal'));
             modal.show();
         }
+        window.addEventListener('scroll', function() {
+    const filter = document.querySelector('.location-filter');
+    if (window.scrollY > 100) {
+        filter.classList.add('sticky');
+    } else {
+        filter.classList.remove('sticky');
+    }
+});
 
         function filterDrivers(searchTerm) {
             const driverCards = document.querySelectorAll('.driver-card');
