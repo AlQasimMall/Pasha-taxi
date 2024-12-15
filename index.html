@@ -66,6 +66,135 @@
 .container {
     padding: 0 1rem; /* قلل الحشوة الجانبية */
 }
+/* تحديثات الخريطة */
+#map {
+    height: 90vh; /* ارتفاع نسبي لشاشة العرض */
+    min-height: 800px; /* الحد الأدنى للارتفاع */
+    width: 100%;
+    border-radius: 25px;
+    margin: 4rem 0;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    border: px solid var(--secondary-color);
+    z-index: 1;
+}
+
+/* تحديثات الفلاتر */
+.location-filter {
+    background: white;
+    padding: 5rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    margin: 3rem 0;
+    position: sticky;
+    top: 80px;
+    z-index: 2;
+    backdrop-filter: blur(10px);
+}
+
+.location-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-top: 3rem;
+    padding: 0.5rem 0;
+}
+
+.location-chip {
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.location-chip i {
+    font-size: 1.3rem;
+}
+
+.location-chip:hover,
+.location-chip.active {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+/* تحسينات التجاوب */
+@media (max-width: 768px) {
+    #map {
+        height: 60vh;
+        min-height: 400px;
+    }
+
+    .location-filter {
+        padding: 1.5rem;
+        margin: 1rem 0;
+    }
+
+    .location-chips {
+        gap: 1rem;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .location-chip {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.1rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    #map {
+        height: 80vh;
+        min-height: 600px;
+    }
+
+    .location-filter {
+        padding: 2.5rem;
+    }
+
+    .location-chip {
+        padding: 1.2rem 2.5rem;
+        font-size: 1.3rem;
+    }
+}
+
+/* تحسينات إضافية للتجربة */
+.location-chips::-webkit-scrollbar {
+    height: 6px;
+}
+
+.location-chips::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+.location-chips::-webkit-scrollbar-track {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
+
+/* تحسين التناسق العام */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+body {
+    padding-top: 80px; /* للتعويض عن الناف بار الثابت */
+}
+
 
 .driver-card {
     margin: 0; /* أزل الفراغات الخارجية */
