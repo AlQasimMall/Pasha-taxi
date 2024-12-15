@@ -801,6 +801,118 @@ html, body {
 .edit-btn:hover {
     background: rgb(255, 215, 0);
 }
+
+.search-wrapper {
+    position: relative;
+}
+
+.search-input-wrapper {
+    position: relative;
+}
+
+.search-input {
+    padding-right: 40px;
+    border-radius: 20px;
+    border: 2px solid #eee;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+}
+
+.search-results {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px 0;
+}
+
+.search-result-item {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-result-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.search-result-item .driver-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.search-result-item .driver-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+}
+
+.search-result-item .driver-details {
+    flex: 1;
+}
+
+.search-result-item .driver-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--secondary-color);
+}
+
+.search-result-item .driver-meta {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.highlight {
+    background: rgba(255, 215, 0, 0.3);
+    padding: 0 3px;
+    border-radius: 3px;
+}
+
+/* تنسيق شريط التمرير */
+.search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-results::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+.no-results {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+}
+
+/* تحسينات للأزرار */
+.btn-outline-primary {
+    border-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-check:checked + .btn-outline-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--secondary-color);
+}
     </style>
 </head>
 <body>
@@ -855,43 +967,145 @@ html, body {
                     <i class="fas fa-map-marker-alt"></i>
                     بغداد
                 </span>
+                <span class="location-chip" data-location="الكرخ">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الكرخ
+                </span>
+                <span class="location-chip" data-location="الرصافة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الرصافة
+                </span>
                 <span class="location-chip" data-location="البصرة">
                     <i class="fas fa-map-marker-alt"></i>
                     البصرة
                 </span>
-                <span class="location-chip" data-location="النجف">
+                <span class="location-chip" data-location="نينوى">
                     <i class="fas fa-map-marker-alt"></i>
-                    النجف
-                </span>
-                <span class="location-chip" data-location="كربلاء">
-                    <i class="fas fa-map-marker-alt"></i>
-                    كربلاء
+                    نينوى
                 </span>
                 <span class="location-chip" data-location="الموصل">
                     <i class="fas fa-map-marker-alt"></i>
                     الموصل
                 </span>
-              
-                </span>
-                <span class="location-chip" data-location="بغداد">
-                    <i class="fas fa-map-marker-alt"></i>
-                    بغداد
-                </span>
-                <span class="location-chip" data-location="البصرة">
-                    <i class="fas fa-map-marker-alt"></i>
-                    البصرة
-                </span>
                 <span class="location-chip" data-location="النجف">
                     <i class="fas fa-map-marker-alt"></i>
                     النجف
+                </span>
+                <span class="location-chip" data-location="الكوفة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الكوفة
                 </span>
                 <span class="location-chip" data-location="كربلاء">
                     <i class="fas fa-map-marker-alt"></i>
                     كربلاء
                 </span>
+                <span class="location-chip" data-location="الحسينية">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الحسينية
+                </span>
+                <span class="location-chip" data-location="أربيل">
+                    <i class="fas fa-map-marker-alt"></i>
+                    أربيل
+                </span>
+                <span class="location-chip" data-location="كركوك">
+                    <i class="fas fa-map-marker-alt"></i>
+                    كركوك
+                </span>
+                <span class="location-chip" data-location="الأنبار">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الأنبار
+                </span>
+                <span class="location-chip" data-location="الرمادي">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الرمادي
+                </span>
+                <span class="location-chip" data-location="الفلوجة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الفلوجة
+                </span>
+                <span class="location-chip" data-location="بابل">
+                    <i class="fas fa-map-marker-alt"></i>
+                    بابل
+                </span>
+                <span class="location-chip" data-location="الحلة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الحلة
+                </span>
+                <span class="location-chip" data-location="المسيب">
+                    <i class="fas fa-map-marker-alt"></i>
+                    المسيب
+                </span>
                 <span class="location-chip" data-location="الهاشمية">
                     <i class="fas fa-map-marker-alt"></i>
                     الهاشمية
+                </span>
+                <span class="location-chip" data-location="القاسم">
+                    <i class="fas fa-map-marker-alt"></i>
+                    القاسم
+                </span>
+                <span class="location-chip" data-location="ديالى">
+                    <i class="fas fa-map-marker-alt"></i>
+                    ديالى
+                </span>
+                <span class="location-chip" data-location="بعقوبة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    بعقوبة
+                </span>
+                <span class="location-chip" data-location="ذي قار">
+                    <i class="fas fa-map-marker-alt"></i>
+                    ذي قار
+                </span>
+                <span class="location-chip" data-location="الناصرية">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الناصرية
+                </span>
+                <span class="location-chip" data-location="السليمانية">
+                    <i class="fas fa-map-marker-alt"></i>
+                    السليمانية
+                </span>
+                <span class="location-chip" data-location="صلاح الدين">
+                    <i class="fas fa-map-marker-alt"></i>
+                    صلاح الدين
+                </span>
+                <span class="location-chip" data-location="تكريت">
+                    <i class="fas fa-map-marker-alt"></i>
+                    تكريت
+                </span>
+                <span class="location-chip" data-location="واسط">
+                    <i class="fas fa-map-marker-alt"></i>
+                    واسط
+                </span>
+                <span class="location-chip" data-location="الكوت">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الكوت
+                </span>
+                <span class="location-chip" data-location="ميسان">
+                    <i class="fas fa-map-marker-alt"></i>
+                    ميسان
+                </span>
+                <span class="location-chip" data-location="العمارة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    العمارة
+                </span>
+                <span class="location-chip" data-location="المثنى">
+                    <i class="fas fa-map-marker-alt"></i>
+                    المثنى
+                </span>
+                <span class="location-chip" data-location="السماوة">
+                    <i class="fas fa-map-marker-alt"></i>
+                    السماوة
+                </span>
+                <span class="location-chip" data-location="دهوك">
+                    <i class="fas fa-map-marker-alt"></i>
+                    دهوك
+                </span>
+                <span class="location-chip" data-location="القادسية">
+                    <i class="fas fa-map-marker-alt"></i>
+                    القادسية
+                </span>
+                <span class="location-chip" data-location="الديوانية">
+                    <i class="fas fa-map-marker-alt"></i>
+                    الديوانية
                 </span>
                 
             </div>
@@ -954,25 +1168,44 @@ html, body {
                             <div class="col-md-12">
                                 <label class="form-label">المنطقة</label>
                                 <select class="form-control" id="driverLocation" required>
-                                    <option value="">اختر المنطقة</option>
-                                    <option value="بغداد">بغداد</option>
-                                    <option value="البصرة">البصرة</option>
-                                    <option value="النجف">النجف</option>
-                                    <option value="كربلاء">كربلاء</option>
-                                    <option value="الموصل">الموصل</option>
+                                    <option value="">اختر المحافظة</option>
+<option value="بغداد">بغداد</option>
+<option value="الكرخ">الكرخ</option>
+<option value="الرصافة">الرصافة</option>
+<option value="البصرة">البصرة</option>
+<option value="نينوى">نينوى</option>
+<option value="الموصل">الموصل</option>
+<option value="النجف">النجف</option>
+<option value="الكوفة">الكوفة</option>
+<option value="كربلاء">كربلاء</option>
+<option value="الحسينية">الحسينية</option>
+<option value="أربيل">أربيل</option>
+<option value="كركوك">كركوك</option>
+<option value="الأنبار">الأنبار</option>
+<option value="الرمادي">الرمادي</option>
+<option value="الفلوجة">الفلوجة</option>
+<option value="بابل">بابل</option>
+<option value="الحلة">الحلة</option>
+<option value="المسيب">المسيب</option>
+<option value="الهاشمية">الهاشمية</option>
+<option value="القاسم">القاسم</option>
+<option value="ديالى">ديالى</option>
+<option value="بعقوبة">بعقوبة</option>
+<option value="ذي قار">ذي قار</option>
+<option value="الناصرية">الناصرية</option>
+<option value="السليمانية">السليمانية</option>
+<option value="صلاح الدين">صلاح الدين</option>
+<option value="تكريت">تكريت</option>
+<option value="واسط">واسط</option>
+<option value="الكوت">الكوت</option>
+<option value="ميسان">ميسان</option>
+<option value="العمارة">العمارة</option>
+<option value="المثنى">المثنى</option>
+<option value="السماوة">السماوة</option>
+<option value="دهوك">دهوك</option>
+<option value="القادسية">القادسية</option>
+<option value="الديوانية">الديوانية</option>
                                
-                                <option value="بابل">بابل</option>
-                                    <option value="الديوانيه">الديوانية</option>
-                                    <option value="الهاشمية">الهاشمية</option>
-                                    <option value="القاسم">القاسم</option>
-                                    <option value="الكوفة">الكوفة</option
-                                 
-                                   </select>
-                            </div>
-                            <div class="col-md-12">
-                                <label class="form-label">المنطقة</label>
-                                <select class="form-control" id="driverLocation" required>
-                                    <option value="">اختر المنطقة</option>
                                
                             </div>
                             <div class="col-12">
@@ -989,7 +1222,7 @@ html, body {
             </div>
         </div>
     </div>
-    
+        
 
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
@@ -1041,9 +1274,43 @@ html, body {
                         <div class="col-md-12">
                             <label class="form-label">المنطقة</label>
                             <select class="form-control" id="editDriverLocation" required>
-                                <option value="بغداد">بغداد</option>
-                                <option value="البصرة">البصرة</option>
-                                <option value="النجف">النجف</option>
+                                <option value="">اختر المحافظة</option>
+<option value="بغداد">بغداد</option>
+<option value="الكرخ">الكرخ</option>
+<option value="الرصافة">الرصافة</option>
+<option value="البصرة">البصرة</option>
+<option value="نينوى">نينوى</option>
+<option value="الموصل">الموصل</option>
+<option value="النجف">النجف</option>
+<option value="الكوفة">الكوفة</option>
+<option value="كربلاء">كربلاء</option>
+<option value="الحسينية">الحسينية</option>
+<option value="أربيل">أربيل</option>
+<option value="كركوك">كركوك</option>
+<option value="الأنبار">الأنبار</option>
+<option value="الرمادي">الرمادي</option>
+<option value="الفلوجة">الفلوجة</option>
+<option value="بابل">بابل</option>
+<option value="الحلة">الحلة</option>
+<option value="المسيب">المسيب</option>
+<option value="الهاشمية">الهاشمية</option>
+<option value="القاسم">القاسم</option>
+<option value="ديالى">ديالى</option>
+<option value="بعقوبة">بعقوبة</option>
+<option value="ذي قار">ذي قار</option>
+<option value="الناصرية">الناصرية</option>
+<option value="السليمانية">السليمانية</option>
+<option value="صلاح الدين">صلاح الدين</option>
+<option value="تكريت">تكريت</option>
+<option value="واسط">واسط</option>
+<option value="الكوت">الكوت</option>
+<option value="ميسان">ميسان</option>
+<option value="العمارة">العمارة</option>
+<option value="المثنى">المثنى</option>
+<option value="السماوة">السماوة</option>
+<option value="دهوك">دهوك</option>
+<option value="القادسية">القادسية</option>
+<option value="الديوانية">الديوانية</option>
                                 <!-- إضافة باقي المدن -->
                             </select>
                         </div>
@@ -1057,6 +1324,55 @@ html, body {
                         <button type="submit" class="btn btn-primary w-100">حفظ التغييرات</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">بحث عن سائق</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="search-wrapper">
+                    <!-- حقل البحث -->
+                    <div class="search-input-wrapper mb-3">
+                        <div class="input-group">
+                            <input type="text" 
+                                   class="form-control search-input" 
+                                   id="navbarSearchInput" 
+                                   placeholder="ابحث عن اسم السائق، المنطقة، نوع السيارة..."
+                                   autofocus>
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- خيارات البحث -->
+                    <div class="search-options mb-3">
+                        <div class="btn-group w-100" role="group">
+                            <input type="radio" class="btn-check" name="searchType" id="searchAll" checked>
+                            <label class="btn btn-outline-primary" for="searchAll">الكل</label>
+
+                            <input type="radio" class="btn-check" name="searchType" id="searchName">
+                            <label class="btn btn-outline-primary" for="searchName">الاسم</label>
+
+                            <input type="radio" class="btn-check" name="searchType" id="searchLocation">
+                            <label class="btn btn-outline-primary" for="searchLocation">المنطقة</label>
+
+                            <input type="radio" class="btn-check" name="searchType" id="searchCar">
+                            <label class="btn btn-outline-primary" for="searchCar">السيارة</label>
+                        </div>
+                    </div>
+
+                    <!-- نتائج البحث -->
+                    <div id="searchResults" class="search-results"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -1217,7 +1533,78 @@ function loadDrivers(location = 'all') {
 }
 
 
+// قاموس يحتوي على إحداثيات المحافظات والمناطق العراقية
+const locationCoordinates = {
+    "بغداد": { lat: 33.3152, lng: 44.3661 },
+    "الكرخ": { lat: 33.3024, lng: 44.3937 },
+    "الرصافة": { lat: 33.3319, lng: 44.4445 },
+    "البصرة": { lat: 30.5085, lng: 47.7804 },
+    "نينوى": { lat: 36.3359, lng: 43.1194 },
+    "الموصل": { lat: 36.3359, lng: 43.1194 },
+    "النجف": { lat: 31.9892, lng: 44.3405 },
+    "الكوفة": { lat: 32.0343, lng: 44.4019 },
+    "كربلاء": { lat: 32.6101, lng: 44.0241 },
+    "الحسينية": { lat: 32.6239, lng: 44.0179 },
+    "أربيل": { lat: 36.1901, lng: 44.0091 },
+    "كركوك": { lat: 35.4681, lng: 44.3923 },
+    "الأنبار": { lat: 33.3784, lng: 43.1441 },
+    "الرمادي": { lat: 33.4250, lng: 43.3001 },
+    "الفلوجة": { lat: 33.3538, lng: 43.7789 },
+    "بابل": { lat: 32.4680, lng: 44.4491 },
+    "الحلة": { lat: 32.4689, lng: 44.4217 },
+    "المسيب": { lat: 32.8471, lng: 44.2907 },
+    "الهاشمية": { lat: 32.2482, lng: 44.6027 },
+    "القاسم": { lat: 32.2973, lng: 44.5907 },
+    "ديالى": { lat: 33.7752, lng: 44.6451 },
+    "بعقوبة": { lat: 33.7474, lng: 44.6537 },
+    "ذي قار": { lat: 31.0529, lng: 46.2590 },
+    "الناصرية": { lat: 31.0529, lng: 46.2590 },
+    "السليمانية": { lat: 35.5556, lng: 45.4350 },
+    "صلاح الدين": { lat: 34.6108, lng: 43.6782 },
+    "تكريت": { lat: 34.6707, lng: 43.6789 },
+    "واسط": { lat: 32.5141, lng: 45.8206 },
+    "الكوت": { lat: 32.5141, lng: 45.8206 },
+    "ميسان": { lat: 31.8389, lng: 47.1451 },
+    "العمارة": { lat: 31.8389, lng: 47.1451 },
+    "المثنى": { lat: 31.3289, lng: 45.2792 },
+    "السماوة": { lat: 31.3199, lng: 45.2847 },
+    "دهوك": { lat: 36.8695, lng: 42.9505 },
+    "القادسية": { lat: 31.9889, lng: 44.9252 },
+    "الديوانية": { lat: 31.9889, lng: 44.9252 }
+};
 
+function getCoordinatesForLocation(location) {
+    // تحقق من وجود الموقع في القاموس
+    if (locationCoordinates[location]) {
+        return locationCoordinates[location];
+    }
+    
+    // إذا لم يتم العثور على الموقع، نرجع إحداثيات بغداد كقيمة افتراضية
+    console.warn(`لم يتم العثور على إحداثيات لـ ${location}، سيتم استخدام إحداثيات بغداد`);
+    return locationCoordinates["بغداد"];
+}
+
+// مثال على الاستخدام في دالة إضافة السائق
+async function handleAddDriver(event) {
+    event.preventDefault();
+    
+    const location = document.getElementById('driverLocation').value;
+    const coordinates = getCoordinatesForLocation(location);
+    
+    // استخدام الإحداثيات في البيانات المرسلة
+    const driverData = {
+        // ... البيانات الأخرى
+        latitude: coordinates.lat,
+        longitude: coordinates.lng
+    };
+    
+    // إكمال عملية إضافة السائق
+    try {
+        // ... كود إرسال البيانات
+    } catch (error) {
+        console.error('Error adding driver:', error);
+    }
+}
         
         function handleLocationError(error) {
             // التعامل مع خطأ في الموقع الجغرافي
@@ -2008,6 +2395,140 @@ function updateUserLocation(position) {
         filter.classList.remove('sticky');
     }
 });
+
+
+// دالة البحث الرئيسية
+function searchDrivers(searchTerm, searchType = 'all') {
+    const resultsContainer = document.getElementById('searchResults');
+    resultsContainer.innerHTML = '<div class="text-center"><div class="spinner-border text-primary" role="status"></div></div>';
+
+    if (!searchTerm.trim()) {
+        resultsContainer.innerHTML = '';
+        return;
+    }
+
+    const driversRef = database.ref('drivers');
+    driversRef.once('value')
+        .then((snapshot) => {
+            const results = [];
+            snapshot.forEach((childSnapshot) => {
+                const driver = childSnapshot.val();
+                const driverId = childSnapshot.key;
+                
+                const searchLower = searchTerm.toLowerCase();
+                let match = false;
+
+                switch(searchType) {
+                    case 'name':
+                        match = driver.name.toLowerCase().includes(searchLower);
+                        break;
+                    case 'location':
+                        match = driver.location.toLowerCase().includes(searchLower);
+                        break;
+                    case 'car':
+                        match = driver.carType.toLowerCase().includes(searchLower) || 
+                               driver.carModel.toString().includes(searchLower);
+                        break;
+                    default:
+                        match = driver.name.toLowerCase().includes(searchLower) || 
+                               driver.location.toLowerCase().includes(searchLower) ||
+                               driver.carType.toLowerCase().includes(searchLower) ||
+                               driver.carModel.toString().includes(searchLower);
+                }
+
+                if (match) {
+                    results.push({ ...driver, id: driverId });
+                }
+            });
+            
+            displaySearchResults(results, searchTerm);
+        })
+        .catch((error) => {
+            console.error("Error searching:", error);
+            resultsContainer.innerHTML = '<div class="no-results">حدث خطأ في البحث</div>';
+        });
+}
+
+// دالة عرض نتائج البحث
+function displaySearchResults(results, searchTerm) {
+    const resultsContainer = document.getElementById('searchResults');
+    
+    if (results.length === 0) {
+        resultsContainer.innerHTML = '<div class="no-results">لا توجد نتائج للبحث</div>';
+        return;
+    }
+
+    resultsContainer.innerHTML = results.map(driver => `
+        <div class="search-result-item" onclick="handleDriverSelect('${driver.id}')">
+            <div class="driver-info">
+                <img src="${driver.imageUrl}" alt="${driver.name}" class="driver-image">
+                <div class="driver-details">
+                    <div class="driver-name">${highlightText(driver.name, searchTerm)}</div>
+                    <div class="driver-meta">
+                        <i class="fas fa-map-marker-alt"></i> 
+                        ${highlightText(driver.location, searchTerm)}
+                    </div>
+                    <div class="driver-meta">
+                        <i class="fas fa-car"></i> 
+                        ${highlightText(driver.carType, searchTerm)} ${highlightText(driver.carModel.toString(), searchTerm)}
+                    </div>
+                </div>
+                <div class="driver-status ${driver.active ? 'text-success' : 'text-danger'}">
+                    <i class="fas fa-circle"></i>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// دالة تمييز نص البحث
+function highlightText(text, searchTerm) {
+    if (!searchTerm) return text;
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
+}
+
+// دالة معالجة اختيار السائق
+function handleDriverSelect(driverId) {
+    viewDriverLocation(driverId);
+    const modal = bootstrap.Modal.getInstance(document.getElementById('searchModal'));
+    modal.hide();
+}
+
+// إعداد مستمعي الأحداث
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('navbarSearchInput');
+    const searchTypeInputs = document.querySelectorAll('input[name="searchType"]');
+    let searchTimeout;
+
+    // مستمع حدث البحث
+    searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            const searchType = document.querySelector('input[name="searchType"]:checked').id.replace('search', '').toLowerCase();
+            searchDrivers(e.target.value, searchType);
+        }, 300);
+    });
+
+    // مستمع حدث تغيير نوع البحث
+    searchTypeInputs.forEach(input => {
+        input.addEventListener('change', () => {
+            if (searchInput.value) {
+                const searchType = input.id.replace('search', '').toLowerCase();
+                searchDrivers(searchInput.value, searchType);
+            }
+        });
+    });
+
+    // تنظيف البحث عند إغلاق النافذة المنبثقة
+    document.getElementById('searchModal').addEventListener('hidden.bs.modal', () => {
+        searchInput.value = '';
+        document.getElementById('searchResults').innerHTML = '';
+        document.getElementById('searchAll').checked = true;
+    });
+});
+
+
 
         function filterDrivers(searchTerm) {
             const driverCards = document.querySelectorAll('.driver-card');
