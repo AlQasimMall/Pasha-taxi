@@ -744,6 +744,51 @@ html, body {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
         }
+        
+        /* أنماط لأزرار الحذف والتعديل */
+.driver-card-actions {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.action-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.delete-btn {
+    background: rgba(255, 59, 48, 0.9);
+    color: white;
+}
+
+.edit-btn {
+    background: rgba(255, 215, 0, 0.9);
+    color: black;
+}
+
+.action-icon:hover {
+    transform: scale(1.1);
+}
+
+.delete-btn:hover {
+    background: rgb(255, 59, 48);
+}
+
+.edit-btn:hover {
+    background: rgb(255, 215, 0);
+}
     </style>
 </head>
 <body>
@@ -932,6 +977,7 @@ html, body {
             </div>
         </div>
     </div>
+    
 
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
@@ -940,6 +986,69 @@ html, body {
     <div class="loading-spinner" id="loadingSpinner">
         <div class="spinner"></div>
     </div>
+    <!-- نافذة تعديل بيانات السائق -->
+<div class="modal fade" id="editDriverModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">تعديل بيانات السائق</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editDriverForm" onsubmit="handleEditDriver(event)">
+                    <input type="hidden" id="editDriverId">
+                    
+                    <div class="mb-4 text-center">
+                        <div class="image-upload-container" onclick="document.getElementById('editDriverImage').click()">
+                            <input type="file" id="editDriverImage" accept="image/*" style="display: none" onchange="handleEditImagePreview(event)">
+                            <img id="editImagePreview" src="#" alt="" style="display: none; width: 100%; height: 200px; object-fit: cover; border-radius: 10px;">
+                            <div class="upload-placeholder">
+                                <i class="fas fa-camera fa-2x mb-2"></i>
+                                <p>انقر لتغيير الصورة</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">اسم السائق</label>
+                            <input type="text" class="form-control" id="editDriverName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">رقم الهاتف</label>
+                            <input type="tel" class="form-control" id="editDriverPhone" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">نوع السيارة</label>
+                            <input type="text" class="form-control" id="editCarType" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">موديل السيارة</label>
+                            <input type="number" class="form-control" id="editCarModel" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">المنطقة</label>
+                            <select class="form-control" id="editDriverLocation" required>
+                                <option value="بغداد">بغداد</option>
+                                <option value="البصرة">البصرة</option>
+                                <option value="النجف">النجف</option>
+                                <!-- إضافة باقي المدن -->
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">معلومات إضافية</label>
+                            <textarea class="form-control" id="editDriverBio" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary w-100">حفظ التغييرات</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
@@ -1366,12 +1475,23 @@ function loadDrivers(location = 'all') {
 }
 
 // تحديث دالة إنشاء بطاقة السائق
+// دالة إنشاء بطاقة السائق المحدثة
 function createDriverCard(driver, key) {
     const distance = userLocation && driver.coordinates ? 
         calculateDistance(userLocation, driver.coordinates) : null;
 
     return `
-        <div class="driver-card animate__animated animate__fadeIn">
+        <div class="driver-card animate__animated animate__fadeIn" data-driver-id="${key}">
+            <!-- أزرار الحذف والتعديل -->
+            <div class="driver-card-actions">
+                <button class="action-icon delete-btn" onclick="confirmDeleteDriver('${key}')">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                <button class="action-icon edit-btn" onclick="showEditDriverModal('${key}')">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </div>
+
             <div class="driver-image-container">
                 <img src="${driver.imageUrl}" alt="${driver.name}" class="driver-image">
                 <div class="driver-status ${driver.active ? 'status-active' : 'status-inactive'}">
@@ -1427,83 +1547,286 @@ function createDriverCard(driver, key) {
     `;
 }
 
-        async function getCoordinatesForLocation(location) {
-            try {
-                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location},Iraq`);
-                const data = await response.json();
-                
-                if (data && data.length > 0) {
-                    return {
-                        lat: parseFloat(data[0].lat),
-                        lng: parseFloat(data[0].lon)
-                    };
+// دالة تأكيد الحذف
+function confirmDeleteDriver(driverId) {
+    if (confirm('هل أنت متأكد من حذف هذا السائق؟')) {
+        deleteDriver(driverId);
+    }
+}
+
+// دالة حذف السائق
+async function deleteDriver(driverId) {
+    try {
+        showLoading();
+        
+        const driverRef = database.ref(`drivers/${driverId}`);
+        const snapshot = await driverRef.once('value');
+        const driverData = snapshot.val();
+
+        if (driverData) {
+            // حذف الصورة من التخزين
+            if (driverData.imageUrl) {
+                try {
+                    const imageRef = storage.refFromURL(driverData.imageUrl);
+                    await imageRef.delete();
+                } catch (error) {
+                    console.error('Error deleting image:', error);
                 }
-                throw new Error('لم يتم العثور على الموقع');
-            } catch (error) {
-                console.error('Error getting coordinates:', error);
-                throw new Error('فشل في العثور على الإحداثيات');
             }
+
+            // حذف بيانات السائق
+            await driverRef.remove();
+
+            // حذف البطاقة من الواجهة
+            const card = document.querySelector(`[data-driver-id="${driverId}"]`);
+            if (card) {
+                card.classList.add('animate__fadeOut');
+                setTimeout(() => card.remove(), 300);
+            }
+
+            showToast('تم حذف السائق بنجاح');
+        }
+    } catch (error) {
+        console.error('Error deleting driver:', error);
+        showToast('حدث خطأ أثناء حذف السائق', 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+// دالة إظهار نافذة التعديل
+function showEditDriverModal(driverId) {
+    database.ref(`drivers/${driverId}`).once('value')
+        .then(snapshot => {
+            const driver = snapshot.val();
+            if (driver) {
+                document.getElementById('editDriverId').value = driverId;
+                document.getElementById('editDriverName').value = driver.name;
+                document.getElementById('editDriverPhone').value = driver.phone;
+                document.getElementById('editCarType').value = driver.carType;
+                document.getElementById('editCarModel').value = driver.carModel;
+                document.getElementById('editDriverLocation').value = driver.location;
+                
+                if (driver.imageUrl) {
+                    document.getElementById('editImagePreview').src = driver.imageUrl;
+                    document.getElementById('editImagePreview').style.display = 'block';
+                }
+
+                const editModal = new bootstrap.Modal(document.getElementById('editDriverModal'));
+                editModal.show();
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching driver data:', error);
+            showToast('حدث خطأ في تحميل بيانات السائق', 'error');
+        });
+}
+
+// دالة معالجة تعديل البيانات
+async function handleEditDriver(event) {
+    event.preventDefault();
+    showLoading();
+
+    try {
+        const driverId = document.getElementById('editDriverId').value;
+        const imageFile = document.getElementById('editDriverImage').files[0];
+        let updates = {
+            name: document.getElementById('editDriverName').value,
+            phone: document.getElementById('editDriverPhone').value,
+            carType: document.getElementById('editCarType').value,
+            carModel: document.getElementById('editCarModel').value,
+            location: document.getElementById('editDriverLocation').value
+        };
+
+        if (imageFile) {
+            const imageRef = storage.ref(`drivers/${Date.now()}_${imageFile.name}`);
+            const uploadTask = await imageRef.put(imageFile);
+            updates.imageUrl = await uploadTask.ref.getDownloadURL();
         }
 
-        async function handleAddDriver(event) {
-            event.preventDefault();
-            showLoading();
+        await database.ref(`drivers/${driverId}`).update(updates);
         
-            try {
-                const imageFile = document.getElementById('driverImage').files[0];
-                if (!imageFile) {
-                    throw new Error('الرجاء اختيار صورة للسائق');
-                }
+        const modal = bootstrap.Modal.getInstance(document.getElementById('editDriverModal'));
+        modal.hide();
         
-                // رفع صورة السائق
-                const imageRef = storage.ref(`drivers/${Date.now()}_${imageFile.name}`);
-                const uploadTask = await imageRef.put(imageFile);
-                const imageUrl = await uploadTask.ref.getDownloadURL();
-        
-                // إدخال الإحداثيات من رابط الموقع
-                const mapLink = document.getElementById('driverMapLink').value;
-                let coordinates = null;
-        
-                if (mapLink) {
-                    const match = mapLink.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/); // استخراج الإحداثيات من الرابط
-                    if (match) {
-                        coordinates = {
-                            lat: parseFloat(match[1]),
-                            lng: parseFloat(match[2]),
-                        };
-                    } else {
-                        throw new Error('رابط الموقع غير صالح. يرجى التأكد من إدخال رابط Google Maps صالح.');
-                    }
-                }
-        
-                const driverData = {
-                    name: document.getElementById('driverName').value,
-                    phone: document.getElementById('driverPhone').value,
-                    carType: document.getElementById('carType').value,
-                    carModel: document.getElementById('carModel').value,
-                    location: document.getElementById('driverLocation').value,
-                    coordinates: coordinates, // حفظ الإحداثيات
-                    bio: document.getElementById('driverBio').value,
-                    imageUrl: imageUrl,
-                    rating: 5,
-                    trips: 0,
-                    active: true,
-                    createdAt: firebase.database.ServerValue.TIMESTAMP,
-                };
-        
-                await database.ref('drivers').push(driverData);
-        
-                document.getElementById('addDriverForm').reset();
-                showToast('تم إضافة السائق بنجاح');
-                loadDrivers();
-            } catch (error) {
-                console.error('Error adding driver:', error);
-                showToast(error.message, 'error');
-            } finally {
-                hideLoading();
-            }
+        showToast('تم تحديث بيانات السائق بنجاح');
+        loadDrivers();
+    } catch (error) {
+        console.error('Error updating driver:', error);
+        showToast('حدث خطأ أثناء تحديث البيانات', 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+// دوال إضافية للحذف والتعديل
+function confirmDeleteDriver(driverId) {
+    // استخدام الطريقة التقليدية للتأكيد إذا لم تتوفر مكتبة SweetAlert
+    if (typeof Swal === 'undefined') {
+        if (confirm('هل أنت متأكد من حذف هذا السائق؟')) {
+            deleteDriver(driverId);
         }
+        return;
+    }
+
+    // استخدام SweetAlert إذا كانت متوفرة
+    Swal.fire({
+        title: 'هل أنت متأكد؟',
+        text: 'سيتم حذف السائق بشكل نهائي!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'نعم، احذف!',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        customClass: {
+            confirmButton: 'btn btn-danger mx-2',
+            cancelButton: 'btn btn-secondary mx-2'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteDriver(driverId);
+        }
+    });
+}
+
+// دالة الحذف الفعلي
+async function deleteDriver(driverId) {
+    try {
+        showLoading();
         
+        // الحصول على بيانات السائق
+        const driverRef = database.ref(`drivers/${driverId}`);
+        const snapshot = await driverRef.once('value');
+        const driverData = snapshot.val();
+
+        if (driverData) {
+            // حذف الصورة من Firebase Storage إذا كانت موجودة
+            if (driverData.imageUrl) {
+                try {
+                    const imageRef = storage.refFromURL(driverData.imageUrl);
+                    await imageRef.delete();
+                } catch (error) {
+                    console.error('Error deleting image:', error);
+                }
+            }
+
+            // حذف بيانات السائق من قاعدة البيانات
+            await driverRef.remove();
+
+            // حذف البطاقة من واجهة المستخدم
+            const card = document.querySelector(`[data-driver-id="${driverId}"]`);
+            if (card) {
+                card.classList.add('animate__animated', 'animate__fadeOut');
+                setTimeout(() => {
+                    card.remove();
+                }, 500);
+            }
+
+            // عرض رسالة نجاح
+            showToast('تم حذف السائق بنجاح', 'success');
+            
+            // تحديث الخريطة
+            loadDrivers();
+        }
+    } catch (error) {
+        console.error('Error deleting driver:', error);
+        showToast('حدث خطأ أثناء حذف السائق', 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+
+function showEditDriverModal(driverId) {
+    database.ref(`drivers/${driverId}`).once('value')
+        .then(snapshot => {
+            const driver = snapshot.val();
+            if (driver) {
+                // ملء النموذج ببيانات السائق الحالية
+                document.getElementById('editDriverId').value = driverId;
+                document.getElementById('editDriverName').value = driver.name;
+                document.getElementById('editDriverPhone').value = driver.phone;
+                document.getElementById('editCarType').value = driver.carType;
+                document.getElementById('editCarModel').value = driver.carModel;
+                document.getElementById('editDriverLocation').value = driver.location;
+                document.getElementById('editDriverBio').value = driver.bio || '';
+                
+                if (driver.imageUrl) {
+                    document.getElementById('editImagePreview').src = driver.imageUrl;
+                    document.getElementById('editImagePreview').style.display = 'block';
+                    document.querySelector('#editDriverModal .upload-placeholder').style.display = 'none';
+                }
+                
+                // عرض النافذة المنبثقة
+                const editModal = new bootstrap.Modal(document.getElementById('editDriverModal'));
+                editModal.show();
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching driver data:', error);
+            showToast('حدث خطأ في تحميل بيانات السائق', 'error');
+        });
+}
+
+async function handleEditDriver(event) {
+    event.preventDefault();
+    showLoading();
+
+    const driverId = document.getElementById('editDriverId').value;
+    const imageFile = document.getElementById('editDriverImage').files[0];
+    
+    try {
+        let imageUrl;
+        if (imageFile) {
+            const imageRef = storage.ref(`drivers/${Date.now()}_${imageFile.name}`);
+            const uploadTask = await imageRef.put(imageFile);
+            imageUrl = await uploadTask.ref.getDownloadURL();
+        }
+
+        const updates = {
+            name: document.getElementById('editDriverName').value,
+            phone: document.getElementById('editDriverPhone').value,
+            carType: document.getElementById('editCarType').value,
+            carModel: document.getElementById('editCarModel').value,
+            location: document.getElementById('editDriverLocation').value,
+            bio: document.getElementById('editDriverBio').value
+        };
+
+        if (imageUrl) {
+            updates.imageUrl = imageUrl;
+        }
+
+        await database.ref(`drivers/${driverId}`).update(updates);
+
+        // إغلاق النافذة المنبثقة
+        const modal = bootstrap.Modal.getInstance(document.getElementById('editDriverModal'));
+        modal.hide();
+
+        showToast('تم تحديث بيانات السائق بنجاح');
+        loadDrivers(); // تحديث عرض السائقين
+    } catch (error) {
+        console.error('Error updating driver:', error);
+        showToast('حدث خطأ أثناء تحديث البيانات', 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+function handleEditImagePreview(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('editImagePreview');
+            const placeholder = document.querySelector('#editDriverModal .upload-placeholder');
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+            placeholder.style.display = 'none';
+        }
+        reader.readAsDataURL(file);
+    }
+}
         
 
         function handleImagePreview(event) {
