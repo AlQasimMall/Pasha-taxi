@@ -2,45 +2,57 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="تطبيق تاكسي العراق - خدمة حجز سيارات الأجرة">
-    <title>تاكسي العراق - النسخة المحدثة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="تطبيق تاكسي العراق - خدمة حجز سيارات الأجرة الأفضل في العراق">
+    <meta name="keywords" content="تاكسي العراق, سيارات أجرة, حجز تاكسي, نقل, مواصلات">
+    <meta name="author" content="تاكسي العراق">
+    <meta name="theme-color" content="#FFD700">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <title>تاكسي العراق - خدمة حجز السيارات الأولى في العراق</title>
+    
+    <!-- App Icons -->
+    <link rel="icon" type="image/png" href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/driver-images%2F7605a607-6cf8-4b32-aee1-fa7558c98452.png?alt=media&token=5cf9e67c-ba6e-4431-a6a0-79dede15b527">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/driver-images%2F7605a607-6cf8-4b32-aee1-fa7558c98452.png?alt=media&token=5cf9e67c-ba6e-4431-a6a0-79dede15b527">
+    <link rel="apple-touch-startup-image" href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/driver-images%2F7605a607-6cf8-4b32-aee1-fa7558c98452.png?alt=media&token=5cf9e67c-ba6e-4431-a6a0-79dede15b527">
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
     
     <!-- External CSS Libraries -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.rtl.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-      <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon"
-        href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737">
-    <link rel="apple-touch-icon"
-        href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737">
-    <link rel="apple-touch-icon"
-        href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737">
-    <link rel="apple-touch-icon"
-        href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737">
-    <link rel="apple-touch-icon"
-        href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737">
-    <link rel="apple-touch-icon"
-        href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737">
-    <link rel="apple-touch-icon"
-        href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737">
-    <link rel="apple-touch-icon"
-        href="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/PriceInHand-main%2F7da94f84-c767-466c-b0d3-b7bb852fd5e7.webp?alt=media&token=83c906f1-292a-4629-819b-3d137c911737">
-    <meta name="apple-mobile-web-app-status-bar" content="#db4938">
-    <meta name="theme-color" content="#db4938">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+    
+    <!-- App CSS -->
     <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="تاكسي العراق">
+    <meta property="og:description" content="خدمة حجز سيارات الأجرة الأفضل في العراق">
+    <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/driver-images%2F7605a607-6cf8-4b32-aee1-fa7558c98452.png?alt=media&token=5cf9e67c-ba6e-4431-a6a0-79dede15b527">
+    <meta property="og:url" content="https://taxi-iraq.com">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="تاكسي العراق">
+    <meta name="twitter:description" content="خدمة حجز سيارات الأجرة الأفضل في العراق">
+    <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/messageemeapp.appspot.com/o/driver-images%2F7605a607-6cf8-4b32-aee1-fa7558c98452.png?alt=media&token=5cf9e67c-ba6e-4431-a6a0-79dede15b527">
+    
+    <!-- Scripts -->
     <script src="https://unpkg.com/react/umd/react.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js" crossorigin></script>
-<script src="https://unpkg.com/babel-standalone/babel.min.js"></script>
- <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
- 
- <script src="firebase-config.js"></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone/babel.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="firebase-config.js"></script>
     <script src="script.js"></script>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <!-- Application CSS -->
     <style>
@@ -1661,28 +1673,15 @@ async function handleEditDriver(event) {
 
 // دوال إضافية للحذف والتعديل
 function confirmDeleteDriver(driverId) {
-    // استخدام الطريقة التقليدية للتأكيد إذا لم تتوفر مكتبة SweetAlert
-    if (typeof Swal === 'undefined') {
-        if (confirm('هل أنت متأكد من حذف هذا السائق؟')) {
-            deleteDriver(driverId);
-        }
-        return;
-    }
-
-    // استخدام SweetAlert إذا كانت متوفرة
     Swal.fire({
-        title: 'هل أنت متأكد؟',
-        text: 'سيتم حذف السائق بشكل نهائي!',
+        title: 'تأكيد الحذف',
+        text: 'هل أنت متأكد من حذف هذا السائق؟',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'نعم، احذف!',
-        cancelButtonText: 'إلغاء',
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
-        customClass: {
-            confirmButton: 'btn btn-danger mx-2',
-            cancelButton: 'btn btn-secondary mx-2'
-        }
+        confirmButtonText: 'نعم، احذف',
+        cancelButtonText: 'إلغاء'
     }).then((result) => {
         if (result.isConfirmed) {
             deleteDriver(driverId);
@@ -1690,45 +1689,32 @@ function confirmDeleteDriver(driverId) {
     });
 }
 
-// دالة الحذف الفعلي
 async function deleteDriver(driverId) {
     try {
         showLoading();
         
-        // الحصول على بيانات السائق
+        // حذف بيانات السائق من قاعدة البيانات
         const driverRef = database.ref(`drivers/${driverId}`);
-        const snapshot = await driverRef.once('value');
-        const driverData = snapshot.val();
-
-        if (driverData) {
-            // حذف الصورة من Firebase Storage إذا كانت موجودة
-            if (driverData.imageUrl) {
-                try {
-                    const imageRef = storage.refFromURL(driverData.imageUrl);
-                    await imageRef.delete();
-                } catch (error) {
-                    console.error('Error deleting image:', error);
-                }
-            }
-
-            // حذف بيانات السائق من قاعدة البيانات
-            await driverRef.remove();
-
-            // حذف البطاقة من واجهة المستخدم
-            const card = document.querySelector(`[data-driver-id="${driverId}"]`);
-            if (card) {
-                card.classList.add('animate__animated', 'animate__fadeOut');
-                setTimeout(() => {
-                    card.remove();
-                }, 500);
-            }
-
-            // عرض رسالة نجاح
-            showToast('تم حذف السائق بنجاح', 'success');
-            
-            // تحديث الخريطة
-            loadDrivers();
+        const driverSnapshot = await driverRef.once('value');
+        const driverData = driverSnapshot.val();
+        
+        if (driverData && driverData.imageUrl) {
+            // حذف الصورة من التخزين
+            const imageRef = storage.refFromURL(driverData.imageUrl);
+            await imageRef.delete();
         }
+        
+        // حذف البيانات
+        await driverRef.remove();
+        
+        // حذف البطاقة من الواجهة مع تأثير حركي
+        const driverCard = document.querySelector(`[data-driver-id="${driverId}"]`);
+        if (driverCard) {
+            driverCard.classList.add('animate__fadeOut');
+            setTimeout(() => driverCard.remove(), 300);
+        }
+        
+        showToast('تم حذف السائق بنجاح');
     } catch (error) {
         console.error('Error deleting driver:', error);
         showToast('حدث خطأ أثناء حذف السائق', 'error');
