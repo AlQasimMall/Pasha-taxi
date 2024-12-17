@@ -1554,6 +1554,27 @@ img {
         </div>
     </div>
 </div>
+<!-- نافذة دردشة للمراسلة -->
+<div class="modal fade" id="chatModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">الدردشة مع السائق</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="chatMessages" style="height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+                    <!-- الرسائل تظهر هنا -->
+                </div>
+                <div class="input-group mt-3">
+                    <input type="text" id="chatInput" class="form-control" placeholder="اكتب رسالتك...">
+                    <button class="btn btn-primary" onclick="sendMessage()">إرسال</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
@@ -1584,6 +1605,44 @@ img {
         let markerLayer;
         let isLoadingDrivers = false; // للتحكم في حالة تحميل البيانات
 let isViewingDriverLocation = false; // لتعطيل تحديث موقع المستخدم عند عرض موقع السائق
+let currentDriverId = null;
+
+function messageDriver(driverId) {
+    currentDriverId = driverId;
+    loadChatMessages(driverId);
+    const chatModal = new bootstrap.Modal(document.getElementById('chatModal'));
+    chatModal.show();
+}
+function loadChatMessages(driverId) {
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.innerHTML = ''; // مسح الرسائل السابقة
+
+    database.ref(`chats/${currentDriverId}`).on('value', (snapshot) => {
+        chatMessages.innerHTML = ''; // إعادة تحميل الرسائل
+        snapshot.forEach((childSnapshot) => {
+            const message = childSnapshot.val();
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = `${message.sender}: ${message.text}`;
+            chatMessages.appendChild(messageDiv);
+        });
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+}
+function sendMessage() {
+    const chatInput = document.getElementById('chatInput');
+    const messageText = chatInput.value.trim();
+    if (!messageText) return;
+
+    const messageData = {
+        sender: 'المستخدم', // يمكن استبدالها بمعرّف المستخدم
+        text: messageText,
+        timestamp: Date.now(),
+    };
+
+    database.ref(`chats/${currentDriverId}`).push(messageData);
+    chatInput.value = '';
+}
+
 
 function loadDrivers(location = 'all') {
     if (isLoadingDrivers) return; // إذا كان التحميل قيد التنفيذ، لا تقم بإعادة التحميل.
