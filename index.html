@@ -72,148 +72,340 @@
         }
 
       body {
-    margin: 0;
-    padding: 0;
+    margin: 1;
+    padding: 1;
     box-sizing: border-box;
 }
 
 .container {
-    padding: 0 1rem; /* قلل الحشوة الجانبية */
+    padding:  0rem; /* قلل الحشوة الجانبية */
 }
 /* تحديثات الخريطة */
 #map {
-    height: 90vh; /* ارتفاع نسبي لشاشة العرض */
-    min-height: 800px; /* الحد الأدنى للارتفاع */
-    width: 100%;
-    border-radius: 25px;
-    margin: 4rem 0;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-    border: px solid var(--secondary-color);
+    height: 30vh; /* زيادة الارتفاع النسبي قليلاً */
+    min-height: 100px; /* تعيين حد أدنى مناسب للارتفاع */
+    width: 105%; /* جعل العرض يغطي الحاوية بالكامل */
+    border-radius: 15px; /* تقليل التقويس لتصميم عصري */
+    margin: 3.5rem 0 2rem; /* تقليل المسافة من الأعلى وإضافة مسافة صغيرة من الأسفل */
+    box-shadow: 0 10px 20px rgba(141, 16, 16, 0.1); /* تخفيف الظلال */
+    border: 2px solid var(--secondary-color); /* تحسين الحدود */
     z-index: 1;
+    position: relative; /* تحسين الموضع للتحكم في الترتيب */
+    background: linear-gradient(135deg, #0e7583, #80deea); /* إضافة تدرج خلفية */
 }
 
-/* تحديثات الفلاتر */
-.location-filter {
-    background: white;
-    padding: 5rem;
-    border-radius: 20px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-    margin: 3rem 0;
-    position: sticky;
-    top: 80px;
-    z-index: 2;
-    backdrop-filter: blur(10px);
-}
-
-.location-chips {
+/* تحسين المسافة بين الخريطة والعناصر الأخرى */
+.container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1.2rem;
-    margin-top: 3rem;
-    padding: 0.5rem 0;
+    flex-direction: column;
+    gap:0rem; /* مسافة بين العناصر */
+}
+/* تحسين شريط التايتل */
+.app-header {
+    background: var(--secondary-color);
+    height: 50px;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.location-chip {
-    padding: 1rem 2rem;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: #f8f9fa;
-    border: 2px solid #dee2e6;
-    white-space: nowrap;
+/* اللوجو واسم التطبيق */
+.app-logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+}
+
+.app-logo i {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+}
+
+/* أيقونة البحث */
+.search-icon {
+    color: var(--primary-color);
     font-size: 1.2rem;
-    font-weight: 800;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
+.search-icon:hover {
+    color: #ffc107;
+}
+
+/* الأدوات الأخرى */
+.tools {
+    display: flex;
+    gap: 1rem;
+}
+
+.tools .nav-link {
+    color: #fff;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.tools .nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* تحسين شريط التايتل */
+.app-header {
+    background: var(--secondary-color);
+    height: 50px;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* اللوجو واسم التطبيق */
+.app-logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.app-logo i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+/* الأدوات الثلاثة */
+.tools {
+    display: flex;
+    gap: 1rem;
+}
+
+.tools .nav-link {
+    color: #fff;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.tools .nav-link i {
+    font-size: 1.2rem;
+}
+
+/* تحسين التناسق على الشاشات الصغيرة */
+@media (max-width: 768px) {
+    .app-header {
+        height: 45px;
+        padding: 0 0.5rem;
+    }
+
+    .app-logo {
+        font-size: 1rem;
+    }
+
+    .app-logo i {
+        font-size: 1.2rem;
+    }
+
+    .tools .nav-link i {
+        font-size: 1rem;
+    }
+}
+
+
+/* تحسين التفاعلات لجعل الخريطة أكثر جاذبية */
+#map:hover {
+    transform: scale(1.02); /* تكبير طفيف عند التمرير */
+    box-shadow: 0 6px 25px rgba(192, 19, 19, 0.856); /* تحسين الظلال عند التمرير */
+    transition: all 0.3s ease-in-out;
+}
+
+
+/* تحديث حاوية الفلاتر مع التثبيت */
+.location-filter {
+    background: rgb(255, 255, 255);
+    padding: 0; /* إزالة الحشوة */
+    border-radius: 10px; /* تقليل التقويس */
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* تخفيف الظلال */
+    margin: 0.3rem; /* مسافة صغيرة للخارج */
+    position: sticky;
+    top: 100px; /* تقليل المسافة من الأعلى */
+    z-index: 1000;
+    overflow: hidden;
+    backdrop-filter: blur(3px); /* تقليل تأثير التمويه */
+    -webkit-backdrop-filter: blur(3px);
+    border-bottom: none; /* إزالة الحدود */
+    transition: all 0.2s ease;
+}
+
+/* تحسين تنسيق الفلاتر */
+.location-chips {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem; /* تقليل الفجوة بين العناصر */
+    overflow-x: auto;
+    padding: 0.0rem 0; /* تقليل الحشوة الرأسية */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    white-space: nowrap;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+/* تحسين أزرار الفلتر */
+.location-chip {
+    padding: 0.0rem 0.0rem; /* تقليل الحشوات الداخلية */
+    border-radius: 15px; /* تقليل التقويس */
+    border: 1px solid var(--primary-color); /* تقليل سمك الحدود */
+    background: #fff;
+    font-size: 0.5rem; /* تصغير حجم النص */
+    font-weight: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem; /* تقليل الفجوة بين الأيقونة والنص */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    color: var(--secondary-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* تقليل الظلال */
+}
+
+/* تحسين الأيقونات */
 .location-chip i {
-    font-size: 1.3rem;
+    font-size: 0.8rem; /* تصغير حجم الأيقونة */
+    color: var(--primary-color);
+    transition: all 0.2s ease;
 }
 
+/* تحسين حالة التحويم والتنشيط */
 .location-chip:hover,
 .location-chip.active {
     background: var(--primary-color);
-    color: var(--secondary-color);
-    border-color: var(--primary-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    color: #fff;
+    transform: translateY(-1px); /* تخفيف الارتفاع عند التحويم */
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
 }
 
-/* تحسينات التجاوب */
-@media (max-width: 768px) {
-    #map {
-        height: 60vh;
-        min-height: 400px;
-    }
-
-    .location-filter {
-        padding: 1.5rem;
-        margin: 1rem 0;
-    }
-
-    .location-chips {
-        gap: 1rem;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .location-chip {
-        padding: 0.8rem 1.5rem;
-        font-size: 1.1rem;
-    }
+.location-chip:hover i,
+.location-chip.active i {
+    color: #fff;
+    transform: scale(1.1); /* تأثير تكبير بسيط */
 }
 
-@media (min-width: 1024px) {
-    #map {
-        height: 80vh;
-        min-height: 600px;
-    }
-
-    .location-filter {
-        padding: 2.5rem;
-    }
-
-    .location-chip {
-        padding: 1.2rem 2.5rem;
-        font-size: 1.3rem;
-    }
-}
-
-/* تحسينات إضافية للتجربة */
+/* تحسين شريط التمرير */
 .location-chips::-webkit-scrollbar {
-    height: 6px;
-}
-
-.location-chips::-webkit-scrollbar-thumb {
-    background-color: var(--primary-color);
-    border-radius: 10px;
+    height: 0px; /* تقليل ارتفاع شريط التمرير */
 }
 
 .location-chips::-webkit-scrollbar-track {
-    background-color: #f8f9fa;
+    background: rgba(241, 241, 241, 0.8);
     border-radius: 10px;
 }
+
+.location-chips::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+    border: none;
+}
+
+.location-chips::-webkit-scrollbar-thumb:hover {
+    background: #e5c100;
+}
+
+/* تحسين التجاوب مع شاشات الهواتف */
+@media (max-width: 768px) {
+    .location-filter {
+        padding: 0; /* إزالة الحشوة على الشاشات الصغيرة */
+        top: 10px; /* تقليل المسافة من الأعلى */
+    }
+
+    .location-chip {
+        padding: 0.3rem 0.5rem; /* تقليل الأزرار أكثر */
+        font-size: 0.8rem; /* تصغير النص */
+    }
+
+    .location-chip i {
+        font-size: 0.7rem; /* تصغير الأيقونات */
+    }
+}
+
+
+
 
 /* تحسين التناسق العام */
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 1.5rem;
+    padding: 0 2.5rem;
 }
 
 body {
-    padding-top: 80px; /* للتعويض عن الناف بار الثابت */
+    padding-top: 1%; /* للتعويض عن الناف بار الثابت */
+}
+
+/* إزالة الفراغات والحشوات من الصفحة بالكامل */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* جعل الـ body يغطي كامل الشاشة بدون فراغات */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden; /* منع التمرير الأفقي */
+    background-color: #fff; /* لون الخلفية الافتراضي */
+}
+
+/* إزالة الفراغات من أي عنصر رئيسي */
+.container,
+.row,
+.navbar,
+.location-filter,
+.tools,
+#map {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+}
+
+/* تخصيص الخريطة لتغطي كامل العرض */
+#map {
+    height: 40vh; /* ارتفاع مناسب */
+    margin: 0;
+    border-radius: 0; /* إزالة أي تقويس للحواف */
+}
+
+/* تحسين التنسيق ليكون متناسقًا */
+.navbar {
+    height: 50px; /* تقليل ارتفاع الشريط */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+}
+
+.tools .nav-link {
+    padding: 0.3rem 0.5rem; /* تقليل الحشوات داخل الروابط */
+    font-size: 1rem;
 }
 
 
 .driver-card {
     margin: 0; /* أزل الفراغات الخارجية */
-    padding: 1rem; /* حشوة داخلية بسيطة */
-    gap: 0.5rem; /* فراغ بسيط بين العناصر داخل البطاقة */
+    padding: 0rem; /* حشوة داخلية بسيطة */
+    gap: 0.0rem; /* فراغ بسيط بين العناصر داخل البطاقة */
 }
 
 .drivers-grid {
@@ -222,10 +414,10 @@ body {
 
 .location-filter {
     margin: 0.5rem 0; /* تقليل المسافة الخارجية */
-    padding: 0.5rem 1rem; /* تقليل الحشوة */
+    padding: 0.0rem 0rem; /* تقليل الحشوة */
 }
 body {
-    font-size: 1.2rem; /* تكبير النص الأساسي */
+    font-size: 1rem; /* تكبير النص الأساسي */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* تأكد من تناسق الخط */
 }
 
@@ -239,34 +431,33 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .driver-name {
-    font-size: 2rem; /* تكبير اسم السائق */
+    font-size: 1rem; /* تكبير اسم السائق */
 }
 
 .driver-stats .stat-value {
-    font-size: 2rem; /* تكبير القيم الإحصائية */
+    font-size: 1rem; /* تكبير القيم الإحصائية */
 }
 
 .driver-stats .stat-label {
-    font-size: 2rem; /* تكبير النصوص التوضيحية */
+    font-size: 1rem; /* تكبير النصوص التوضيحية */
 }
 
 .toast-container .custom-toast {
     font-size: 1.2rem; /* تكبير رسائل الإشعارات */
 }
-@media (max-width: 768px) {
-    body {
-        font-size: 1rem; /* حجم أصغر للخطوط على الشاشات الصغيرة */
+@media (max-width:5000px) {
+    .container {
+        padding: 0.5rem;
     }
-
-    .drivers-grid {
-        grid-template-columns: 2fr; /* عمود واحد للبطاقات على الهواتف */
-        gap: 1rem;
+    .driver-card {
+        margin-bottom: 1rem;
     }
-
-    .location-filter {
-        padding: 0.5rem; /* تقليل الحشوة */
+    .location-chip {
+        font-size: 1rem;
+        padding: 0.8rem;
     }
 }
+
 
 @media (min-width: 1024px) {
     body {
@@ -274,11 +465,19 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .drivers-grid {
-        grid-template-columns: repeat(3, 1fr); /* 3 أعمدة للبطاقات */
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
+    @media (min-width: 768px) {
+        .drivers-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
 
     .location-filter {
-        padding: 1rem; /* حشوة أكبر قليلاً */
+        padding: 0rem; /* حشوة أكبر قليلاً */
     }
 }
 
@@ -302,195 +501,143 @@ html, body {
 /* إزالة الهوامش من البطاقات أو أي عنصر إضافي */
 .driver-card {
     margin: 0;
-    padding: 0.5rem; /* حشوة بسيطة داخلية للبطاقة */
+    padding: 0.0rem; /* حشوة بسيطة داخلية للبطاقة */
     box-sizing: border-box;
 }
 
-/* توسيع الخريطة لتغطية العرض بالكامل */
-#map {
-    width: 100%;
-    margin: 0;
-    border: none;
-}
 
 /* تفاعل أفضل للهواتف */
-@media (max-width: 768px) {
-    .drivers-grid {
-        grid-template-columns: 1fr; /* عمود واحد على الشاشات الصغيرة */
+@media (max-width: 68px) {
+    .container {
+        padding: 0.5rem;
     }
-
-    body {
+    .driver-card {
+        margin-bottom: 1rem;
+    }
+    .location-chip {
         font-size: 1rem;
+        padding: 0.8rem;
     }
 }
+
 
 /* للشاشات الكبيرة */
-@media (min-width: 1024px) {
+.drivers-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+@media (min-width: 768px) {
     .drivers-grid {
-        grid-template-columns: repeat(2, 1fr); /* عمودان للبطاقات */
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    @media (min-width: 768px) {
+        .drivers-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+}
+
+
+
+
+/* تحسين شريط التايتل */
+.app-header {
+    background: var(--secondary-color);
+    height: 50px; /* تقليل الارتفاع */
+    padding: 0 0rem; /* إزالة الحشوة العلوية والسفلية */
+    display: flex;
+    justify-content: space-between; /* توزيع العناصر */
+    align-items: center; /* توسيط العناصر عموديًا */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+/* اللوجو والاسم */
+.app-logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem; /* تصغير حجم النص */
+    font-weight: bold;
+    color: var(--primary-color);
+    text-decoration: none;
+    gap: 0.5rem; /* مسافة بين الأيقونة والنص */
+}
+
+.app-logo i {
+    font-size: 1.5rem; /* حجم أيقونة اللوجو */
+    color: var(--primary-color);
+}
+
+/* شريط الأدوات أو العناصر */
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* مسافة بين العناصر */
+    margin: 0;
+    list-style: none;
+    padding: 0;
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+    font-size: 1rem; /* حجم النص */
+    padding: 0.3rem 0.5rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--primary-color);
+}
+
+/* إخفاء أيقونة شريط الأدوات على الشاشة الكبيرة */
+.navbar-toggler {
+    display: none;
+}
+
+/* تحسين التناسق على الشاشات الصغيرة */
+@media (max-width: 768px) {
+    .app-header {
+        height: 45px; /* تقليل إضافي للارتفاع */
+    }
+
+    .app-logo {
+        font-size: 1rem;
+    }
+
+    .app-logo i {
+        font-size: 1.2rem;
+    }
+
+    .navbar-toggler {
+        display: block; /* إظهار زر القائمة فقط على الشاشات الصغيرة */
+    }
+
+    .navbar-nav {
+        display: none; /* إخفاء شريط الأدوات واستبداله بالزر */
     }
 }
 
 
-
-        .app-header {
-            background: var(--secondary-color);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: var(--card-shadow);
-        }
-
-        .app-logo {
-            font-size: 1.8rem;
-            text-decoration: none;
-            color: var(--primary-color) !important;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .app-logo:hover {
-            transform: scale(1.05);
-        }
-
-        .navbar-nav .nav-link {
-            color: #fff;
-            transition: var(--transition);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-        }
-
-        .navbar-nav .nav-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--primary-color);
-        }
-       
-       
-
-
-        #map {
-            height: 400px;
-            border-radius: 20px;
-            margin: 1rem 0;
-            box-shadow: var(--card-shadow);
-            border: 2px solid var(--secondary-color);
-            z-index: 1;
-        }
-
-        .leaflet-popup-content {
-            text-align: center;
-            direction: rtl;
-        }
-
-        /* تحديث أزرار الفلترة لتكون أكبر وأكثر بروزاً */
-/* تحديث حاوية الفلاتر مع التثبيت */
-.location-filter {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 1.5rem;
-    border-radius: 0; /* إزالة الحواف المستديرة للتثبيت الكامل */
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    margin: 0;
-    position: sticky;
-    top: 70px; /* تعديل المسافة من الأعلى ليناسب الناف بار */
-    z-index: 1000; /* زيادة الـ z-index للتأكد من الظهور فوق العناصر الأخرى */
-    overflow: hidden;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 2px solid var(--primary-color);
-    transition: all 0.3s ease;
-}
-
-/* تحسين تنسيق الفلاتر */
-.location-chips {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 1.2rem;
-    overflow-x: auto;
-    padding: 0.8rem 0;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    white-space: nowrap;
-    margin: 0 auto;
-    max-width: 100%;
-}
-
-/* تحسين أزرار الفلتر */
-.location-chip {
-    padding: 1.2rem 2.5rem;
-    border-radius: 50px; /* زيادة التقويس */
-    border: 3px solid var(--primary-color); /* زيادة سمك الحدود */
-    background: white;
-    font-size: 1.6rem;
-    font-weight: 700;
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    flex-shrink: 0;
-    color: var(--secondary-color);
-    text-shadow: 0 1px 1px rgba(0,0,0,0.1);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-/* تحسين الأيقونات */
-.location-chip i {
-    font-size: 1.8rem;
-    color: var(--primary-color);
-    transition: all 0.3s ease;
-}
-
-/* تحسين حالة التحويم والتنشيط */
-.location-chip:hover,
-.location-chip.active {
-    background: var(--primary-color);
-    color: var(--secondary-color);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
-}
-
-.location-chip:hover i,
-.location-chip.active i {
-    color: var(--secondary-color);
-    transform: scale(1.1);
-}
-
-/* تحسين شريط التمرير */
-.location-chips::-webkit-scrollbar {
-    height: 8px;
-}
-
-.location-chips::-webkit-scrollbar-track {
-    background: rgba(241, 241, 241, 0.8);
-    border-radius: 4px;
-}
-
-.location-chips::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 4px;
-    border: 2px solid rgba(255, 255, 255, 0.5);
-}
-
-.location-chips::-webkit-scrollbar-thumb:hover {
-    background: #e5c100;
-}
 
 /* تحسينات التجاوب */
 @media (max-width: 768px) {
-    .location-filter {
-        padding: 1rem;
+    .container {
+        padding: 0.5rem;
     }
-
+    .driver-card {
+        margin-bottom: 1rem;
+    }
     .location-chip {
-        padding: 1rem 2rem;
-        font-size: 1.3rem;
-    }
-    
-    .location-chip i {
-        font-size: 1.5rem;
+        font-size: 1rem;
+        padding: 0.8rem;
     }
 }
+
 
 @media (min-width: 1024px) {
     .location-filter {
@@ -512,12 +659,32 @@ html, body {
     background: rgba(255, 255, 255, 0.98);
     box-shadow: 0 4px 25px rgba(0,0,0,0.15);
 }
-        .drivers-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-            padding: 2rem 0;
-        }
+.drivers-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+@media (min-width: 768px) {
+    .drivers-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+.location-chip:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+}
+.location-chips {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 0.5rem;
+}
+
 
         .driver-card {
             background: white;
@@ -531,7 +698,7 @@ html, body {
 
         .driver-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.89);
         }
 
         .driver-image-container {
@@ -722,11 +889,7 @@ html, body {
             100% { transform: rotate(360deg); }
         }
 
-        @media (max-width: 868px) {
-            .drivers-grid { grid-template-columns: 1fr; }
-            #map { height: 500px; }
-        }
-
+        
         .modal-content {
             border-radius: 20px;
             border: none;
@@ -739,7 +902,7 @@ html, body {
         }
 
         .modal-body {
-            padding: 2rem;
+            padding: 1rem;
         }
 
         .form-label {
@@ -915,6 +1078,8 @@ html, body {
     border-color: var(--primary-color);
     color: var(--secondary-color);
 }
+
+
     </style>
 </head>
 <body>
@@ -925,27 +1090,37 @@ html, body {
                 <i class="fas fa-taxi"></i>
                 تاكسي العراق
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
-                            <i class="fas fa-search me-1"></i>
-                            بحث
+            <nav class="navbar app-header fixed-top">
+                <div class="container d-flex justify-content-between align-items-center">
+                    <!-- اللوجو واسم التطبيق مع أيقونة البحث -->
+                    <div class="d-flex align-items-center app-title">
+                        <a class="app-logo d-flex align-items-center" href="#">
+                            <i class="fas fa-taxi me-2"></i>
+                            <span>Pashataxi</span>
                         </a>
-                    </li>
-                    <li class="nav-item">
+                        <!-- أيقونة البحث بجانب الاسم -->
+                        <a class="search-icon ms-3" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+                            <i class="fas fa-search"></i>
+                        </a>
+                    <
+            
+                    <!-- الأدوات الأخرى (التنبيهات، حسابي) -->
+                    <div class="tools d-flex align-items-center">
                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#notificationsModal">
-                            <i class="fas fa-bell me-1"></i>
-                            تنبيهات
+                            <i class="fas fa-bell"></i>
                         </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
-                            <i class="fas fa-user me-1"></i>
-                            حسابي
+                            <i class="fas fa-user"></i>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            
                         </a>
                     </li>
                 </ul>
@@ -1708,6 +1883,9 @@ async function handleAddDriver(event) {
 }
 
 
+
+
+
 function viewDriverLocation(driverId) {
     database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
         const driver = snapshot.val();
@@ -1948,6 +2126,8 @@ function createDriverCard(driver, key) {
         </div>
     `;
 }
+
+
 
 // دالة تأكيد الحذف مع نافذة تأكيد محسنة
 function confirmDeleteDriver(driverId) {
