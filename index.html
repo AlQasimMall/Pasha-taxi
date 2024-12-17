@@ -1079,6 +1079,160 @@ img {
     color: var(--secondary-color);
 }
 
+/* تحسين تصميم نافذة المحادثة */
+.message {
+    display: flex;
+    flex-direction: column;
+    margin: 5px 0;
+}
+
+.message-bubble {
+    max-width: 80%;
+    padding: 10px;
+    border-radius: 15px;
+    font-size: 14px;
+    word-wrap: break-word;
+}
+
+.message-bubble.sent {
+    background-color: #007bff;
+    color: white;
+    margin-left: auto;
+    text-align: right;
+}
+
+.message-bubble.received {
+    background-color: #e9ecef;
+    color: black;
+    margin-right: auto;
+    text-align: left;
+}
+
+.timestamp {
+    font-size: 10px;
+    margin-top: 5px;
+    text-align: right;
+    color: #999;
+}
+/* تحسين نافذة المحادثة */
+.chat-window {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* العنوان */
+.chat-header {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    padding: 1rem;
+}
+
+/* منطقة الرسائل */
+.chat-body {
+    background-color: #f8f9fa;
+    height: 400px;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message-bubble {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 20px;
+    word-wrap: break-word;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.message-bubble.sent {
+    background-color: var(--primary-color);
+    color: white;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.message-bubble.received {
+    background-color: #e0e0e0;
+    color: black;
+    align-self: flex-start;
+    text-align: left;
+}
+
+.timestamp {
+    font-size: 10px;
+    color: #888;
+    margin-top: 5px;
+}
+
+/* شريط الإدخال */
+.chat-footer {
+    background-color: #fff;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input {
+    border-radius: 20px;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ccc;
+}
+
+.send-btn {
+    border-radius: 50%;
+    margin-left: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    width: 50px;
+    height: 50px;
+}
+
+.send-btn i {
+    color: white;
+}
+
+/* تحسين شريط التمرير */
+.chat-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.chat-body::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+.driver-marker img {
+    border-radius: 50%;
+    border: 3px solid #FFD700;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.driver-marker i {
+    color: #FFD700;
+    font-size: 1.5rem;
+}
+
+.leaflet-popup-content {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+
 
     </style>
 </head>
@@ -1554,26 +1708,30 @@ img {
         </div>
     </div>
 </div>
-<!-- نافذة دردشة للمراسلة -->
-<div class="modal fade" id="chatModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">الدردشة مع السائق</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+<!-- نافذة المحادثة -->
+<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content chat-window">
+            <div class="modal-header chat-header">
+                <h5 class="modal-title" id="chatModalLabel">محادثة مع السائق</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
             </div>
-            <div class="modal-body">
-                <div id="chatMessages" style="height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
-                    <!-- الرسائل تظهر هنا -->
-                </div>
-                <div class="input-group mt-3">
-                    <input type="text" id="chatInput" class="form-control" placeholder="اكتب رسالتك...">
-                    <button class="btn btn-primary" onclick="sendMessage()">إرسال</button>
+            <div class="modal-body chat-body">
+                <!-- منطقة الرسائل -->
+                <div id="chatMessages" class="chat-messages"></div>
+            </div>
+            <div class="modal-footer chat-footer">
+                <div class="input-group">
+                    <input type="text" id="chatInput" class="form-control chat-input" placeholder="اكتب رسالتك هنا...">
+                    <button class="btn btn-primary send-btn" onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 
     <!-- Scripts -->
@@ -1606,6 +1764,53 @@ img {
         let isLoadingDrivers = false; // للتحكم في حالة تحميل البيانات
 let isViewingDriverLocation = false; // لتعطيل تحديث موقع المستخدم عند عرض موقع السائق
 let currentDriverId = null;
+let currentChatDriverId = null;
+
+// فتح نافذة المحادثة
+function openChatWindow(driverId) {
+    currentChatDriverId = driverId;
+    const chatModal = new bootstrap.Modal(document.getElementById('chatModal'));
+    document.getElementById('chatMessages').innerHTML = ''; // تفريغ الرسائل
+    loadMessages();
+    chatModal.show();
+}
+
+// تحميل الرسائل
+function loadMessages() {
+    const chatBox = document.getElementById('chatMessages');
+    chatBox.innerHTML = '';
+
+    database.ref(`chats/${currentChatDriverId}`).on('child_added', (snapshot) => {
+        const message = snapshot.val();
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message';
+        messageDiv.innerHTML = `
+            <div class="message-bubble ${message.sender === 'المستخدم' ? 'sent' : 'received'}">
+                <p>${message.text}</p>
+                <span class="timestamp">${new Date(message.timestamp).toLocaleTimeString()}</span>
+            </div>
+        `;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+}
+
+
+// إرسال الرسالة
+function sendMessage() {
+    const messageInput = document.getElementById('chatInput');
+    const messageText = messageInput.value.trim();
+
+    if (messageText) {
+        firebase.database().ref(`chats/${currentChatDriverId}`).push({
+            sender: 'المستخدم', // يمكنك تخصيص هذا
+            text: messageText,
+            timestamp: Date.now()
+        });
+        messageInput.value = '';
+    }
+}
+
 
 function messageDriver(driverId) {
     currentDriverId = driverId;
@@ -1629,18 +1834,25 @@ function loadChatMessages(driverId) {
     });
 }
 function sendMessage() {
-    const chatInput = document.getElementById('chatInput');
-    const messageText = chatInput.value.trim();
+    const messageInput = document.getElementById('chatInput');
+    const messageText = messageInput.value.trim();
+
     if (!messageText) return;
 
     const messageData = {
-        sender: 'المستخدم', // يمكن استبدالها بمعرّف المستخدم
+        sender: 'المستخدم', // يمكن استبدالها بمعرف المستخدم
         text: messageText,
         timestamp: Date.now(),
     };
 
-    database.ref(`chats/${currentDriverId}`).push(messageData);
-    chatInput.value = '';
+    // إرسال الرسالة إلى قاعدة البيانات
+    database.ref(`chats/${currentChatDriverId}`).push(messageData)
+        .then(() => {
+            messageInput.value = ''; // تفريغ حقل الإدخال
+        })
+        .catch((error) => {
+            console.error('Error sending message:', error);
+        });
 }
 
 
@@ -1663,13 +1875,32 @@ function loadDrivers(location = 'all') {
                     driversGrid.innerHTML += createDriverCard(driver, childSnapshot.key);
 
                     if (driver.coordinates) {
-                        L.marker([driver.coordinates.lat, driver.coordinates.lng], {
+                        const { lat, lng } = driver.coordinates;
+
+                        // إنشاء العلامة بمعلومات السائق
+                        const driverMarker = L.marker([lat, lng], {
                             icon: L.divIcon({
-                                html: `<i class="fas fa-taxi" style="color: ${driver.active ? '#FFD700' : '#ccc'};"></i>`,
+                                html: `<img src="${driver.image || 'default-avatar.png'}" 
+                                              alt="صورة السائق" 
+                                              style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #FFD700;">`,
                                 className: 'driver-marker',
-                                iconSize: [25, 25],
+                                iconSize: [40, 40],
                             }),
                         }).addTo(markerLayer);
+
+                        // إضافة نافذة منبثقة عند النقر على العلامة
+                        driverMarker.bindPopup(`
+                            <div style="text-align: center;">
+                                <img src="${driver.image || 'default-avatar.png'}" 
+                                     alt="صورة السائق" 
+                                     style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 10px;">
+                                <h6 style="margin: 5px 0; font-weight: bold;">${driver.name}</h6>
+                                <p style="color: #555; font-size: 0.9rem;">🚗 ${driver.carType} - ${driver.carModel}</p>
+                                <button class="btn btn-sm btn-primary" onclick="openChatWindow('${childSnapshot.key}')">
+                                    <i class="fas fa-comment"></i> مراسلة السائق
+                                </button>
+                            </div>
+                        `);
                     }
                 }
             });
@@ -1684,6 +1915,7 @@ function loadDrivers(location = 'all') {
             isLoadingDrivers = false; // إعادة تعيين العلم بعد الانتهاء.
         });
 }
+
 
 function viewDriverLocation(driverId) {
     isViewingDriverLocation = true; // تعطيل تحديث موقع المستخدم
@@ -1709,9 +1941,11 @@ function viewDriverLocation(driverId) {
                 <div style="text-align: center;">
                     <h6>${driver.name}</h6>
                     <p>${driver.carType} - ${driver.carModel}</p>
-                    <button class="btn btn-primary btn-sm mt-2" onclick="messageDriver('${driverId}')">
-                        مراسلة السائق
-                    </button>
+                    <button class="action-btn secondary" onclick="openChatWindow('${key}')">
+    <i class="fas fa-comment"></i> مراسلة
+</button>
+
+
                 </div>
             `).openPopup();
 
@@ -1726,28 +1960,82 @@ function viewDriverLocation(driverId) {
         isViewingDriverLocation = false;
     }, 30000); // 30 ثانية
 }
+function viewDriverLocation(driverId) {
+    database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
+        const driver = snapshot.val();
 
-function updateUserLocation(position) {
-    if (isViewingDriverLocation) return; // توقف عن تحديث موقع المستخدم إذا كان يعرض موقع السائق
+        if (driver && driver.coordinates) {
+            const { lat, lng } = driver.coordinates;
 
-    const newLocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-    };
+            // تحريك الخريطة إلى موقع السائق مع تأثير سلس
+            map.flyTo([lat, lng], 15, {
+                animate: true,
+                duration: 1.5, // مدة التحريك
+            });
 
-    if (!userMarker) {
-        userMarker = L.marker([newLocation.lat, newLocation.lng], {
-            icon: L.divIcon({
-                html: '<i class="fas fa-user-circle fa-2x" style="color: #007bff;"></i>',
-                className: 'user-marker',
-                iconSize: [30, 30],
-            }),
-        }).bindPopup('موقعك الحالي').addTo(map);
-    } else {
-        userMarker.setLatLng([newLocation.lat, newLocation.lng]);
-    }
+            // إزالة العلامات السابقة الخاصة بالسائق
+            markerLayer.clearLayers();
 
-    map.setView([newLocation.lat, newLocation.lng], 13);
+            // إضافة علامة بموقع السائق مع صورة محفوظة في قاعدة البيانات
+            const driverMarker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    html: `
+                        <div style="position: relative; text-align: center;">
+                            <img src="${driver.image || 'https://via.placeholder.com/50'}" 
+                                 alt="صورة السائق" 
+                                 style="width: 50px; height: 50px; border: 3px solid #FFD700; 
+                                 border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                            <i class="fas fa-taxi" 
+                               style="position: absolute; bottom: -5px; right: 50%; transform: translateX(50%); 
+                               color: #FFD700; font-size: 1.5rem;"></i>
+                        </div>
+                    `,
+                    className: 'driver-marker',
+                    iconSize: [60, 60],
+                }),
+            }).addTo(markerLayer);
+
+            // نافذة منبثقة مع صورة السائق
+            driverMarker.bindPopup(`
+                <div style="text-align: center; font-family: 'Segoe UI', sans-serif;">
+                    <img src="${driver.image || 'https://via.placeholder.com/70'}" 
+                         alt="صورة السائق" 
+                         style="width: 70px; height: 70px; border-radius: 50%; margin-bottom: 10px; 
+                         border: 3px solid #FFD700;">
+                    <h5 style="color: #FFD700; font-weight: bold;">${driver.name}</h5>
+                    <p style="margin: 5px 0;">🚗 ${driver.carType} - ${driver.carModel}</p>
+                    <button class="btn btn-sm btn-primary" onclick="openChatWindow('${driverId}')">
+                        <i class="fas fa-comment"></i> مراسلة السائق
+                    </button>
+                </div>
+            `).openPopup();
+
+            scrollToMap();
+
+            // عرض رسالة تأكيد جذابة
+            Swal.fire({
+                title: '🚖 تم تحديد موقع السائق!',
+                html: `
+                    <p style="font-size: 1rem; color: #555;">
+                        السائق <b>${driver.name}</b> بانتظارك.
+                    </p>
+                    <p style="color: #666;">هل ترغب بمراسلته الآن؟</p>
+                `,
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonColor: '#FFD700',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '📨 نعم، مراسلة السائق',
+                cancelButtonText: '❌ إغلاق',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    openChatWindow(driverId);
+                }
+            });
+        } else {
+            showToast('لم يتم العثور على موقع السائق أو الصورة.', 'error');
+        }
+    });
 }
 
 
@@ -1916,65 +2204,65 @@ async function handleAddDriver(event) {
         
 
         function createDriverCard(driver, key) {
-            const distance = userLocation ? calculateDistance(userLocation, driver.coordinates) : null;
-        
-            return `
-                <div class="driver-card animate__animated animate__fadeIn">
-                    <div class="driver-image-container">
-                        <img src="${driver.imageUrl}" alt="${driver.name}" class="driver-image">
-                        <div class="driver-status ${driver.active ? 'status-active' : 'status-inactive'}">
-                            ${driver.active ? 'متاح' : 'مشغول'}
+    const distance = userLocation ? calculateDistance(userLocation, driver.coordinates) : null;
+
+    return `
+        <div class="driver-card animate__animated animate__fadeIn">
+            <div class="driver-image-container">
+                <img src="${driver.imageUrl}" alt="${driver.name}" class="driver-image">
+                <div class="driver-status ${driver.active ? 'status-active' : 'status-inactive'}">
+                    ${driver.active ? 'متاح' : 'مشغول'}
+                </div>
+            </div>
+            <div class="driver-info">
+                <h5 class="driver-name">${driver.name}</h5>
+                <div class="driver-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">
+                            <i class="fas fa-star" style="color: #FFD700;"></i>
+                            ${driver.rating.toFixed(1)}
                         </div>
+                        <div class="stat-label">التقييم</div>
                     </div>
-                    <div class="driver-info">
-                        <h5 class="driver-name">${driver.name}</h5>
-                        <div class="driver-stats">
-                            <div class="stat-item">
-                                <div class="stat-value">
-                                    <i class="fas fa-star" style="color: #FFD700;"></i>
-                                    ${driver.rating.toFixed(1)}
-                                </div>
-                                <div class="stat-label">التقييم</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-value">
-                                    <i class="fas fa-route"></i>
-                                    ${driver.trips}
-                                </div>
-                                <div class="stat-label">الرحلات</div>
-                            </div>
-                            <div class="stat-item">
-                                <div class="stat-value">
-                                    ${distance ? distance.toFixed(1) : '--'}
-                                </div>
-                                <div class="stat-label">كم</div>
-                            </div>
+                    <div class="stat-item">
+                        <div class="stat-value">
+                            <i class="fas fa-route"></i>
+                            ${driver.trips}
                         </div>
-                        <div class="text-muted">
-                            <p class="mb-2">
-                                <i class="fas fa-car me-2"></i>
-                                ${driver.carType} ${driver.carModel}
-                            </p>
-                            <p class="mb-0">
-                                <i class="fas fa-map-marker-alt me-2"></i>
-                                ${driver.location}
-                            </p>
-                        </div>
+                        <div class="stat-label">الرحلات</div>
                     </div>
-                    <div class="driver-actions">
-                        <button class="action-btn primary" onclick="viewDriverLocation('${key}')">
-                            <i class="fas fa-map-marker-alt"></i>
-                            عرض الموقع
-                        </button>
-                        <button class="action-btn secondary" onclick="messageDriver('${key}')">
-                            <i class="fas fa-comment"></i>
-                            مراسلة
-                        </button>
+                    <div class="stat-item">
+                        <div class="stat-value">
+                            ${distance ? distance.toFixed(1) : '--'}
+                        </div>
+                        <div class="stat-label">كم</div>
                     </div>
                 </div>
-            `;
-        }
-        
+                <div class="text-muted">
+                    <p class="mb-2">
+                        <i class="fas fa-car me-2"></i>
+                        ${driver.carType} ${driver.carModel}
+                    </p>
+                    <p class="mb-0">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        ${driver.location}
+                    </p>
+                </div>
+            </div>
+            <div class="driver-actions">
+                <button class="action-btn primary" onclick="viewDriverLocation('${key}')">
+                    <i class="fas fa-map-marker-alt"></i>
+                    عرض الموقع
+                </button>
+                <button class="action-btn secondary" onclick="openChatWindow('${key}')">
+    <i class="fas fa-comment"></i> مراسلة
+</button>
+
+            </div>
+        </div>
+    `;
+}
+
        
 
 
@@ -2180,10 +2468,11 @@ function createDriverCard(driver, key) {
                     <i class="fas fa-map-marker-alt"></i>
                     عرض الموقع
                 </button>
-                <button class="action-btn secondary" onclick="messageDriver('${key}')">
-                    <i class="fas fa-comment"></i>
-                    مراسلة
-                </button>
+               <button class="action-btn secondary" onclick="openChatWindow('${key}')">
+    <i class="fas fa-comment"></i> مراسلة
+</button>
+
+
             </div>
         </div>
     `;
@@ -2580,26 +2869,19 @@ async function handleAddDriver(event) {
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
-        function messageDriver(driverId) {
+       function messageDriver(driverId) {
     database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
         const driver = snapshot.val();
-        if (driver && userLocation) {
-            const phoneNumber = driver.phone.replace(/[^0-9]/g, '');
-            
-            // إنشاء رابط Google Maps مع موقع المستخدم
-            const googleMapsLink = `https://www.google.com/maps?q=${userLocation.lat},${userLocation.lng}`;
-            
-            // إنشاء نص الرسالة مع رابط الموقع
-            const message = `السلام عليكم، موقعي الحالي: ${googleMapsLink}`;
-            
-            // تشفير النص للرابط
-            const encodedMessage = encodeURIComponent(message);
-            
-            // فتح رابط WhatsApp مع الرسالة المجهزة
-            const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-            window.open(whatsappLink, '_blank');
-        } else if (!userLocation) {
-            showToast('لم نتمكن من تحديد موقعك. يرجى السماح بالوصول إلى الموقع.', 'error');
+
+        if (driver) {
+            // تحديد السائق الحالي للدردشة
+            currentChatDriverId = driverId;
+
+            // فتح نافذة الدردشة
+            const chatModal = new bootstrap.Modal(document.getElementById('chatModal'));
+            document.getElementById('chatMessages').innerHTML = ''; // تفريغ الرسائل السابقة
+            loadMessages(); // تحميل الرسائل السابقة بين المستخدم والسائق
+            chatModal.show();
         } else {
             showToast('عذراً، لا يمكن العثور على معلومات السائق.', 'error');
         }
