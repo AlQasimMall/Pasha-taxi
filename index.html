@@ -1765,95 +1765,66 @@ img {
 let isViewingDriverLocation = false; // لتعطيل تحديث موقع المستخدم عند عرض موقع السائق
 let currentDriverId = null;
 let currentChatDriverId = null;
+let userId;
 
-// فتح نافذة المحادثة
+// التحقق من وجود معرف في localStorage
+if (!localStorage.getItem('userId')) {
+    userId = generateUUID(); // توليد معرف جديد
+    localStorage.setItem('userId', userId);
+} else {
+    userId = localStorage.getItem('userId');
+}
+
+function generateUUID() {
+    return 'xxxx-xxxx-4xxx-yxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+
 function openChatWindow(driverId) {
     currentChatDriverId = driverId;
     const chatModal = new bootstrap.Modal(document.getElementById('chatModal'));
-    document.getElementById('chatMessages').innerHTML = ''; // تفريغ الرسائل
-    loadMessages();
+    loadMessages(); // تحميل الرسائل من الدالة الموحدة
     chatModal.show();
 }
-
-// تحميل الرسائل
 function loadMessages() {
     const chatBox = document.getElementById('chatMessages');
-    chatBox.innerHTML = '';
+    chatBox.innerHTML = ''; // تفريغ الرسائل السابقة
 
-    database.ref(`chats/${currentChatDriverId}`).on('child_added', (snapshot) => {
+    database.ref(`chats/${userId}/${currentChatDriverId}`).on('child_added', (snapshot) => {
         const message = snapshot.val();
+
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message';
         messageDiv.innerHTML = `
-            <div class="message-bubble ${message.sender === 'المستخدم' ? 'sent' : 'received'}">
+            <div class="message-bubble ${message.sender === userId ? 'sent' : 'received'}">
                 <p>${message.text}</p>
                 <span class="timestamp">${new Date(message.timestamp).toLocaleTimeString()}</span>
             </div>
         `;
         chatBox.appendChild(messageDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
+        chatBox.scrollTop = chatBox.scrollHeight; // التمرير إلى آخر رسالة
     });
 }
 
-
-// إرسال الرسالة
 function sendMessage() {
     const messageInput = document.getElementById('chatInput');
     const messageText = messageInput.value.trim();
 
     if (messageText) {
-        firebase.database().ref(`chats/${currentChatDriverId}`).push({
-            sender: 'المستخدم', // يمكنك تخصيص هذا
+        database.ref(`chats/${userId}/${currentChatDriverId}`).push({
+            sender: userId,
             text: messageText,
             timestamp: Date.now()
         });
-        messageInput.value = '';
+        messageInput.value = ''; // تفريغ حقل الإدخال بعد الإرسال
     }
 }
 
 
-function messageDriver(driverId) {
-    currentDriverId = driverId;
-    loadChatMessages(driverId);
-    const chatModal = new bootstrap.Modal(document.getElementById('chatModal'));
-    chatModal.show();
-}
-function loadChatMessages(driverId) {
-    const chatMessages = document.getElementById('chatMessages');
-    chatMessages.innerHTML = ''; // مسح الرسائل السابقة
-
-    database.ref(`chats/${currentDriverId}`).on('value', (snapshot) => {
-        chatMessages.innerHTML = ''; // إعادة تحميل الرسائل
-        snapshot.forEach((childSnapshot) => {
-            const message = childSnapshot.val();
-            const messageDiv = document.createElement('div');
-            messageDiv.textContent = `${message.sender}: ${message.text}`;
-            chatMessages.appendChild(messageDiv);
-        });
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    });
-}
-function sendMessage() {
-    const messageInput = document.getElementById('chatInput');
-    const messageText = messageInput.value.trim();
-
-    if (!messageText) return;
-
-    const messageData = {
-        sender: 'المستخدم', // يمكن استبدالها بمعرف المستخدم
-        text: messageText,
-        timestamp: Date.now(),
-    };
-
-    // إرسال الرسالة إلى قاعدة البيانات
-    database.ref(`chats/${currentChatDriverId}`).push(messageData)
-        .then(() => {
-            messageInput.value = ''; // تفريغ حقل الإدخال
-        })
-        .catch((error) => {
-            console.error('Error sending message:', error);
-        });
-}
 
 
 function loadDrivers(location = 'all') {
