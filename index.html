@@ -72,340 +72,148 @@
         }
 
       body {
-    margin: 1;
-    padding: 1;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
 .container {
-    padding:  0rem; /* قلل الحشوة الجانبية */
+    padding: 0 1rem; /* قلل الحشوة الجانبية */
 }
 /* تحديثات الخريطة */
 #map {
-    height: 30vh; /* زيادة الارتفاع النسبي قليلاً */
-    min-height: 100px; /* تعيين حد أدنى مناسب للارتفاع */
-    width: 105%; /* جعل العرض يغطي الحاوية بالكامل */
-    border-radius: 15px; /* تقليل التقويس لتصميم عصري */
-    margin: 3.5rem 0 2rem; /* تقليل المسافة من الأعلى وإضافة مسافة صغيرة من الأسفل */
-    box-shadow: 0 10px 20px rgba(141, 16, 16, 0.1); /* تخفيف الظلال */
-    border: 2px solid var(--secondary-color); /* تحسين الحدود */
+    height: 90vh; /* ارتفاع نسبي لشاشة العرض */
+    min-height: 800px; /* الحد الأدنى للارتفاع */
+    width: 100%;
+    border-radius: 25px;
+    margin: 4rem 0;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    border: px solid var(--secondary-color);
     z-index: 1;
-    position: relative; /* تحسين الموضع للتحكم في الترتيب */
-    background: linear-gradient(135deg, #0e7583, #80deea); /* إضافة تدرج خلفية */
 }
 
-/* تحسين المسافة بين الخريطة والعناصر الأخرى */
-.container {
-    display: flex;
-    flex-direction: column;
-    gap:0rem; /* مسافة بين العناصر */
-}
-/* تحسين شريط التايتل */
-.app-header {
-    background: var(--secondary-color);
-    height: 50px;
-    padding: 0 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* اللوجو واسم التطبيق */
-.app-logo {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.app-logo i {
-    font-size: 1.5rem;
-    margin-right: 0.5rem;
-    color: var(--primary-color);
-}
-
-/* أيقونة البحث */
-.search-icon {
-    color: var(--primary-color);
-    font-size: 1.2rem;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.search-icon:hover {
-    color: #ffc107;
-}
-
-/* الأدوات الأخرى */
-.tools {
-    display: flex;
-    gap: 1rem;
-}
-
-.tools .nav-link {
-    color: #fff;
-    font-size: 1.2rem;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.tools .nav-link:hover {
-    color: var(--primary-color);
-}
-
-/* تحسين شريط التايتل */
-.app-header {
-    background: var(--secondary-color);
-    height: 50px;
-    padding: 0 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* اللوجو واسم التطبيق */
-.app-logo {
-    display: flex;
-    align-items: center;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    gap: 0.5rem;
-    text-decoration: none;
-}
-
-.app-logo i {
-    font-size: 1.5rem;
-    color: var(--primary-color);
-}
-
-/* الأدوات الثلاثة */
-.tools {
-    display: flex;
-    gap: 1rem;
-}
-
-.tools .nav-link {
-    color: #fff;
-    font-size: 1.2rem;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.tools .nav-link i {
-    font-size: 1.2rem;
-}
-
-/* تحسين التناسق على الشاشات الصغيرة */
-@media (max-width: 768px) {
-    .app-header {
-        height: 45px;
-        padding: 0 0.5rem;
-    }
-
-    .app-logo {
-        font-size: 1rem;
-    }
-
-    .app-logo i {
-        font-size: 1.2rem;
-    }
-
-    .tools .nav-link i {
-        font-size: 1rem;
-    }
-}
-
-
-/* تحسين التفاعلات لجعل الخريطة أكثر جاذبية */
-#map:hover {
-    transform: scale(1.02); /* تكبير طفيف عند التمرير */
-    box-shadow: 0 6px 25px rgba(192, 19, 19, 0.856); /* تحسين الظلال عند التمرير */
-    transition: all 0.3s ease-in-out;
-}
-
-
-/* تحديث حاوية الفلاتر مع التثبيت */
+/* تحديثات الفلاتر */
 .location-filter {
-    background: rgb(255, 255, 255);
-    padding: 0; /* إزالة الحشوة */
-    border-radius: 10px; /* تقليل التقويس */
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* تخفيف الظلال */
-    margin: 0.3rem; /* مسافة صغيرة للخارج */
+    background: white;
+    padding: 5rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    margin: 3rem 0;
     position: sticky;
-    top: 100px; /* تقليل المسافة من الأعلى */
-    z-index: 1000;
-    overflow: hidden;
-    backdrop-filter: blur(3px); /* تقليل تأثير التمويه */
-    -webkit-backdrop-filter: blur(3px);
-    border-bottom: none; /* إزالة الحدود */
-    transition: all 0.2s ease;
+    top: 80px;
+    z-index: 2;
+    backdrop-filter: blur(10px);
 }
 
-/* تحسين تنسيق الفلاتر */
 .location-chips {
     display: flex;
-    flex-wrap: nowrap;
-    gap: 0.5rem; /* تقليل الفجوة بين العناصر */
-    overflow-x: auto;
-    padding: 0.0rem 0; /* تقليل الحشوة الرأسية */
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    white-space: nowrap;
-    margin: 0 auto;
-    max-width: 100%;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-top: 3rem;
+    padding: 0.5rem 0;
 }
 
-/* تحسين أزرار الفلتر */
 .location-chip {
-    padding: 0.0rem 0.0rem; /* تقليل الحشوات الداخلية */
-    border-radius: 15px; /* تقليل التقويس */
-    border: 1px solid var(--primary-color); /* تقليل سمك الحدود */
-    background: #fff;
-    font-size: 0.5rem; /* تصغير حجم النص */
-    font-weight: 1000;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.8rem; /* تقليل الفجوة بين الأيقونة والنص */
+    padding: 1rem 2rem;
+    border-radius: 25px;
     cursor: pointer;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-    color: var(--secondary-color);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* تقليل الظلال */
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.2rem;
+    font-weight: 800;
 }
 
-/* تحسين الأيقونات */
 .location-chip i {
-    font-size: 0.8rem; /* تصغير حجم الأيقونة */
-    color: var(--primary-color);
-    transition: all 0.2s ease;
+    font-size: 1.3rem;
 }
 
-/* تحسين حالة التحويم والتنشيط */
 .location-chip:hover,
 .location-chip.active {
     background: var(--primary-color);
-    color: #fff;
-    transform: translateY(-1px); /* تخفيف الارتفاع عند التحويم */
-    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
+    color: var(--secondary-color);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
 }
 
-.location-chip:hover i,
-.location-chip.active i {
-    color: #fff;
-    transform: scale(1.1); /* تأثير تكبير بسيط */
-}
-
-/* تحسين شريط التمرير */
-.location-chips::-webkit-scrollbar {
-    height: 0px; /* تقليل ارتفاع شريط التمرير */
-}
-
-.location-chips::-webkit-scrollbar-track {
-    background: rgba(241, 241, 241, 0.8);
-    border-radius: 10px;
-}
-
-.location-chips::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 10px;
-    border: none;
-}
-
-.location-chips::-webkit-scrollbar-thumb:hover {
-    background: #e5c100;
-}
-
-/* تحسين التجاوب مع شاشات الهواتف */
+/* تحسينات التجاوب */
 @media (max-width: 768px) {
+    #map {
+        height: 60vh;
+        min-height: 400px;
+    }
+
     .location-filter {
-        padding: 0; /* إزالة الحشوة على الشاشات الصغيرة */
-        top: 10px; /* تقليل المسافة من الأعلى */
+        padding: 1.5rem;
+        margin: 1rem 0;
+    }
+
+    .location-chips {
+        gap: 1rem;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        -webkit-overflow-scrolling: touch;
     }
 
     .location-chip {
-        padding: 0.3rem 0.5rem; /* تقليل الأزرار أكثر */
-        font-size: 0.8rem; /* تصغير النص */
-    }
-
-    .location-chip i {
-        font-size: 0.7rem; /* تصغير الأيقونات */
+        padding: 0.8rem 1.5rem;
+        font-size: 1.1rem;
     }
 }
 
+@media (min-width: 1024px) {
+    #map {
+        height: 80vh;
+        min-height: 600px;
+    }
 
+    .location-filter {
+        padding: 2.5rem;
+    }
 
+    .location-chip {
+        padding: 1.2rem 2.5rem;
+        font-size: 1.3rem;
+    }
+}
+
+/* تحسينات إضافية للتجربة */
+.location-chips::-webkit-scrollbar {
+    height: 6px;
+}
+
+.location-chips::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+.location-chips::-webkit-scrollbar-track {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
 
 /* تحسين التناسق العام */
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 2.5rem;
+    padding: 0 1.5rem;
 }
 
 body {
-    padding-top: 1%; /* للتعويض عن الناف بار الثابت */
-}
-
-/* إزالة الفراغات والحشوات من الصفحة بالكامل */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* جعل الـ body يغطي كامل الشاشة بدون فراغات */
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden; /* منع التمرير الأفقي */
-    background-color: #fff; /* لون الخلفية الافتراضي */
-}
-
-/* إزالة الفراغات من أي عنصر رئيسي */
-.container,
-.row,
-.navbar,
-.location-filter,
-.tools,
-#map {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100%;
-}
-
-/* تخصيص الخريطة لتغطي كامل العرض */
-#map {
-    height: 40vh; /* ارتفاع مناسب */
-    margin: 0;
-    border-radius: 0; /* إزالة أي تقويس للحواف */
-}
-
-/* تحسين التنسيق ليكون متناسقًا */
-.navbar {
-    height: 50px; /* تقليل ارتفاع الشريط */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 1rem;
-}
-
-.tools .nav-link {
-    padding: 0.3rem 0.5rem; /* تقليل الحشوات داخل الروابط */
-    font-size: 1rem;
+    padding-top: 80px; /* للتعويض عن الناف بار الثابت */
 }
 
 
 .driver-card {
     margin: 0; /* أزل الفراغات الخارجية */
-    padding: 0rem; /* حشوة داخلية بسيطة */
-    gap: 0.0rem; /* فراغ بسيط بين العناصر داخل البطاقة */
+    padding: 1rem; /* حشوة داخلية بسيطة */
+    gap: 0.5rem; /* فراغ بسيط بين العناصر داخل البطاقة */
 }
 
 .drivers-grid {
@@ -414,10 +222,10 @@ html, body {
 
 .location-filter {
     margin: 0.5rem 0; /* تقليل المسافة الخارجية */
-    padding: 0.0rem 0rem; /* تقليل الحشوة */
+    padding: 0.5rem 1rem; /* تقليل الحشوة */
 }
 body {
-    font-size: 1rem; /* تكبير النص الأساسي */
+    font-size: 1.2rem; /* تكبير النص الأساسي */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* تأكد من تناسق الخط */
 }
 
@@ -431,33 +239,34 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .driver-name {
-    font-size: 1rem; /* تكبير اسم السائق */
+    font-size: 2rem; /* تكبير اسم السائق */
 }
 
 .driver-stats .stat-value {
-    font-size: 1rem; /* تكبير القيم الإحصائية */
+    font-size: 2rem; /* تكبير القيم الإحصائية */
 }
 
 .driver-stats .stat-label {
-    font-size: 1rem; /* تكبير النصوص التوضيحية */
+    font-size: 2rem; /* تكبير النصوص التوضيحية */
 }
 
 .toast-container .custom-toast {
     font-size: 1.2rem; /* تكبير رسائل الإشعارات */
 }
-@media (max-width:5000px) {
-    .container {
-        padding: 0.5rem;
+@media (max-width: 768px) {
+    body {
+        font-size: 1rem; /* حجم أصغر للخطوط على الشاشات الصغيرة */
     }
-    .driver-card {
-        margin-bottom: 1rem;
+
+    .drivers-grid {
+        grid-template-columns: 2fr; /* عمود واحد للبطاقات على الهواتف */
+        gap: 1rem;
     }
-    .location-chip {
-        font-size: 1rem;
-        padding: 0.8rem;
+
+    .location-filter {
+        padding: 0.5rem; /* تقليل الحشوة */
     }
 }
-
 
 @media (min-width: 1024px) {
     body {
@@ -465,19 +274,11 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .drivers-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
+        grid-template-columns: repeat(3, 1fr); /* 3 أعمدة للبطاقات */
     }
-    @media (min-width: 768px) {
-        .drivers-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-    
 
     .location-filter {
-        padding: 0rem; /* حشوة أكبر قليلاً */
+        padding: 1rem; /* حشوة أكبر قليلاً */
     }
 }
 
@@ -501,143 +302,195 @@ html, body {
 /* إزالة الهوامش من البطاقات أو أي عنصر إضافي */
 .driver-card {
     margin: 0;
-    padding: 0.0rem; /* حشوة بسيطة داخلية للبطاقة */
+    padding: 0.5rem; /* حشوة بسيطة داخلية للبطاقة */
     box-sizing: border-box;
 }
 
+/* توسيع الخريطة لتغطية العرض بالكامل */
+#map {
+    width: 100%;
+    margin: 0;
+    border: none;
+}
 
 /* تفاعل أفضل للهواتف */
-@media (max-width: 68px) {
-    .container {
-        padding: 0.5rem;
+@media (max-width: 768px) {
+    .drivers-grid {
+        grid-template-columns: 1fr; /* عمود واحد على الشاشات الصغيرة */
     }
-    .driver-card {
-        margin-bottom: 1rem;
-    }
-    .location-chip {
+
+    body {
         font-size: 1rem;
-        padding: 0.8rem;
     }
 }
-
 
 /* للشاشات الكبيرة */
-.drivers-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-}
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
     .drivers-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
+        grid-template-columns: repeat(2, 1fr); /* عمودان للبطاقات */
     }
-    @media (min-width: 768px) {
-        .drivers-grid {
-            grid-template-columns: repeat(2, 1fr);
+}
+
+
+
+        .app-header {
+            background: var(--secondary-color);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: var(--card-shadow);
         }
-    }
-    
-}
+
+        .app-logo {
+            font-size: 1.8rem;
+            text-decoration: none;
+            color: var(--primary-color) !important;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .app-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff;
+            transition: var(--transition);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .navbar-nav .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary-color);
+        }
+       
+       
 
 
+        #map {
+            height: 400px;
+            border-radius: 20px;
+            margin: 1rem 0;
+            box-shadow: var(--card-shadow);
+            border: 2px solid var(--secondary-color);
+            z-index: 1;
+        }
 
+        .leaflet-popup-content {
+            text-align: center;
+            direction: rtl;
+        }
 
-/* تحسين شريط التايتل */
-.app-header {
-    background: var(--secondary-color);
-    height: 50px; /* تقليل الارتفاع */
-    padding: 0 0rem; /* إزالة الحشوة العلوية والسفلية */
-    display: flex;
-    justify-content: space-between; /* توزيع العناصر */
-    align-items: center; /* توسيط العناصر عموديًا */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-}
-
-/* اللوجو والاسم */
-.app-logo {
-    display: flex;
-    align-items: center;
-    font-size: 1.2rem; /* تصغير حجم النص */
-    font-weight: bold;
-    color: var(--primary-color);
-    text-decoration: none;
-    gap: 0.5rem; /* مسافة بين الأيقونة والنص */
-}
-
-.app-logo i {
-    font-size: 1.5rem; /* حجم أيقونة اللوجو */
-    color: var(--primary-color);
-}
-
-/* شريط الأدوات أو العناصر */
-.navbar-nav {
-    display: flex;
-    align-items: center;
-    gap: 1rem; /* مسافة بين العناصر */
+        /* تحديث أزرار الفلترة لتكون أكبر وأكثر بروزاً */
+/* تحديث حاوية الفلاتر مع التثبيت */
+.location-filter {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 1.5rem;
+    border-radius: 0; /* إزالة الحواف المستديرة للتثبيت الكامل */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     margin: 0;
-    list-style: none;
-    padding: 0;
+    position: sticky;
+    top: 70px; /* تعديل المسافة من الأعلى ليناسب الناف بار */
+    z-index: 1000; /* زيادة الـ z-index للتأكد من الظهور فوق العناصر الأخرى */
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--primary-color);
+    transition: all 0.3s ease;
 }
 
-.navbar-nav .nav-link {
-    color: #fff;
-    font-size: 1rem; /* حجم النص */
-    padding: 0.3rem 0.5rem;
-    text-decoration: none;
-    transition: color 0.3s ease;
+/* تحسين تنسيق الفلاتر */
+.location-chips {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1.2rem;
+    overflow-x: auto;
+    padding: 0.8rem 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    white-space: nowrap;
+    margin: 0 auto;
+    max-width: 100%;
 }
 
-.navbar-nav .nav-link:hover {
+/* تحسين أزرار الفلتر */
+.location-chip {
+    padding: 1.2rem 2.5rem;
+    border-radius: 50px; /* زيادة التقويس */
+    border: 3px solid var(--primary-color); /* زيادة سمك الحدود */
+    background: white;
+    font-size: 1.6rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    color: var(--secondary-color);
+    text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* تحسين الأيقونات */
+.location-chip i {
+    font-size: 1.8rem;
     color: var(--primary-color);
+    transition: all 0.3s ease;
 }
 
-/* إخفاء أيقونة شريط الأدوات على الشاشة الكبيرة */
-.navbar-toggler {
-    display: none;
+/* تحسين حالة التحويم والتنشيط */
+.location-chip:hover,
+.location-chip.active {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
 }
 
-/* تحسين التناسق على الشاشات الصغيرة */
-@media (max-width: 768px) {
-    .app-header {
-        height: 45px; /* تقليل إضافي للارتفاع */
-    }
-
-    .app-logo {
-        font-size: 1rem;
-    }
-
-    .app-logo i {
-        font-size: 1.2rem;
-    }
-
-    .navbar-toggler {
-        display: block; /* إظهار زر القائمة فقط على الشاشات الصغيرة */
-    }
-
-    .navbar-nav {
-        display: none; /* إخفاء شريط الأدوات واستبداله بالزر */
-    }
+.location-chip:hover i,
+.location-chip.active i {
+    color: var(--secondary-color);
+    transform: scale(1.1);
 }
 
+/* تحسين شريط التمرير */
+.location-chips::-webkit-scrollbar {
+    height: 8px;
+}
 
+.location-chips::-webkit-scrollbar-track {
+    background: rgba(241, 241, 241, 0.8);
+    border-radius: 4px;
+}
+
+.location-chips::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.location-chips::-webkit-scrollbar-thumb:hover {
+    background: #e5c100;
+}
 
 /* تحسينات التجاوب */
 @media (max-width: 768px) {
-    .container {
-        padding: 0.5rem;
+    .location-filter {
+        padding: 1rem;
     }
-    .driver-card {
-        margin-bottom: 1rem;
-    }
+
     .location-chip {
-        font-size: 1rem;
-        padding: 0.8rem;
+        padding: 1rem 2rem;
+        font-size: 1.3rem;
+    }
+    
+    .location-chip i {
+        font-size: 1.5rem;
     }
 }
-
 
 @media (min-width: 1024px) {
     .location-filter {
@@ -659,32 +512,12 @@ html, body {
     background: rgba(255, 255, 255, 0.98);
     box-shadow: 0 4px 25px rgba(0,0,0,0.15);
 }
-.drivers-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-}
-@media (min-width: 768px) {
-    .drivers-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-}
-.location-chip:hover {
-    transform: scale(1.1);
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
-}
-.location-chips {
-    display: flex;
-    overflow-x: auto;
-    gap: 1rem;
-    padding: 0.5rem;
-}
-
+        .drivers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            padding: 2rem 0;
+        }
 
         .driver-card {
             background: white;
@@ -698,7 +531,7 @@ img {
 
         .driver-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.89);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
         }
 
         .driver-image-container {
@@ -889,7 +722,11 @@ img {
             100% { transform: rotate(360deg); }
         }
 
-        
+        @media (max-width: 868px) {
+            .drivers-grid { grid-template-columns: 1fr; }
+            #map { height: 500px; }
+        }
+
         .modal-content {
             border-radius: 20px;
             border: none;
@@ -902,7 +739,7 @@ img {
         }
 
         .modal-body {
-            padding: 1rem;
+            padding: 2rem;
         }
 
         .form-label {
@@ -1078,215 +915,6 @@ img {
     border-color: var(--primary-color);
     color: var(--secondary-color);
 }
-/* تحسين تصميم نافذة المحادثة */
-.message {
-    display: flex;
-    flex-direction: column;
-    margin: 5px 0;
-}
-
-.message-bubble {
-    max-width: 75%;
-    padding: 12px 15px;
-    border-radius: 20px;
-    font-size: 15px;
-    word-wrap: break-word;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    transition: transform 0.2s ease-in-out;
-}
-
-.message-bubble:hover {
-    transform: scale(1.02);
-}
-
-.message-bubble.sent {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: white;
-    margin-left: auto;
-    text-align: right;
-    border-bottom-right-radius: 5px;
-}
-
-.message-bubble.received {
-    background: #f1f1f1;
-    color: #333;
-    margin-right: auto;
-    text-align: left;
-    border-bottom-left-radius: 5px;
-}
-
-.timestamp {
-    font-size: 11px;
-    margin-top: 3px;
-    color: #aaa;
-    text-align: right;
-}
-
-/* تحسين نافذة المحادثة */
-.chat-window {
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    border: 1px solid #ddd;
-    background-color: #fff;
-}
-
-/* العنوان */
-.chat-header {
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: white;
-    text-align: center;
-    font-weight: bold;
-    font-size: 18px;
-    padding: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #ddd;
-}
-
-.chat-header img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-}
-
-.chat-header h5 {
-    margin: 0;
-    font-size: 1.2rem;
-}
-
-.chat-header .btn-close {
-    background-color: white;
-    opacity: 0.8;
-}
-
-/* منطقة الرسائل */
-.chat-body {
-    background: #f8f9fa;
-    height: 450px;
-    overflow-y: auto;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.chat-body::-webkit-scrollbar {
-    width: 8px;
-}
-
-.chat-body::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-.chat-body::-webkit-scrollbar-thumb {
-    background: #007bff;
-    border-radius: 10px;
-}
-
-/* شريط الإدخال */
-.chat-footer {
-    background-color: #fff;
-    padding: 0.8rem 1.2rem;
-    border-top: 1px solid #ddd;
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-}
-
-.chat-input {
-    flex: 1;
-    border-radius: 30px;
-    padding: 0.8rem 1.2rem;
-    border: 1px solid #ccc;
-    transition: border-color 0.3s ease-in-out;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
-}
-
-.chat-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
-}
-
-.send-btn {
-    border-radius: 50%;
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    font-size: 1.4rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease-in-out;
-}
-
-.send-btn:hover {
-    transform: scale(1.1);
-}
-
-.send-btn i {
-    color: white;
-}
-
-/* تحسين الرسائل المستلمة والمرسلة */
-.chat-messages {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.message-bubble.sent::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: -10px;
-    width: 0;
-    height: 0;
-    border: 10px solid transparent;
-    border-top-color: #0056b3;
-    border-bottom: 0;
-    margin-left: -10px;
-}
-
-.message-bubble.received::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: -10px;
-    width: 0;
-    height: 0;
-    border: 10px solid transparent;
-    border-top-color: #f1f1f1;
-    border-bottom: 0;
-    margin-right: -10px;
-}
-.modal-content {
-    border: 3px solid gold; /* الإطار الذهبي */
-    border-radius: 15px; /* حواف دائرية */
-    background-color: #f0f0f0; /* لون الخلفية الداخلي */
-    color: #000; /* لون النص */
-}
-
-.modal-header {
-    background-color: #000000cc; /* أسود خافت */
-    color: gold; /* النص باللون الذهبي */
-    border-bottom: 1px solid gold; /* خط سفلي ذهبي */
-}
-
-.modal-body {
-    background-color: #ffffff; /* أبيض */
-    color: #000; /* لون النص */
-}
-
-
-
     </style>
 </head>
 <body>
@@ -1297,37 +925,27 @@ img {
                 <i class="fas fa-taxi"></i>
                 تاكسي العراق
             </a>
-            <nav class="navbar app-header fixed-top">
-                <div class="container d-flex justify-content-between align-items-center">
-                    <!-- اللوجو واسم التطبيق مع أيقونة البحث -->
-                    <div class="d-flex align-items-center app-title">
-                        <a class="app-logo d-flex align-items-center" href="#">
-                            <i class="fas fa-taxi me-2"></i>
-                            <span>ataxiPash</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
+                            <i class="fas fa-search me-1"></i>
+                            بحث
                         </a>
-                        <!-- أيقونة البحث بجانب الاسم -->
-                        <a class="search-icon ms-3" href="#" data-bs-toggle="modal" data-bs-target="#searchModal">
-                            <i class="fas fa-search"></i>
-                        </a>
-                    <
-            
-                    <!-- الأدوات الأخرى (التنبيهات، حسابي) -->
-                    <div class="tools d-flex align-items-center">
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#notificationsModal">
-                            <i class="fas fa-bell"></i>
+                            <i class="fas fa-bell me-1"></i>
+                            تنبيهات
                         </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
-                            <i class="fas fa-user"></i>
-                        </a>
-                    </div>
-                </div>
-            </nav>
-            
-                        </a>
-                    </div>
-                </div>
-            </nav>
-            
+                            <i class="fas fa-user me-1"></i>
+                            حسابي
                         </a>
                     </li>
                 </ul>
@@ -1761,53 +1379,6 @@ img {
         </div>
     </div>
 </div>
-<!-- نافذة المحادثة -->
-<div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content chat-window">
-            <!-- رأس النافذة مع صورة واسم السائق -->
-            <div class="modal-header chat-header">
-                <img id="driverImage" src="" alt="صورة السائق" class="rounded-circle me-2" style="width: 60px; height: 60px;">
-                <div>
-                    <h5 class="modal-title" id="driverName">اسم السائق</h5>
-                    <small id="driverCardInfo" style="color: #ddd;">بطاقة السائق</small>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
-            </div>
-            <!-- اختيار المشوار -->
-            <div class="modal-body chat-body">
-                <div id="tripSelection" class="mb-3">
-                    <label class="form-label">عدد المشاوير:</label>
-                    <input type="number" id="tripCount" class="form-control mb-2" placeholder="أدخل عدد المشاوير" min="1">
-                    
-                    <label class="form-label">الوجهة:</label>
-                    <input type="text" id="tripDestination" class="form-control mb-2" placeholder="أدخل الوجهة">
-                    
-                    <label class="form-label">نوع الرحلة:</label>
-                    <select id="tripType" class="form-control mb-3">
-                        <option value="ذهاب">ذهاب</option>
-                        <option value="ذهاب وعودة">ذهاب وعودة</option>
-                    </select>
-                    
-                    <button class="btn btn-success w-100" onclick="confirmTrip()">تأكيد المشوار</button>
-                </div>
-                <!-- منطقة الرسائل -->
-                <div id="chatMessages" class="chat-messages d-none"></div>
-            </div>
-            <!-- شريط الإدخال -->
-            <div class="modal-footer chat-footer d-none">
-                <div class="input-group">
-                    <input type="text" id="chatInput" class="form-control chat-input" placeholder="اكتب رسالتك هنا...">
-                    <button class="btn btn-primary send-btn" onclick="sendMessage()">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
@@ -1836,144 +1407,7 @@ img {
         let userMarker;
         let userLocation = null;
         let markerLayer;
-        let isLoadingDrivers = false; // للتحكم في حالة تحميل البيانات
-let isViewingDriverLocation = false; // لتعطيل تحديث موقع المستخدم عند عرض موقع السائق
-let currentDriverId = null;
-let currentChatDriverId = null;
-let userId;
-
-// التحقق من وجود معرف في localStorage
-if (!localStorage.getItem('userId')) {
-    userId = generateUUID(); // توليد معرف جديد
-    localStorage.setItem('userId', userId);
-} else {
-    userId = localStorage.getItem('userId');
-}
-
-function generateUUID() {
-    return 'xxxx-xxxx-4xxx-yxxx'.replace(/[xy]/g, function(c) {
-        const r = Math.random() * 16 | 0;
-        const v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
-
-
-let currentDriverImage = ''; // متغير لصورة السائق
-let currentDriverName = '';  // متغير لاسم السائق
-let currentDriverCard = '';  // متغير لبطاقة السائق
-
-function openChatWindow(driverId, driverImage, driverName, driverCard) {
-    currentChatDriverId = driverId;
-    currentDriverImage = driverImage;
-    currentDriverName = driverName;
-    currentDriverCard = driverCard;
-
-    // تحديث بيانات السائق في النافذة
-    document.getElementById('driverImage').src = driverImage;
-    document.getElementById('driverName').innerText = driverName;
-    document.getElementById('driverCardInfo').innerText = `بطاقة: ${driverCard}`;
-
-    // إعادة ضبط النافذة: إظهار إدخال الرحلة وإخفاء الرسائل
-    document.getElementById('tripSelection').classList.remove('d-none');
-    document.querySelector('.chat-footer').classList.add('d-none');
-    document.getElementById('chatMessages').classList.add('d-none');
-
-    // إظهار النافذة
-    const chatModal = new bootstrap.Modal(document.getElementById('chatModal'));
-    chatModal.show();
-}
-
-function confirmTrip() {
-    const tripCount = document.getElementById('tripCount').value;
-    const tripDestination = document.getElementById('tripDestination').value;
-    const tripType = document.getElementById('tripType').value;
-    const tripDays = ["الأحد", "الإثنين", "الثلاثاء"]; // مثال للأيام
-
-    if (tripCount > 0 && tripDestination) {
-        const tripData = {
-            tripCount: tripCount,
-            tripDestination: tripDestination,
-            tripType: tripType,
-            tripDays: tripDays,
-            timestamp: Date.now()
-        };
-
-        // إضافة بيانات الرحلة الجديدة دون حذف السابقة
-        database.ref(`chats/${userId}/${currentChatDriverId}/trips`).push(tripData)
-            .then(() => {
-                alert('تم تأكيد الرحلة بنجاح!');
-                // إخفاء إدخال الرحلة وإظهار منطقة الرسائل
-                document.getElementById('tripSelection').classList.add('d-none');
-                document.querySelector('.chat-footer').classList.remove('d-none');
-                document.getElementById('chatMessages').classList.remove('d-none');
-                loadMessages();
-            })
-            .catch((error) => {
-                console.error("Error saving trip:", error);
-            });
-    } else {
-        alert('يرجى إدخال جميع البيانات بشكل صحيح.');
-    }
-}
-
-function loadTrips() {
-    const tripsContainer = document.getElementById('tripsList');
-    tripsContainer.innerHTML = ''; // مسح الرحلات السابقة
-
-    database.ref(`chats/${userId}/${currentChatDriverId}/trips`).on('child_added', (snapshot) => {
-        const trip = snapshot.val();
-        const tripDiv = document.createElement('div');
-        tripDiv.className = 'trip-details';
-        tripDiv.innerHTML = `
-            <p>عدد المشاوير: ${trip.tripCount}</p>
-            <p>الوجهة: ${trip.tripDestination}</p>
-            <p>نوع الرحلة: ${trip.tripType}</p>
-            <p>الأيام: ${trip.tripDays.join(', ')}</p>
-            <p>التاريخ: ${new Date(trip.timestamp).toLocaleString()}</p>
-        `;
-        tripsContainer.appendChild(tripDiv);
-    });
-}
-
-
-
-function sendMessage() {
-    const messageInput = document.getElementById('chatInput');
-    const messageText = messageInput.value.trim();
-
-    if (messageText) {
-        database.ref(`chats/${userId}/${currentChatDriverId}/messages`).push({
-            sender: userId,
-            text: messageText,
-            timestamp: Date.now()
-        });
-        messageInput.value = ''; // تفريغ حقل الإدخال
-    }
-}
-
-
-function loadMessages() {
-    const chatBox = document.getElementById('chatMessages');
-    chatBox.innerHTML = '';
-
-    database.ref(`chats/${userId}/${currentChatDriverId}/messages`).on('child_added', (snapshot) => {
-        const message = snapshot.val();
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'message';
-        messageDiv.innerHTML = `
-            <div class="message-bubble ${message.sender === userId ? 'sent' : 'received'}">
-                <p>${message.text}</p>
-                <span class="timestamp">${new Date(message.timestamp).toLocaleTimeString()}</span>
-            </div>
-        `;
-        chatBox.appendChild(messageDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-    });
-}
-
-
-
+        let isLoadingDrivers = false;
 
 function loadDrivers(location = 'all') {
     if (isLoadingDrivers) return; // إذا كان التحميل قيد التنفيذ، لا تقم بإعادة التحميل.
@@ -1994,32 +1428,13 @@ function loadDrivers(location = 'all') {
                     driversGrid.innerHTML += createDriverCard(driver, childSnapshot.key);
 
                     if (driver.coordinates) {
-                        const { lat, lng } = driver.coordinates;
-
-                        // إنشاء العلامة بمعلومات السائق
-                        const driverMarker = L.marker([lat, lng], {
+                        L.marker([driver.coordinates.lat, driver.coordinates.lng], {
                             icon: L.divIcon({
-                                html: `<img src="${driver.image || 'default-avatar.png'}" 
-                                              alt="صورة السائق" 
-                                              style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #FFD700;">`,
+                                html: `<i class="fas fa-taxi" style="color: ${driver.active ? '#FFD700' : '#ccc'};"></i>`,
                                 className: 'driver-marker',
-                                iconSize: [40, 40],
+                                iconSize: [25, 25],
                             }),
                         }).addTo(markerLayer);
-
-                        // إضافة نافذة منبثقة عند النقر على العلامة
-                        driverMarker.bindPopup(`
-                            <div style="text-align: center;">
-                                <img src="${driver.image || 'default-avatar.png'}" 
-                                     alt="صورة السائق" 
-                                     style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 10px;">
-                                <h6 style="margin: 5px 0; font-weight: bold;">${driver.name}</h6>
-                                <p style="color: #555; font-size: 0.9rem;">🚗 ${driver.carType} - ${driver.carModel}</p>
-                                <button class="btn btn-sm btn-primary" onclick="openChatWindow('${childSnapshot.key}')">
-                                    <i class="fas fa-comment"></i> مراسلة السائق
-                                </button>
-                            </div>
-                        `);
                     }
                 }
             });
@@ -2033,131 +1448,6 @@ function loadDrivers(location = 'all') {
         .finally(() => {
             isLoadingDrivers = false; // إعادة تعيين العلم بعد الانتهاء.
         });
-}
-
-
-function viewDriverLocation(driverId) {
-    isViewingDriverLocation = true; // تعطيل تحديث موقع المستخدم
-
-    database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
-        const driver = snapshot.val();
-        if (driver && driver.coordinates) {
-            const { lat, lng } = driver.coordinates;
-
-            // تعيين موقع الخريطة إلى موقع السائق
-            map.setView([lat, lng], 15);
-
-            // إضافة علامة موقع السائق
-            const driverMarker = L.marker([lat, lng], {
-                icon: L.divIcon({
-                    html: `<i class="fas fa-taxi" style="color: #FFD700;"></i>`,
-                    className: 'driver-marker',
-                    iconSize: [30, 30],
-                }),
-            }).addTo(markerLayer);
-
-            driverMarker.bindPopup(`
-                <div style="text-align: center;">
-                    <h6>${driver.name}</h6>
-                    <p>${driver.carType} - ${driver.carModel}</p>
-                    <button class="action-btn secondary" onclick="openChatWindow('${key}')">
-    <i class="fas fa-comment"></i> مراسلة
-</button>
-
-
-                </div>
-            `).openPopup();
-
-            scrollToMap();
-        } else {
-            showToast('لم يتم إضافة موقع للسائق', 'error');
-        }
-    });
-
-    // إعادة تفعيل تحديث موقع المستخدم بعد فترة
-    setTimeout(() => {
-        isViewingDriverLocation = false;
-    }, 30000); // 30 ثانية
-}
-function viewDriverLocation(driverId) {
-    database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
-        const driver = snapshot.val();
-
-        if (driver && driver.coordinates) {
-            const { lat, lng } = driver.coordinates;
-
-            // تحريك الخريطة إلى موقع السائق مع تأثير سلس
-            map.flyTo([lat, lng], 15, {
-                animate: true,
-                duration: 1.5, // مدة التحريك
-            });
-
-            // إزالة العلامات السابقة الخاصة بالسائق
-            markerLayer.clearLayers();
-
-            // إضافة علامة بموقع السائق مع صورة محفوظة في قاعدة البيانات
-            const driverMarker = L.marker([lat, lng], {
-                icon: L.divIcon({
-                    html: `
-                        <div style="position: relative; text-align: center;">
-                            <img src="${driver.image || 'https://via.placeholder.com/50'}" 
-                                 alt="صورة السائق" 
-                                 style="width: 50px; height: 50px; border: 3px solid #FFD700; 
-                                 border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-                            <i class="fas fa-taxi" 
-                               style="position: absolute; bottom: -5px; right: 50%; transform: translateX(50%); 
-                               color: #FFD700; font-size: 1.5rem;"></i>
-                        </div>
-                    `,
-                    className: 'driver-marker',
-                    iconSize: [60, 60],
-                }),
-            }).addTo(markerLayer);
-
-            // نافذة منبثقة مع صورة السائق
-            driverMarker.bindPopup(`
-                <div style="text-align: center; font-family: 'Segoe UI', sans-serif;">
-                    <img src="${driver.image || 'https://via.placeholder.com/70'}" 
-                         alt="صورة السائق" 
-                         style="width: 70px; height: 70px; border-radius: 50%; margin-bottom: 10px; 
-                         border: 3px solid #FFD700;">
-                    <h5 style="color: #FFD700; font-weight: bold;">${driver.name}</h5>
-                    <p style="margin: 5px 0;">🚗 ${driver.carType} - ${driver.carModel}</p>
-                    <button class="btn btn-sm btn-primary" onclick="openChatWindow('${driverId}', '${driver.image}', '${driver.name}')">
-    <i class="fas fa-comment"></i> مراسلة السائق
-</button>
->
-
-                    </button>
-                </div>
-            `).openPopup();
-
-            scrollToMap();
-
-            // عرض رسالة تأكيد جذابة
-            Swal.fire({
-                title: '🚖 تم تحديد موقع السائق!',
-                html: `
-                    <p style="font-size: 1rem; color: #555;">
-                        السائق <b>${driver.name}</b> بانتظارك.
-                    </p>
-                    <p style="color: #666;">هل ترغب بمراسلته الآن؟</p>
-                `,
-                icon: 'success',
-                showCancelButton: true,
-                confirmButtonColor: '#FFD700',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: '📨 نعم، مراسلة السائق',
-                cancelButtonText: '❌ إغلاق',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    openChatWindow(driverId);
-                }
-            });
-        } else {
-            showToast('لم يتم العثور على موقع السائق أو الصورة.', 'error');
-        }
-    });
 }
 
 
@@ -2326,72 +1616,135 @@ async function handleAddDriver(event) {
         
 
         function createDriverCard(driver, key) {
-    const distance = userLocation ? calculateDistance(userLocation, driver.coordinates) : null;
+            const distance = userLocation ? calculateDistance(userLocation, driver.coordinates) : null;
+        
+            return `
+                <div class="driver-card animate__animated animate__fadeIn">
+                    <div class="driver-image-container">
+                        <img src="${driver.imageUrl}" alt="${driver.name}" class="driver-image">
+                        <div class="driver-status ${driver.active ? 'status-active' : 'status-inactive'}">
+                            ${driver.active ? 'متاح' : 'مشغول'}
+                        </div>
+                    </div>
+                    <div class="driver-info">
+                        <h5 class="driver-name">${driver.name}</h5>
+                        <div class="driver-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">
+                                    <i class="fas fa-star" style="color: #FFD700;"></i>
+                                    ${driver.rating.toFixed(1)}
+                                </div>
+                                <div class="stat-label">التقييم</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">
+                                    <i class="fas fa-route"></i>
+                                    ${driver.trips}
+                                </div>
+                                <div class="stat-label">الرحلات</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">
+                                    ${distance ? distance.toFixed(1) : '--'}
+                                </div>
+                                <div class="stat-label">كم</div>
+                            </div>
+                        </div>
+                        <div class="text-muted">
+                            <p class="mb-2">
+                                <i class="fas fa-car me-2"></i>
+                                ${driver.carType} ${driver.carModel}
+                            </p>
+                            <p class="mb-0">
+                                <i class="fas fa-map-marker-alt me-2"></i>
+                                ${driver.location}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="driver-actions">
+                        <button class="action-btn primary" onclick="viewDriverLocation('${key}')">
+                            <i class="fas fa-map-marker-alt"></i>
+                            عرض الموقع
+                        </button>
+                        <button class="action-btn secondary" onclick="messageDriver('${key}')">
+                            <i class="fas fa-comment"></i>
+                            مراسلة
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+       function viewDriverLocation(driverId) {
+    database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
+        const driver = snapshot.val();
+        if (driver && driver.coordinates) {
+            // نقل الخريطة إلى موقع السائق
+            const { lat, lng } = driver.coordinates;
+            map.setView([lat, lng], 15); // تكبير الخريطة عند موقع السائق
 
-    return `
-        <div class="driver-card animate__animated animate__fadeIn">
-            <div class="driver-image-container">
-                <img src="${driver.imageUrl}" alt="${driver.name}" class="driver-image">
-                <div class="driver-status ${driver.active ? 'status-active' : 'status-inactive'}">
-                    ${driver.active ? 'متاح' : 'مشغول'}
-                </div>
-            </div>
-            <div class="driver-info">
-                <h5 class="driver-name">${driver.name}</h5>
-                <div class="driver-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">
-                            <i class="fas fa-star" style="color: #FFD700;"></i>
-                            ${driver.rating.toFixed(1)}
-                        </div>
-                        <div class="stat-label">التقييم</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">
-                            <i class="fas fa-route"></i>
-                            ${driver.trips}
-                        </div>
-                        <div class="stat-label">الرحلات</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">
-                            ${distance ? distance.toFixed(1) : '--'}
-                        </div>
-                        <div class="stat-label">كم</div>
-                    </div>
-                </div>
-                <div class="text-muted">
-                    <p class="mb-2">
-                        <i class="fas fa-car me-2"></i>
-                        ${driver.carType} ${driver.carModel}
-                    </p>
-                    <p class="mb-0">
-                        <i class="fas fa-map-marker-alt me-2"></i>
-                        ${driver.location}
-                    </p>
-                </div>
-            </div>
-            <div class="driver-actions">
-                <button class="action-btn primary" onclick="viewDriverLocation('${key}')">
-                    <i class="fas fa-map-marker-alt"></i>
-                    عرض الموقع
-                </button>
-                <button class="action-btn secondary" onclick="openChatWindow('${key}')">
-    <i class="fas fa-comment"></i> مراسلة
-</button>
+            // إضافة أو تحديث علامة موقع السائق
+            const driverMarker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    html: `<i class="fas fa-taxi" style="color: #FFD700;"></i>`,
+                    className: 'driver-marker',
+                    iconSize: [30, 30],
+                }),
+            }).addTo(markerLayer);
 
-            </div>
-        </div>
-    `;
+            driverMarker.bindPopup(`
+                <div style="text-align: center;">
+                    <h6>${driver.name}</h6>
+                    <p>${driver.carType} - ${driver.carModel}</p>
+                    <p><button class="btn btn-primary btn-sm mt-2" onclick="messageDriver('${driverId}')">
+                        مراسلة السائق
+                    </button></p>
+                </div>
+            `).openPopup();
+        } else {
+            showToast('لم يتم إضافة موقع للسائق', 'error');
+        }
+    });
 }
 
-       
 
 
 
 
+function viewDriverLocation(driverId) {
+    database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
+        const driver = snapshot.val();
+        if (driver && driver.coordinates) {
+            // تحديد موقع السائق على الخريطة
+            const { lat, lng } = driver.coordinates;
+            map.setView([lat, lng], 15); // تكبير الخريطة عند موقع السائق
 
+            // إضافة أو تحديث علامة موقع السائق
+            const driverMarker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    html: `<i class="fas fa-taxi" style="color: #FFD700;"></i>`,
+                    className: 'driver-marker',
+                    iconSize: [30, 30],
+                }),
+            }).addTo(markerLayer);
 
+            driverMarker.bindPopup(`
+                <div style="text-align: center;">
+                    <h6>${driver.name}</h6>
+                    <p>${driver.carType} - ${driver.carModel}</p>
+                    <button class="btn btn-primary btn-sm mt-2" onclick="messageDriver('${driverId}')">
+                        مراسلة السائق
+                    </button>
+                </div>
+            `).openPopup();
+
+            // التمرير إلى قسم الخريطة
+            scrollToMap();
+        } else {
+            showToast('لم يتم إضافة موقع للسائق', 'error');
+        }
+    });
+}
 function scrollToMap() {
     const mapElement = document.getElementById('map');
     if (mapElement) {
@@ -2590,11 +1943,10 @@ function createDriverCard(driver, key) {
                     <i class="fas fa-map-marker-alt"></i>
                     عرض الموقع
                 </button>
-               <button class="action-btn secondary" onclick="openChatWindow('${key}')">
-    <i class="fas fa-comment"></i> مراسلة
-</button>
-
-
+                <button class="action-btn secondary" onclick="messageDriver('${key}')">
+                    <i class="fas fa-comment"></i>
+                    مراسلة
+                </button>
             </div>
         </div>
     `;
@@ -2991,19 +2343,26 @@ async function handleAddDriver(event) {
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
-       function messageDriver(driverId) {
+        function messageDriver(driverId) {
     database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
         const driver = snapshot.val();
-
-        if (driver) {
-            // تحديد السائق الحالي للدردشة
-            currentChatDriverId = driverId;
-
-            // فتح نافذة الدردشة
-            const chatModal = new bootstrap.Modal(document.getElementById('chatModal'));
-            document.getElementById('chatMessages').innerHTML = ''; // تفريغ الرسائل السابقة
-            loadMessages(); // تحميل الرسائل السابقة بين المستخدم والسائق
-            chatModal.show();
+        if (driver && userLocation) {
+            const phoneNumber = driver.phone.replace(/[^0-9]/g, '');
+            
+            // إنشاء رابط Google Maps مع موقع المستخدم
+            const googleMapsLink = `https://www.google.com/maps?q=${userLocation.lat},${userLocation.lng}`;
+            
+            // إنشاء نص الرسالة مع رابط الموقع
+            const message = `السلام عليكم، موقعي الحالي: ${googleMapsLink}`;
+            
+            // تشفير النص للرابط
+            const encodedMessage = encodeURIComponent(message);
+            
+            // فتح رابط WhatsApp مع الرسالة المجهزة
+            const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            window.open(whatsappLink, '_blank');
+        } else if (!userLocation) {
+            showToast('لم نتمكن من تحديد موقعك. يرجى السماح بالوصول إلى الموقع.', 'error');
         } else {
             showToast('عذراً، لا يمكن العثور على معلومات السائق.', 'error');
         }
