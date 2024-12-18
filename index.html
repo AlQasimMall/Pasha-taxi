@@ -1078,7 +1078,6 @@ img {
     border-color: var(--primary-color);
     color: var(--secondary-color);
 }
-
 /* تحسين تصميم نافذة المحادثة */
 .message {
     display: flex;
@@ -1087,125 +1086,97 @@ img {
 }
 
 .message-bubble {
-    max-width: 80%;
-    padding: 10px;
-    border-radius: 15px;
-    font-size: 14px;
+    max-width: 75%;
+    padding: 12px 15px;
+    border-radius: 20px;
+    font-size: 15px;
     word-wrap: break-word;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: transform 0.2s ease-in-out;
+}
+
+.message-bubble:hover {
+    transform: scale(1.02);
 }
 
 .message-bubble.sent {
-    background-color: #007bff;
+    background: linear-gradient(135deg, #007bff, #0056b3);
     color: white;
     margin-left: auto;
     text-align: right;
+    border-bottom-right-radius: 5px;
 }
 
 .message-bubble.received {
-    background-color: #e9ecef;
-    color: black;
+    background: #f1f1f1;
+    color: #333;
     margin-right: auto;
     text-align: left;
+    border-bottom-left-radius: 5px;
 }
 
 .timestamp {
-    font-size: 10px;
-    margin-top: 5px;
+    font-size: 11px;
+    margin-top: 3px;
+    color: #aaa;
     text-align: right;
-    color: #999;
 }
+
 /* تحسين نافذة المحادثة */
 .chat-window {
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ddd;
+    background-color: #fff;
 }
 
 /* العنوان */
 .chat-header {
-    background-color: var(--primary-color);
+    background: linear-gradient(135deg, #007bff, #0056b3);
     color: white;
     text-align: center;
     font-weight: bold;
-    padding: 1rem;
+    font-size: 18px;
+    padding: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+}
+
+.chat-header img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chat-header h5 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.chat-header .btn-close {
+    background-color: white;
+    opacity: 0.8;
 }
 
 /* منطقة الرسائل */
 .chat-body {
-    background-color: #f8f9fa;
-    height: 400px;
+    background: #f8f9fa;
+    height: 450px;
     overflow-y: auto;
-    padding: 1rem;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.chat-messages {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.message-bubble {
-    max-width: 70%;
-    padding: 10px;
-    border-radius: 20px;
-    word-wrap: break-word;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.message-bubble.sent {
-    background-color: var(--primary-color);
-    color: white;
-    align-self: flex-end;
-    text-align: right;
-}
-
-.message-bubble.received {
-    background-color: #e0e0e0;
-    color: black;
-    align-self: flex-start;
-    text-align: left;
-}
-
-.timestamp {
-    font-size: 10px;
-    color: #888;
-    margin-top: 5px;
-}
-
-/* شريط الإدخال */
-.chat-footer {
-    background-color: #fff;
-    padding: 0.5rem 1rem;
-    border-top: 1px solid #ddd;
-}
-
-.chat-input {
-    border-radius: 20px;
-    padding: 0.8rem 1rem;
-    border: 1px solid #ccc;
-}
-
-.send-btn {
-    border-radius: 50%;
-    margin-left: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    width: 50px;
-    height: 50px;
-}
-
-.send-btn i {
-    color: white;
-}
-
-/* تحسين شريط التمرير */
 .chat-body::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 .chat-body::-webkit-scrollbar-track {
@@ -1214,24 +1185,106 @@ img {
 }
 
 .chat-body::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
+    background: #007bff;
     border-radius: 10px;
 }
-.driver-marker img {
+
+/* شريط الإدخال */
+.chat-footer {
+    background-color: #fff;
+    padding: 0.8rem 1.2rem;
+    border-top: 1px solid #ddd;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.chat-input {
+    flex: 1;
+    border-radius: 30px;
+    padding: 0.8rem 1.2rem;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s ease-in-out;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.chat-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+.send-btn {
     border-radius: 50%;
-    border: 3px solid #FFD700;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease-in-out;
 }
 
-.driver-marker i {
-    color: #FFD700;
-    font-size: 1.5rem;
+.send-btn:hover {
+    transform: scale(1.1);
 }
 
-.leaflet-popup-content {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-align: center;
+.send-btn i {
+    color: white;
 }
+
+/* تحسين الرسائل المستلمة والمرسلة */
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.message-bubble.sent::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -10px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-top-color: #0056b3;
+    border-bottom: 0;
+    margin-left: -10px;
+}
+
+.message-bubble.received::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-top-color: #f1f1f1;
+    border-bottom: 0;
+    margin-right: -10px;
+}
+.modal-content {
+    border: 3px solid gold; /* الإطار الذهبي */
+    border-radius: 15px; /* حواف دائرية */
+    background-color: #f0f0f0; /* لون الخلفية الداخلي */
+    color: #000; /* لون النص */
+}
+
+.modal-header {
+    background-color: #000000cc; /* أسود خافت */
+    color: gold; /* النص باللون الذهبي */
+    border-bottom: 1px solid gold; /* خط سفلي ذهبي */
+}
+
+.modal-body {
+    background-color: #ffffff; /* أبيض */
+    color: #000; /* لون النص */
+}
+
 
 
     </style>
@@ -1712,15 +1765,37 @@ img {
 <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content chat-window">
+            <!-- رأس النافذة مع صورة واسم السائق -->
             <div class="modal-header chat-header">
-                <h5 class="modal-title" id="chatModalLabel">محادثة مع السائق</h5>
+                <img id="driverImage" src="" alt="صورة السائق" class="rounded-circle me-2" style="width: 60px; height: 60px;">
+                <div>
+                    <h5 class="modal-title" id="driverName">اسم السائق</h5>
+                    <small id="driverCardInfo" style="color: #ddd;">بطاقة السائق</small>
+                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
             </div>
+            <!-- اختيار المشوار -->
             <div class="modal-body chat-body">
+                <div id="tripSelection" class="mb-3">
+                    <label class="form-label">عدد المشاوير:</label>
+                    <input type="number" id="tripCount" class="form-control mb-2" placeholder="أدخل عدد المشاوير" min="1">
+                    
+                    <label class="form-label">الوجهة:</label>
+                    <input type="text" id="tripDestination" class="form-control mb-2" placeholder="أدخل الوجهة">
+                    
+                    <label class="form-label">نوع الرحلة:</label>
+                    <select id="tripType" class="form-control mb-3">
+                        <option value="ذهاب">ذهاب</option>
+                        <option value="ذهاب وعودة">ذهاب وعودة</option>
+                    </select>
+                    
+                    <button class="btn btn-success w-100" onclick="confirmTrip()">تأكيد المشوار</button>
+                </div>
                 <!-- منطقة الرسائل -->
-                <div id="chatMessages" class="chat-messages"></div>
+                <div id="chatMessages" class="chat-messages d-none"></div>
             </div>
-            <div class="modal-footer chat-footer">
+            <!-- شريط الإدخال -->
+            <div class="modal-footer chat-footer d-none">
                 <div class="input-group">
                     <input type="text" id="chatInput" class="form-control chat-input" placeholder="اكتب رسالتك هنا...">
                     <button class="btn btn-primary send-btn" onclick="sendMessage()">
@@ -1784,19 +1859,106 @@ function generateUUID() {
 }
 
 
-function openChatWindow(driverId) {
+let currentDriverImage = ''; // متغير لصورة السائق
+let currentDriverName = '';  // متغير لاسم السائق
+let currentDriverCard = '';  // متغير لبطاقة السائق
+
+function openChatWindow(driverId, driverImage, driverName, driverCard) {
     currentChatDriverId = driverId;
+    currentDriverImage = driverImage;
+    currentDriverName = driverName;
+    currentDriverCard = driverCard;
+
+    // تحديث بيانات السائق في النافذة
+    document.getElementById('driverImage').src = driverImage;
+    document.getElementById('driverName').innerText = driverName;
+    document.getElementById('driverCardInfo').innerText = `بطاقة: ${driverCard}`;
+
+    // إعادة ضبط النافذة: إظهار إدخال الرحلة وإخفاء الرسائل
+    document.getElementById('tripSelection').classList.remove('d-none');
+    document.querySelector('.chat-footer').classList.add('d-none');
+    document.getElementById('chatMessages').classList.add('d-none');
+
+    // إظهار النافذة
     const chatModal = new bootstrap.Modal(document.getElementById('chatModal'));
-    loadMessages(); // تحميل الرسائل من الدالة الموحدة
     chatModal.show();
 }
+
+function confirmTrip() {
+    const tripCount = document.getElementById('tripCount').value;
+    const tripDestination = document.getElementById('tripDestination').value;
+    const tripType = document.getElementById('tripType').value;
+    const tripDays = ["الأحد", "الإثنين", "الثلاثاء"]; // مثال للأيام
+
+    if (tripCount > 0 && tripDestination) {
+        const tripData = {
+            tripCount: tripCount,
+            tripDestination: tripDestination,
+            tripType: tripType,
+            tripDays: tripDays,
+            timestamp: Date.now()
+        };
+
+        // إضافة بيانات الرحلة الجديدة دون حذف السابقة
+        database.ref(`chats/${userId}/${currentChatDriverId}/trips`).push(tripData)
+            .then(() => {
+                alert('تم تأكيد الرحلة بنجاح!');
+                // إخفاء إدخال الرحلة وإظهار منطقة الرسائل
+                document.getElementById('tripSelection').classList.add('d-none');
+                document.querySelector('.chat-footer').classList.remove('d-none');
+                document.getElementById('chatMessages').classList.remove('d-none');
+                loadMessages();
+            })
+            .catch((error) => {
+                console.error("Error saving trip:", error);
+            });
+    } else {
+        alert('يرجى إدخال جميع البيانات بشكل صحيح.');
+    }
+}
+
+function loadTrips() {
+    const tripsContainer = document.getElementById('tripsList');
+    tripsContainer.innerHTML = ''; // مسح الرحلات السابقة
+
+    database.ref(`chats/${userId}/${currentChatDriverId}/trips`).on('child_added', (snapshot) => {
+        const trip = snapshot.val();
+        const tripDiv = document.createElement('div');
+        tripDiv.className = 'trip-details';
+        tripDiv.innerHTML = `
+            <p>عدد المشاوير: ${trip.tripCount}</p>
+            <p>الوجهة: ${trip.tripDestination}</p>
+            <p>نوع الرحلة: ${trip.tripType}</p>
+            <p>الأيام: ${trip.tripDays.join(', ')}</p>
+            <p>التاريخ: ${new Date(trip.timestamp).toLocaleString()}</p>
+        `;
+        tripsContainer.appendChild(tripDiv);
+    });
+}
+
+
+
+function sendMessage() {
+    const messageInput = document.getElementById('chatInput');
+    const messageText = messageInput.value.trim();
+
+    if (messageText) {
+        database.ref(`chats/${userId}/${currentChatDriverId}/messages`).push({
+            sender: userId,
+            text: messageText,
+            timestamp: Date.now()
+        });
+        messageInput.value = ''; // تفريغ حقل الإدخال
+    }
+}
+
+
 function loadMessages() {
     const chatBox = document.getElementById('chatMessages');
-    chatBox.innerHTML = ''; // تفريغ الرسائل السابقة
+    chatBox.innerHTML = '';
 
-    database.ref(`chats/${userId}/${currentChatDriverId}`).on('child_added', (snapshot) => {
+    database.ref(`chats/${userId}/${currentChatDriverId}/messages`).on('child_added', (snapshot) => {
         const message = snapshot.val();
-
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message';
         messageDiv.innerHTML = `
@@ -1806,22 +1968,8 @@ function loadMessages() {
             </div>
         `;
         chatBox.appendChild(messageDiv);
-        chatBox.scrollTop = chatBox.scrollHeight; // التمرير إلى آخر رسالة
+        chatBox.scrollTop = chatBox.scrollHeight;
     });
-}
-
-function sendMessage() {
-    const messageInput = document.getElementById('chatInput');
-    const messageText = messageInput.value.trim();
-
-    if (messageText) {
-        database.ref(`chats/${userId}/${currentChatDriverId}`).push({
-            sender: userId,
-            text: messageText,
-            timestamp: Date.now()
-        });
-        messageInput.value = ''; // تفريغ حقل الإدخال بعد الإرسال
-    }
 }
 
 
@@ -1975,8 +2123,11 @@ function viewDriverLocation(driverId) {
                          border: 3px solid #FFD700;">
                     <h5 style="color: #FFD700; font-weight: bold;">${driver.name}</h5>
                     <p style="margin: 5px 0;">🚗 ${driver.carType} - ${driver.carModel}</p>
-                    <button class="btn btn-sm btn-primary" onclick="openChatWindow('${driverId}')">
-                        <i class="fas fa-comment"></i> مراسلة السائق
+                    <button class="btn btn-sm btn-primary" onclick="openChatWindow('${driverId}', '${driver.image}', '${driver.name}')">
+    <i class="fas fa-comment"></i> مراسلة السائق
+</button>
+>
+
                     </button>
                 </div>
             `).openPopup();
