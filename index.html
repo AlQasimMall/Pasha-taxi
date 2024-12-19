@@ -1234,6 +1234,27 @@ img {
     border-bottom: 0;
 }
 
+.stat-item[onclick] {
+    transition: transform 0.2s ease;
+}
+
+.stat-item[onclick]:hover {
+    transform: scale(1.1);
+}
+
+.stat-item[onclick] .stat-value {
+    position: relative;
+}
+
+.stat-item[onclick]:hover .fa-star {
+    animation: starPulse 0.5s ease infinite;
+}
+
+@keyframes starPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
 
 
 
@@ -1839,7 +1860,7 @@ function confirmTrip() {
     const tripCount = document.getElementById('tripCount').value;
     const tripDestination = document.getElementById('tripDestination').value;
     const tripType = document.getElementById('tripType').value;
-    const tripDays = ["الأحد", "الإثنين", "الثلاثاء"]; // مثال للأيام
+    const tripDays = ["الأحد", "الإثنين", "الثلاثاء"];
 
     if (tripCount > 0 && tripDestination) {
         const tripData = {
@@ -1850,15 +1871,24 @@ function confirmTrip() {
             timestamp: Date.now()
         };
 
-        // إضافة بيانات الرحلة الجديدة دون حذف السابقة
+        // إضافة بيانات الرحلة
         database.ref(`chats/${userId}/${currentChatDriverId}/trips`).push(tripData)
             .then(() => {
+                // تحديث عدد الرحلات للسائق
+                return database.ref(`drivers/${currentChatDriverId}`).transaction((driver) => {
+                    if (driver) {
+                        driver.trips = (driver.trips || 0) + 1;
+                    }
+                    return driver;
+                });
+            })
+            .then(() => {
                 alert('تم تأكيد الرحلة بنجاح!');
-                // إخفاء إدخال الرحلة وإظهار منطقة الرسائل
                 document.getElementById('tripSelection').classList.add('d-none');
                 document.querySelector('.chat-footer').classList.remove('d-none');
                 document.getElementById('chatMessages').classList.remove('d-none');
                 loadMessages();
+                loadDrivers(); // تحديث بطاقة السائق
             })
             .catch((error) => {
                 console.error("Error saving trip:", error);
@@ -1866,6 +1896,29 @@ function confirmTrip() {
     } else {
         alert('يرجى إدخال جميع البيانات بشكل صحيح.');
     }
+}
+
+function addRating(driverId) {
+    database.ref(`drivers/${driverId}`).transaction((driver) => {
+        if (driver) {
+            // زيادة التقييم تدريجياً
+            const currentRating = driver.rating || 5;
+            const tripsCount = driver.trips || 0;
+            
+            // معادلة لحساب التقييم الجديد
+            // كلما زاد عدد الرحلات، زاد التقييم بشكل أبطأ
+            const newRating = Math.min(5, currentRating + (0.1 / Math.sqrt(tripsCount + 1)));
+            
+            driver.rating = parseFloat(newRating.toFixed(1));
+        }
+        return driver;
+    }).then(() => {
+        showToast('تم إضافة التقييم بنجاح');
+        loadDrivers(); // تحديث بطاقة السائق
+    }).catch((error) => {
+        console.error('Error updating rating:', error);
+        showToast('حدث خطأ في تحديث التقييم', 'error');
+    });
 }
 
 function loadTrips() {
@@ -2002,65 +2055,6 @@ function createDriverCard(driver, driverId) {
 }
 
 
-function loadDrivers(location = 'all') {
-    if (isLoadingDrivers) return; // إذا كان التحميل قيد التنفيذ، لا تقم بإعادة التحميل.
-    isLoadingDrivers = true;
-
-    showLoading();
-    const driversRef = database.ref('drivers');
-    
-    driversRef.once('value')
-        .then((snapshot) => {
-            const driversGrid = document.getElementById('driversGrid');
-            driversGrid.innerHTML = '';
-            markerLayer.clearLayers();
-
-            snapshot.forEach((childSnapshot) => {
-                const driver = childSnapshot.val();
-                if (location === 'all' || driver.location === location) {
-                    driversGrid.innerHTML += createDriverCard(driver, childSnapshot.key);
-
-                    if (driver.coordinates) {
-                        const { lat, lng } = driver.coordinates;
-
-                        // إنشاء العلامة بمعلومات السائق
-                        const driverMarker = L.marker([lat, lng], {
-                            icon: L.divIcon({
-                                html: `<img src="${driverData.imageUrl}" 
-                                              alt="صورة السائق" 
-                                              style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #FFD700;">`,
-                                className: 'driver-marker',
-                                iconSize: [40, 40],
-                            }),
-                        }).addTo(markerLayer);
-
-                        // إضافة نافذة منبثقة عند النقر على العلامة
-                        driverMarker.bindPopup(`
-                            <div style="text-align: center;">
-                                <img src="${driver.image || 'default-avatar.png'}" 
-                                     alt="صورة السائق" 
-                                     style="width: 60px; height: 60px; border-radius: 50%; margin-bottom: 10px;">
-                                <h6 style="margin: 5px 0; font-weight: bold;">${driver.name}</h6>
-                                <p style="color: #555; font-size: 0.9rem;">🚗 ${driver.carType} - ${driver.carModel}</p>
-                                <button class="btn btn-sm btn-primary" onclick="openChatWindow('${childSnapshot.key}')">
-                                    <i class="fas fa-comment"></i> مراسلة السائق
-                                </button>
-                            </div>
-                        `);
-                    }
-                }
-            });
-
-            hideLoading();
-        })
-        .catch((error) => {
-            console.error('Error loading drivers:', error);
-            showToast('حدث خطأ في تحميل بيانات السائقين', 'error');
-        })
-        .finally(() => {
-            isLoadingDrivers = false; // إعادة تعيين العلم بعد الانتهاء.
-        });
-}
 
 
 function viewDriverLocation(driverId) {
@@ -2109,10 +2103,8 @@ function viewDriverLocation(driverId) {
 function viewDriverLocation(driverId) {
     database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
         const driver = snapshot.val();
-
         if (driver && driver.coordinates) {
             const { lat, lng } = driver.coordinates;
-
             map.flyTo([lat, lng], 15, {
                 animate: true,
                 duration: 1.5
@@ -2120,7 +2112,6 @@ function viewDriverLocation(driverId) {
 
             markerLayer.clearLayers();
 
-            // التعديل هنا: استخدام driver.imageUrl بدلاً من driver.image
             const driverMarker = L.marker([lat, lng], {
                 icon: L.divIcon({
                     html: `
@@ -2139,20 +2130,63 @@ function viewDriverLocation(driverId) {
                 }),
             }).addTo(markerLayer);
 
-            // تحديث النافذة المنبثقة أيضاً
-            driverMarker.bindPopup(`
-                <div style="text-align: center; font-family: 'Segoe UI', sans-serif;">
-                    <img src="${driver.imageUrl || 'default-avatar.png'}" 
-                         alt="صورة السائق" 
-                         style="width: 70px; height: 70px; border-radius: 50%; margin-bottom: 10px; 
-                         border: 3px solid #FFD700;">
-                    <h5 style="color: #333; font-weight: bold;">${driver.name}</h5>
-                    <p style="margin: 5px 0;">🚗 ${driver.carType} - ${driver.carModel}</p>
-                    <button class="btn btn-sm btn-primary" onclick="openChatWindow('${driverId}')">
-                        <i class="fas fa-comment"></i> مراسلة السائق
-                    </button>
+            const popupContent = `
+                <div style="text-align: center; font-family: 'Segoe UI', sans-serif; min-width: 200px;">
+                    <div class="driver-popup-header" style="margin-bottom: 10px;">
+                        <img src="${driver.imageUrl || 'default-avatar.png'}" 
+                             alt="صورة السائق" 
+                             style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #FFD700; 
+                             margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                        <h5 style="color: #333; font-weight: bold; margin: 8px 0;">${driver.name}</h5>
+                    </div>
+                    
+                    <div class="driver-popup-stats" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 15px;">
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #FFD700;">
+                                <i class="fas fa-star"></i> ${driver.rating ? driver.rating.toFixed(1) : '5.0'}
+                            </div>
+                            <div style="font-size: 0.8rem; color: #666;">التقييم</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; color: #333;">
+                                <i class="fas fa-route"></i> ${driver.trips || 0}
+                            </div>
+                            <div style="font-size: 0.8rem; color: #666;">الرحلات</div>
+                        </div>
+                    </div>
+                    
+                    <div class="driver-popup-info" style="margin-bottom: 15px; text-align: right;">
+                        <p style="margin: 5px 0;">
+                            <i class="fas fa-car" style="color: #FFD700; margin-left: 5px;"></i>
+                            ${driver.carType} - ${driver.carModel}
+                        </p>
+                        <p style="margin: 5px 0;">
+                            <i class="fas fa-map-marker-alt" style="color: #FFD700; margin-left: 5px;"></i>
+                            ${driver.location}
+                        </p>
+                        <p style="margin: 5px 0;">
+                            <i class="fas fa-phone" style="color: #FFD700; margin-left: 5px;"></i>
+                            ${driver.phone}
+                        </p>
+                    </div>
+
+                    <div class="driver-popup-actions" style="display: grid; grid-template-columns: 1fr; gap: 8px;">
+                        <button onclick="openChatWindow('${driverId}')" 
+                                style="background: #FFD700; color: #333; border: none; padding: 8px 15px; 
+                                border-radius: 20px; cursor: pointer; font-weight: bold; 
+                                display: flex; align-items: center; justify-content: center; gap: 5px;
+                                transition: all 0.3s ease;">
+                            <i class="fas fa-comment"></i>
+                            مراسلة السائق
+                        </button>
+                    </div>
                 </div>
-            `).openPopup();
+            `;
+
+            driverMarker.bindPopup(popupContent, {
+                maxWidth: 300,
+                className: 'custom-popup'
+            }).openPopup();
 
             scrollToMap();
 
@@ -2324,6 +2358,7 @@ async function handleAddDriver(event) {
     const coordinates = getCoordinatesForLocation(location);
     
     // استخدام الإحداثيات في البيانات المرسلة
+    
     const driverData = {
         // ... البيانات الأخرى
         latitude: coordinates.lat,
@@ -2352,7 +2387,8 @@ async function handleAddDriver(event) {
         <div class="driver-card animate__animated animate__fadeIn">
             <div class="driver-image-container">
                 <img src="${driver.imageUrl}" alt="${driver.name}" class="driver-image">
-                <div class="driver-status ${driver.active ? 'status-active' : 'status-inactive'}">
+                <div class="driver-status ${driver.active ? 'status-active' : 'status-inactive'}" 
+                     onclick="toggleDriverStatus('${key}', ${driver.active})">
                     ${driver.active ? 'متاح' : 'مشغول'}
                 </div>
             </div>
@@ -2392,18 +2428,41 @@ async function handleAddDriver(event) {
                 </div>
             </div>
             <div class="driver-actions">
-                <button class="action-btn primary" onclick="viewDriverLocation('${key}')">
-                    <i class="fas fa-map-marker-alt"></i>
-                    عرض الموقع
+                <button class="action-btn primary" onclick="bookDriver('${key}')">
+                    <i class="fas fa-taxi"></i>
+                    حجز
                 </button>
                 <button class="action-btn secondary" onclick="openChatWindow('${key}')">
-    <i class="fas fa-comment"></i> مراسلة
-</button>
-
+                    <i class="fas fa-comment"></i> مراسلة
+                </button>
             </div>
         </div>
     `;
 }
+
+
+function bookDriver(driverId) {
+    showLoading();
+    database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
+        const driver = snapshot.val();
+        if (driver && driver.active) {
+            setTimeout(() => {
+                hideLoading();
+                database.ref(`drivers/${driverId}`).update({
+                    active: false // تعيين الحالة إلى "مشغول"
+                }).then(() => {
+                    showToast(`تم إرسال طلب الحجز إلى ${driver.name}`);
+                    window.location.href = `tel:${driver.phone}`;
+                    loadDrivers(); // تحديث حالة السائقين في الواجهة
+                });
+            }, 1500);
+        } else {
+            hideLoading();
+            showToast('السائق غير متاح حالياً', 'error');
+        }
+    });
+}
+
 
        
 
@@ -2500,36 +2559,60 @@ function loadDrivers(location = 'all') {
             snapshot.forEach((childSnapshot) => {
                 const driver = childSnapshot.val();
                 if (location === 'all' || driver.location === location) {
-                    // حساب المسافة إذا كانت إحداثيات المستخدم والسائق متوفرة
-                    let distance = null;
-                    if (userLocation && driver.coordinates) {
-                        distance = calculateDistance(userLocation, driver.coordinates);
-                    }
-
-                    // تحديث كارد السائق مع المسافة
                     driversGrid.innerHTML += createDriverCard(driver, childSnapshot.key);
 
                     if (driver.coordinates) {
-                        const marker = L.marker([driver.coordinates.lat, driver.coordinates.lng], {
+                        const { lat, lng } = driver.coordinates;
+
+                        // إنشاء العلامة بمعلومات السائق
+                        const driverMarker = L.marker([lat, lng], {
                             icon: L.divIcon({
-                                html: `<i class="fas fa-taxi" style="color: ${driver.active ? '#FFD700' : '#ccc'};"></i>`,
+                                html: `<img src="${driver.imageUrl}" 
+                                              alt="صورة السائق" 
+                                              style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #FFD700;">`,
                                 className: 'driver-marker',
-                                iconSize: [25, 25]
-                            })
-                        });
+                                iconSize: [40, 40],
+                            }),
+                        }).addTo(markerLayer);
 
-                        // إضافة المسافة إلى النافذة المنبثقة إذا كانت متوفرة
-                        const popupContent = `
+                        // تحديث النافذة المنبثقة
+                        driverMarker.bindPopup(`
                             <div style="text-align: center;">
-                                <h6>${driver.name}</h6>
-                                <p>${driver.carType} - ${driver.carModel}</p>
-                                <p>⭐ ${driver.rating}</p>
-                                ${distance ? `<p>المسافة: ${distance.toFixed(1)} كم</p>` : ''}
-                            </div>
-                        `;
+                                <div style="margin-bottom: 10px;">
+                                    <img src="${driver.imageUrl || 'default-avatar.png'}" 
+                                         alt="صورة السائق" 
+                                         style="width: 70px; height: 70px; border-radius: 50%; border: 3px solid #FFD700; margin-bottom: 10px;">
+                                    <h6 style="margin: 5px 0; font-weight: bold;">${driver.name}</h6>
+                                </div>
+                                
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 10px;">
+                                    <div>
+                                        <i class="fas fa-star" style="color: #FFD700;"></i>
+                                        ${driver.rating ? driver.rating.toFixed(1) : '5.0'}
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-route"></i>
+                                        ${driver.trips || 0}
+                                    </div>
+                                </div>
 
-                        marker.bindPopup(popupContent);
-                        marker.addTo(markerLayer);
+                                <div style="margin-bottom: 10px;">
+                                    <p style="margin: 5px 0;">🚗 ${driver.carType} - ${driver.carModel}</p>
+                                    <p style="margin: 5px 0;">📍 ${driver.location}</p>
+                                </div>
+
+                                <button onclick="openChatWindow('${childSnapshot.key}')" 
+                                        style="background: #FFD700; color: #333; border: none; 
+                                               padding: 8px 15px; border-radius: 20px; width: 100%;
+                                               cursor: pointer; display: flex; align-items: center; 
+                                               justify-content: center; gap: 5px; font-weight: bold;">
+                                    <i class="fas fa-comment"></i>
+                                    مراسلة السائق
+                                </button>
+                            </div>
+                        `, {
+                            maxWidth: 250
+                        });
                     }
                 }
             });
@@ -2537,8 +2620,7 @@ function loadDrivers(location = 'all') {
             hideLoading();
         })
         .catch((error) => {
-            console.error("Error loading drivers:", error);
-            hideLoading();
+            console.error('Error loading drivers:', error);
             showToast('حدث خطأ في تحميل بيانات السائقين', 'error');
         })
         .finally(() => {
@@ -2570,28 +2652,28 @@ function createDriverCard(driver, key) {
                     ${driver.active ? 'متاح' : 'مشغول'}
                 </div>
             </div>
-            <div class="driver-info">
-                <h5 class="driver-name">${driver.name}</h5>
-                <div class="driver-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">
-                            <i class="fas fa-star" style="color: #FFD700;"></i>
-                            ${driver.rating.toFixed(1)}
-                        </div>
-                        <div class="stat-label">التقييم</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">
-                            <i class="fas fa-route"></i>
-                            ${driver.trips}
-                        </div>
-                        <div class="stat-label">الرحلات</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">
-                            ${distance ? distance.toFixed(1) : '--'}
-                        </div>
-                        <div class="stat-label">كم</div>
+               <div class="driver-info">
+    <h5 class="driver-name">${driver.name}</h5>
+    <div class="driver-stats">
+        <div class="stat-item" onclick="addRating('${key}')" style="cursor: pointer">
+            <div class="stat-value">
+                <i class="fas fa-star" style="color: #FFD700;"></i>
+                ${driver.rating ? driver.rating.toFixed(1) : '5.0'}
+            </div>
+            <div class="stat-label">اضغط للتقييم</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">
+                <i class="fas fa-route"></i>
+                ${driver.trips || 0}
+            </div>
+            <div class="stat-label">عدد الرحلات</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">
+                ${distance ? distance.toFixed(1) : '--'}
+            </div>
+            <div class="stat-label">كم</div
                     </div>
                 </div>
                 <div class="text-muted">
@@ -2965,26 +3047,29 @@ async function handleAddDriver(event) {
         hideLoading();
     }
 }
+
         function bookDriver(driverId) {
-            showLoading();
-            database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
-                const driver = snapshot.val();
-                if (driver && driver.active) {
-                    setTimeout(() => {
-                        hideLoading();
-                        database.ref(`drivers/${driverId}`).update({
-                            active: false
-                        }).then(() => {
-                            showToast(`تم إرسال طلب الحجز إلى ${driver.name}`);
-                            window.location.href = `tel:${driver.phone}`;
-                        });
-                    }, 1500);
-                } else {
-                    hideLoading();
-                    showToast('السائق غير متاح حالياً', 'error');
-                }
-            });
+    showLoading();
+    database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
+        const driver = snapshot.val();
+        if (driver && driver.active) {
+            setTimeout(() => {
+                hideLoading();
+                database.ref(`drivers/${driverId}`).update({
+                    active: false // تعيين الحالة إلى "مشغول"
+                }).then(() => {
+                    showToast(`تم إرسال طلب الحجز إلى ${driver.name}`);
+                    window.location.href = `tel:${driver.phone}`;
+                    loadDrivers(); // تحديث حالة السائقين في الواجهة
+                });
+            }, 1500);
+        } else {
+            hideLoading();
+            showToast('السائق غير متاح حالياً', 'error');
         }
+    });
+}
+
 
         function messageDriver(driverId) {
             database.ref(`drivers/${driverId}`).once('value', (snapshot) => {
