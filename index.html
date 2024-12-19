@@ -3962,21 +3962,24 @@ function validateDocuments() {
 }
 
 // دالة معالجة تسجيل السائق
+// دالة معالجة تسجيل السائق المحسنة
 async function handleDriverRegistration(event) {
     event.preventDefault();
     showLoading();
 
     try {
-        // التحقق من المدخلات
-        validateDocuments();
-
+        // التحقق من المدخلات الأساسية
         const formData = new FormData(event.target);
-        const driverId = `DR${Date.now()}`;
+        const requiredFields = ['fullName', 'phone', 'age'];
         
-        // التحقق من البيانات الأساسية
-        if (!formData.get('fullName') || !formData.get('phone')) {
-            throw new Error('يرجى إدخال جميع البيانات المطلوبة');
+        for (const field of requiredFields) {
+            if (!formData.get(field)) {
+                throw new Error(`يرجى إدخال ${field === 'fullName' ? 'الاسم الكامل' : field === 'phone' ? 'رقم الهاتف' : 'العمر'}`);
+            }
         }
+
+        // إنشاء معرف فريد للسائق
+        const driverId = `DR${Date.now()}`;
 
         // إعداد بيانات السائق
         const driverData = {
@@ -3984,41 +3987,57 @@ async function handleDriverRegistration(event) {
             fullName: formData.get('fullName'),
             age: formData.get('age'),
             phone: formData.get('phone'),
-            // ... باقي البيانات
+            vehicleType: formData.get('vehicleType'),
+            vehicleModel: formData.get('vehicleModel'),
+            vehicleNumber: formData.get('vehicleNumber'),
+            vehicleColor: formData.get('vehicleColor'),
+            province: formData.get('province'),
+            area: formData.get('area'),
+            address: formData.get('address'),
             status: 'pending',
             createdAt: firebase.database.ServerValue.TIMESTAMP
         };
 
-        // رفع الصور والمستندات
+        // التحقق من الصورة الشخصية
         const photoFile = document.getElementById('driverPhoto').files[0];
-        if (!photoFile) throw new Error('يرجى اختيار صورة شخصية');
-        
+        if (!photoFile) {
+            throw new Error('يرجى اختيار صورة شخصية');
+        }
+
+        // رفع الصورة الشخصية
         driverData.photoUrl = await uploadFile(photoFile, 'driver-photos');
-        
+
         // رفع المستندات
         const documents = {};
-        for (const [inputId, docName] of Object.entries({
+        const requiredDocuments = {
             idFront: 'هوية-امامي',
             idBack: 'هوية-خلفي',
             licenseFront: 'اجازة-امامي',
             licenseBack: 'اجازة-خلفي'
-        })) {
+        };
+
+        for (const [inputId, docName] of Object.entries(requiredDocuments)) {
             const file = document.getElementById(inputId).files[0];
+            if (!file) {
+                throw new Error(`يرجى رفع ${docName}`);
+            }
             documents[docName] = await uploadFile(file, 'driver-documents');
         }
-        
         driverData.documents = documents;
 
-        // إنشاء وحفظ QR code
+        // إنشاء QR code
         const qrCodeUrl = generateDriverQR(driverData);
+        if (!qrCodeUrl) {
+            throw new Error('فشل في إنشاء رمز QR');
+        }
         driverData.qrCode = qrCodeUrl;
 
         // حفظ البيانات في Firebase
         await database.ref('Drivers').child(driverId).set(driverData);
 
-        // إظهار رسالة النجاح
+        // عرض رسالة النجاح
         showSuccessModal(driverData, qrCodeUrl);
-        
+
         // إغلاق النافذة وإعادة تعيين النموذج
         const modal = bootstrap.Modal.getInstance(document.getElementById('driverRegistrationModal'));
         modal.hide();
@@ -4038,18 +4057,25 @@ async function handleDriverRegistration(event) {
     }
 }
 
-// دالة رفع الملفات إلى Firebase Storage
+// دالة رفع الملفات المحسنة
 async function uploadFile(file, folder) {
     if (!file) {
         throw new Error('لم يتم اختيار ملف');
     }
+
+    // التحقق من حجم الملف (الحد الأقصى 5 ميجابايت)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+        throw new Error('حجم الملف كبير جداً، يجب أن لا يتجاوز 5 ميجابايت');
+    }
+
     try {
         const fileRef = storage.ref(`${folder}/${Date.now()}_${file.name}`);
         const snapshot = await fileRef.put(file);
         return await snapshot.ref.getDownloadURL();
     } catch (error) {
         console.error('Error uploading file:', error);
-        throw new Error('فشل في رفع الملف');
+        throw new Error('فشل في رفع الملف، يرجى المحاولة مرة أخرى');
     }
 }
 
@@ -4086,31 +4112,34 @@ function openUserRegistration() {
 document.addEventListener('DOMContentLoaded', initializeForms);
 
            // دالة إنشاء رمز QR للسائق
-function generateDriverQR(driverData) {
-    const qr = qrcode(0, 'H');
-    qr.addData(JSON.stringify({
-        id: driverData.id,
-        name: driverData.fullName,
-        phone: driverData.phone,
-        registrationDate: driverData.createdAt
-    }));
-    qr.make();
-    return qr.createDataURL(10);
-}
-function generateDriverQR(driverData) {
-    // استخدام مكتبة QRCode.js بشكل صحيح
-    const qrContainer = document.createElement('div');
-    new QRCode(qrContainer, {
-        text: JSON.stringify({
-            id: driverData.id,
-            name: driverData.fullName,
-            phone: driverData.phone
-        }),
-        width: 256,
-        height: 256
-    });
-    return qrContainer.firstChild.toDataURL();
-}
+           function generateDriverQR(driverData) {
+            try {
+                // تقليل حجم البيانات المراد تشفيرها
+                const qrData = {
+                    id: driverData.id,
+                    name: driverData.fullName.substring(0, 30), // تحديد الحد الأقصى للاسم
+                    phone: driverData.phone
+                };
+        
+                const qrContainer = document.createElement('div');
+                new QRCode(qrContainer, {
+                    text: JSON.stringify(qrData),
+                    width: 200, // تقليل الحجم
+                    height: 200,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.L, // استخدام مستوى تصحيح منخفض للتوافق مع الأجهزة المحمولة
+                    useSVG: false // استخدام PNG بدلاً من SVG للتوافق الأفضل
+                });
+        
+                const qrImage = qrContainer.querySelector('img');
+                return qrImage ? qrImage.src : null;
+            } catch (error) {
+                console.error('Error generating QR code:', error);
+                return null;
+            }
+        }
+        
 
 // دالة تحميل الباركود كصورة
 function downloadQRCode(dataUrl, driverId) {
@@ -4158,6 +4187,22 @@ function showSuccessModal(driverData, qrCodeUrl) {
         }
     });
 }
+
+function generateDriverQR(driverData) {
+     // استخدام مكتبة QRCode.js بشكل صحيح
+     const qrContainer = document.createElement('div');
+     new QRCode(qrContainer, {
+         text: JSON.stringify({
+             id: driverData.id,
+             name: driverData.fullName,
+             phone: driverData.phone
+         }),
+         width: 256,
+         height: 256
+     });
+     return qrContainer.firstChild.toDataURL();
+ }
+ 
         </script>
     </main>
     <!-- ربط ملف الجافا سكريبت -->
