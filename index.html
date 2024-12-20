@@ -4124,8 +4124,8 @@ document.addEventListener('DOMContentLoaded', initializeForms);
                 const qrContainer = document.createElement('div');
                 new QRCode(qrContainer, {
                     text: JSON.stringify(qrData),
-                    width: 50, // تقليل الحجم
-                    height: 50,
+                    width: 20, // تقليل الحجم
+                    height: 20,
                     colorDark: "#000000",
                     colorLight: "#ffffff",
                     correctLevel: QRCode.CorrectLevel.L, // استخدام مستوى تصحيح منخفض للتوافق مع الأجهزة المحمولة
