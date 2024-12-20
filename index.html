@@ -3968,14 +3968,29 @@ async function handleDriverRegistration(event) {
     showLoading();
 
     try {
-        // التحقق من المدخلات الأساسية
         const formData = new FormData(event.target);
-        const requiredFields = ['fullName', 'phone', 'age'];
+        const fullName = formData.get('fullName')?.trim();
         
-        for (const field of requiredFields) {
-            if (!formData.get(field)) {
-                throw new Error(`يرجى إدخال ${field === 'fullName' ? 'الاسم الكامل' : field === 'phone' ? 'رقم الهاتف' : 'العمر'}`);
-            }
+        // التحقق من الاسم
+        if (!fullName) {
+            throw new Error('يرجى إدخال الاسم الكامل');
+        }
+
+        // التحقق من طول الاسم
+        if (fullName.length < 2 || fullName.length > 50) {
+            throw new Error('يجب أن يكون الاسم بين 2 و 50 حرف');
+        }
+
+        // التحقق من رقم الهاتف
+        const phone = formData.get('phone')?.trim();
+        if (!phone || phone.length < 10) {
+            throw new Error('يرجى إدخال رقم هاتف صحيح');
+        }
+
+        // التحقق من العمر
+        const age = parseInt(formData.get('age'));
+        if (!age || age < 18 || age > 70) {
+            throw new Error('يجب أن يكون العمر بين 18 و 70 سنة');
         }
 
         // إنشاء معرف فريد للسائق
@@ -3984,18 +3999,19 @@ async function handleDriverRegistration(event) {
         // إعداد بيانات السائق
         const driverData = {
             id: driverId,
-            fullName: formData.get('fullName'),
-            age: formData.get('age'),
-            phone: formData.get('phone'),
-            vehicleType: formData.get('vehicleType'),
-            vehicleModel: formData.get('vehicleModel'),
-            vehicleNumber: formData.get('vehicleNumber'),
-            vehicleColor: formData.get('vehicleColor'),
-            province: formData.get('province'),
-            area: formData.get('area'),
-            address: formData.get('address'),
+            fullName: fullName,
+            age: age,
+            phone: phone,
+            vehicleType: formData.get('vehicleType')?.trim(),
+            vehicleModel: formData.get('vehicleModel')?.trim(),
+            vehicleNumber: formData.get('vehicleNumber')?.trim(),
+            vehicleColor: formData.get('vehicleColor')?.trim(),
+            province: formData.get('province')?.trim(),
+            area: formData.get('area')?.trim(),
+            address: formData.get('address')?.trim(),
             status: 'pending',
-            createdAt: firebase.database.ServerValue.TIMESTAMP
+            createdAt: firebase.database.ServerValue.TIMESTAMP,
+            lastUpdated: firebase.database.ServerValue.TIMESTAMP
         };
 
         // التحقق من الصورة الشخصية
@@ -4004,8 +4020,18 @@ async function handleDriverRegistration(event) {
             throw new Error('يرجى اختيار صورة شخصية');
         }
 
-        // رفع الصورة الشخصية
-        driverData.photoUrl = await uploadFile(photoFile, 'driver-photos');
+        // التحقق من نوع الملف
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        if (!validImageTypes.includes(photoFile.type)) {
+            throw new Error('يرجى اختيار صورة بصيغة JPG أو PNG');
+        }
+
+        // رفع الصورة الشخصية مع إظهار نسبة التقدم
+        try {
+            driverData.photoUrl = await uploadFile(photoFile, 'driver-photos');
+        } catch (uploadError) {
+            throw new Error('فشل في رفع الصورة الشخصية: ' + uploadError.message);
+        }
 
         // رفع المستندات
         const documents = {};
@@ -4021,43 +4047,70 @@ async function handleDriverRegistration(event) {
             if (!file) {
                 throw new Error(`يرجى رفع ${docName}`);
             }
-            documents[docName] = await uploadFile(file, 'driver-documents');
+            if (!validImageTypes.includes(file.type)) {
+                throw new Error(`يرجى رفع ${docName} بصيغة JPG أو PNG`);
+            }
+            try {
+                documents[docName] = await uploadFile(file, 'driver-documents');
+            } catch (uploadError) {
+                throw new Error(`فشل في رفع ${docName}: ${uploadError.message}`);
+            }
         }
         driverData.documents = documents;
 
-        // إنشاء QR code
-        const qrCodeUrl = generateDriverQR(driverData);
-        if (!qrCodeUrl) {
-            throw new Error('فشل في إنشاء رمز QR');
+        // إنشاء الباركود باستخدام رقم الطلب فقط
+        let qrCodeUrl;
+        try {
+            qrCodeUrl = generateDriverQR({ id: driverId });
+            await validateQRCode(qrCodeUrl);
+            driverData.qrCode = qrCodeUrl;
+        } catch (qrError) {
+            console.error('QR Code error:', qrError);
+            // نستمر في العملية حتى لو فشل إنشاء الباركود
+            driverData.qrCode = null;
         }
-        driverData.qrCode = qrCodeUrl;
 
         // حفظ البيانات في Firebase
-        await database.ref('Drivers').child(driverId).set(driverData);
+        try {
+            await database.ref('Drivers').child(driverId).set(driverData);
+        } catch (dbError) {
+            console.error('Firebase error:', dbError);
+            throw new Error('حدث خطأ أثناء حفظ البيانات، يرجى المحاولة مرة أخرى');
+        }
 
         // عرض رسالة النجاح
-        showSuccessModal(driverData, qrCodeUrl);
+        await showSuccessModal(driverData, qrCodeUrl);
 
         // إغلاق النافذة وإعادة تعيين النموذج
         const modal = bootstrap.Modal.getInstance(document.getElementById('driverRegistrationModal'));
-        modal.hide();
-        event.target.reset();
-        resetPreviews();
+        if (modal) {
+            modal.hide();
+            event.target.reset();
+            resetPreviews();
+        }
 
     } catch (error) {
-        console.error('Error registering driver:', error);
+        console.error('Registration error:', error);
         Swal.fire({
             title: 'خطأ!',
             text: error.message || 'حدث خطأ أثناء التسجيل، يرجى المحاولة مرة أخرى',
             icon: 'error',
-            confirmButtonText: 'حسناً'
+            confirmButtonText: 'حسناً',
+            confirmButtonColor: '#d33'
         });
     } finally {
         hideLoading();
     }
 }
 
-// دالة رفع الملفات المحسنة
+// دالة مساعدة لإظهار نسبة التقدم أثناء رفع الملفات
+function showUploadProgress(progress) {
+    const progressBar = document.querySelector('.upload-progress');
+    if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+        progressBar.textContent = `${Math.round(progress)}%`;
+    }
+}
 async function uploadFile(file, folder) {
     if (!file) {
         throw new Error('لم يتم اختيار ملف');
@@ -4070,11 +4123,35 @@ async function uploadFile(file, folder) {
     }
 
     try {
-        const fileRef = storage.ref(`${folder}/${Date.now()}_${file.name}`);
-        const snapshot = await fileRef.put(file);
-        return await snapshot.ref.getDownloadURL();
+        // إنشاء اسم ملف آمن
+        const safeFileName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+        const fileRef = storage.ref(`${folder}/${safeFileName}`);
+        
+        // رفع الملف مع إظهار نسبة التقدم
+        const uploadTask = fileRef.put(file);
+        
+        return new Promise((resolve, reject) => {
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload progress:', progress);
+                },
+                (error) => {
+                    console.error('Upload error:', error);
+                    reject(new Error('فشل في رفع الملف، يرجى المحاولة مرة أخرى'));
+                },
+                async () => {
+                    try {
+                        const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                        resolve(downloadURL);
+                    } catch (error) {
+                        reject(new Error('فشل في الحصول على رابط الملف'));
+                    }
+                }
+            );
+        });
     } catch (error) {
-        console.error('Error uploading file:', error);
+        console.error('Error in uploadFile:', error);
         throw new Error('فشل في رفع الملف، يرجى المحاولة مرة أخرى');
     }
 }
@@ -4111,34 +4188,82 @@ function openUserRegistration() {
 // تهيئة عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', initializeForms);
 
-           // دالة إنشاء رمز QR للسائق
-           function generateDriverQR(driverData) {
-            try {
-                // تقليل حجم البيانات المراد تشفيرها
-                const qrData = {
-                    id: driverData.id,
-                    name: driverData.fullName.substring(0, 30), // تحديد الحد الأقصى للاسم
-                    phone: driverData.phone
-                };
+function generateDriverQR(driverData) {
+    try {
+        // استخدام رقم الطلب فقط لإنشاء الباركود
+        const requestId = driverData.id; // مثال: DR1734725935436
         
-                const qrContainer = document.createElement('div');
-                new QRCode(qrContainer, {
-                    text: JSON.stringify(qrData),
-                    width: 20, // تقليل الحجم
-                    height: 20,
-                    colorDark: "#000000",
-                    colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.L, // استخدام مستوى تصحيح منخفض للتوافق مع الأجهزة المحمولة
-                    useSVG: false // استخدام PNG بدلاً من SVG للتوافق الأفضل
-                });
-        
-                const qrImage = qrContainer.querySelector('img');
-                return qrImage ? qrImage.src : null;
-            } catch (error) {
-                console.error('Error generating QR code:', error);
-                return null;
-            }
+        const qrContainer = document.createElement('div');
+        new QRCode(qrContainer, {
+            text: requestId, // استخدام رقم الطلب فقط
+            width: 128,
+            height: 128,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.L, // مستوى تصحيح منخفض لأن البيانات بسيطة
+            quietZone: 10,
+            quietZoneColor: "#ffffff"
+        });
+
+        const qrImage = qrContainer.querySelector('img');
+        if (!qrImage || !qrImage.src) {
+            throw new Error('فشل في إنشاء صورة QR');
         }
+
+        return qrImage.src;
+    } catch (error) {
+        console.error('خطأ في إنشاء QR code:', error);
+        throw new Error('فشل في إنشاء رمز QR');
+    }
+}
+
+// تحديث دالة عرض نافذة النجاح
+function showSuccessModal(driverData, qrCodeUrl) {
+    Swal.fire({
+        title: '<strong>تم تقديم طلبك بنجاح!</strong>',
+        html: `
+            <div class="success-registration-modal">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="registration-details">
+                    <p class="lead">شكراً لك، ${driverData.fullName}</p>
+                    <p>تم استلام طلبك وسيتم مراجعته من قبل فريقنا.</p>
+                    <p>رقم الطلب: <strong>${driverData.id}</strong></p>
+                </div>
+                <div class="qr-code-section">
+                    <p>الباركود الخاص بطلبك:</p>
+                    <img src="${qrCodeUrl}" alt="رمز QR" class="qr-code-image">
+                    <button class="download-qr-btn" onclick="downloadQRCode('${qrCodeUrl}', '${driverData.id}')">
+                        <i class="fas fa-download"></i>
+                        تحميل الباركود
+                    </button>
+                </div>
+                <div class="note-section">
+                    <p>* يرجى الاحتفاظ برقم الطلب والباركود للمراجعة</p>
+                    <p>* يمكنك استخدام هذا الباركود لتتبع حالة طلبك</p>
+                </div>
+            </div>
+        `,
+        icon: 'success',
+        confirmButtonText: 'تم',
+        confirmButtonColor: '#FFD700',
+        allowOutsideClick: false,
+        customClass: {
+            popup: 'success-registration-popup'
+        }
+    });
+}
+
+// دالة للتحقق من صحة الباركود
+function validateQRCode(qrCodeUrl) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => reject(new Error('فشل في إنشاء الباركود'));
+        img.src = qrCodeUrl;
+    });
+}
         
 
 // دالة تحميل الباركود كصورة
