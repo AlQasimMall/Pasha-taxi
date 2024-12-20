@@ -50,6 +50,8 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     
     <!-- App Scripts -->
@@ -1520,128 +1522,39 @@ img {
     max-width: 500px;
     padding: 20px;
 }
+    
 
-/* Document Upload Styles */
-.document-upload-container {
-    border: 2px dashed #ddd;
-    border-radius: 10px;
-    padding: 1rem;
-    background: #fff;
-    transition: all 0.3s ease;
-}
-
-.document-upload-container:hover {
-    border-color: #FFD700;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
-}
-
-.document-preview {
-    width: 100%;
-    height: 200px;
-    position: relative;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #f8f9fa;
-}
-
-.document-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.upload-placeholder {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: #6c757d;
-}
-
-.upload-placeholder i {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    color: #FFD700;
-}
-
-.upload-actions {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-}
-
-.btn-camera, .btn-gallery {
-    flex: 1;
-    padding: 0.5rem;
-    border-radius: 5px;
-    border: none;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
-}
-
-.btn-camera {
-    background: #FFD700;
-    color: #000;
-}
-
-.btn-gallery {
-    background: #f8f9fa;
-    color: #000;
-    border: 1px solid #ddd;
-}
-
-.btn-camera:hover {
-    background: #ffc107;
-    transform: translateY(-2px);
-}
-
-.btn-gallery:hover {
-    background: #e9ecef;
-    transform: translateY(-2px);
-}
-
-/* Camera Modal Styles */
 .camera-container {
     position: relative;
     width: 100%;
-    height: 400px;
+    height: 70vh;
     background: #000;
-    border-radius: 10px;
     overflow: hidden;
 }
 
-#cameraView {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-#cameraStream {
+#cameraPreview {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.guide-box {
+.capture-guide {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 60%;
-    border: 2px solid #FFD700;
-    border-radius: 10px;
-    transition: border-color 0.3s ease;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.guide-box.active {
-    border-color: #4CAF50;
+.guide-box {
+    position: relative;
+    width: 80%;
+    height: 60%;
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    border-radius: 10px;
 }
 
 .corner {
@@ -1651,75 +1564,74 @@ img {
     border: 2px solid #FFD700;
 }
 
-.top-left {
-    top: -2px;
-    left: -2px;
-    border-right: none;
-    border-bottom: none;
-}
-
-.top-right {
-    top: -2px;
-    right: -2px;
-    border-left: none;
-    border-bottom: none;
-}
-
-.bottom-left {
-    bottom: -2px;
-    left: -2px;
-    border-right: none;
-    border-top: none;
-}
-
-.bottom-right {
-    bottom: -2px;
-    right: -2px;
-    border-left: none;
-    border-top: none;
-}
-
-.camera-message {
+.guide-text {
     position: absolute;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.7);
     color: white;
-    padding: 8px 16px;
+    padding: 10px 20px;
     border-radius: 20px;
-    font-size: 14px;
 }
 
 .camera-controls {
     position: absolute;
     bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
     display: flex;
-    gap: 1rem;
+    justify-content: center;
+    gap: 20px;
 }
 
 .btn-capture {
-    width: 60px;
-    height: 60px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     background: #FFD700;
     border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
     color: #000;
-    cursor: pointer;
+    font-size: 24px;
     transition: all 0.3s ease;
 }
 
-.btn-capture:hover {
-    transform: scale(1.1);
-    background: #ffc107;
+.btn-switch-camera {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: white;
+    font-size: 20px;
 }
-    
+
+/* أنماط حقول التقاط المستندات */
+.document-capture {
+    width: 100%;
+    height: 200px;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    background: #f8f9fa;
+    position: relative;
+}
+
+.capture-placeholder {
+    text-align: center;
+    color: #666;
+}
+
+.capture-placeholder i {
+    font-size: 2rem;
+    color: #FFD700;
+    margin-bottom: 10px;
+}
     </style>
 </head>
 <body>
@@ -2383,155 +2295,87 @@ img {
                     </div>
 
                     <!-- المستمسكات -->
-                   <!-- تحديث قسم المستمسكات -->
-<div class="registration-section mb-4">
-    <h6 class="section-title">المستمسكات</h6>
-    <div class="row g-3">
-        <!-- هوية الوجه الأمامي -->
-        <div class="col-md-6">
-            <label class="form-label">صورة الهوية الوجه الأمامي</label>
-            <div class="document-upload-container">
-                <div class="document-preview" id="idFrontPreviewContainer">
-                    <img id="idFrontPreview" src="#" alt="" style="display: none;">
-                    <div class="upload-placeholder">
-                        <i class="fas fa-id-card"></i>
-                        <span>اختر طريقة الرفع</span>
-                    </div>
-                </div>
-                <div class="upload-actions">
-                    <button type="button" class="btn btn-camera" onclick="openCamera('idFront')">
-                        <i class="fas fa-camera"></i> التقاط صورة
-                    </button>
-                    <button type="button" class="btn btn-gallery" onclick="document.getElementById('idFront').click()">
-                        <i class="fas fa-images"></i> اختيار من المعرض
-                    </button>
-                </div>
-                <input type="file" 
-                       id="idFront" 
-                       accept="image/*"
-                       style="display: none;"
-                       onchange="handleFileSelect(this, 'idFrontPreview')"
-                       required>
-            </div>
-        </div>
-
-        <!-- هوية الوجه الخلفي -->
-        <div class="col-md-6">
-            <label class="form-label">صورة الهوية الوجه الخلفي</label>
-            <div class="document-upload-container">
-                <div class="document-preview" id="idBackPreviewContainer">
-                    <img id="idBackPreview" src="#" alt="" style="display: none;">
-                    <div class="upload-placeholder">
-                        <i class="fas fa-id-card"></i>
-                        <span>اختر طريقة الرفع</span>
-                    </div>
-                </div>
-                <div class="upload-actions">
-                    <button type="button" class="btn btn-camera" onclick="openCamera('idBack')">
-                        <i class="fas fa-camera"></i> التقاط صورة
-                    </button>
-                    <button type="button" class="btn btn-gallery" onclick="document.getElementById('idBack').click()">
-                        <i class="fas fa-images"></i> اختيار من المعرض
-                    </button>
-                </div>
-                <input type="file" 
-                       id="idBack" 
-                       accept="image/*"
-                       style="display: none;"
-                       onchange="handleFileSelect(this, 'idBackPreview')"
-                       required>
-            </div>
-        </div>
-
-        <!-- نفس النمط للإجازة الأمامية والخلفية -->
-        <!-- إجازة السوق الأمامية -->
-        <div class="col-md-6">
-            <label class="form-label">إجازة السوق الوجه الأمامي</label>
-            <div class="document-upload-container">
-                <div class="document-preview" id="licenseFrontPreviewContainer">
-                    <img id="licenseFrontPreview" src="#" alt="" style="display: none;">
-                    <div class="upload-placeholder">
-                        <i class="fas fa-id-card"></i>
-                        <span>اختر طريقة الرفع</span>
-                    </div>
-                </div>
-                <div class="upload-actions">
-                    <button type="button" class="btn btn-camera" onclick="openCamera('licenseFront')">
-                        <i class="fas fa-camera"></i> التقاط صورة
-                    </button>
-                    <button type="button" class="btn btn-gallery" onclick="document.getElementById('licenseFront').click()">
-                        <i class="fas fa-images"></i> اختيار من المعرض
-                    </button>
-                </div>
-                <input type="file" 
-                       id="licenseFront" 
-                       accept="image/*"
-                       style="display: none;"
-                       onchange="handleFileSelect(this, 'licenseFrontPreview')"
-                       required>
-            </div>
-        </div>
-
-        <!-- إجازة السوق الخلفية -->
-        <div class="col-md-6">
-            <label class="form-label">إجازة السوق الوجه الخلفي</label>
-            <div class="document-upload-container">
-                <div class="document-preview" id="licenseBackPreviewContainer">
-                    <img id="licenseBackPreview" src="#" alt="" style="display: none;">
-                    <div class="upload-placeholder">
-                        <i class="fas fa-id-card"></i>
-                        <span>اختر طريقة الرفع</span>
-                    </div>
-                </div>
-                <div class="upload-actions">
-                    <button type="button" class="btn btn-camera" onclick="openCamera('licenseBack')">
-                        <i class="fas fa-camera"></i> التقاط صورة
-                    </button>
-                    <button type="button" class="btn btn-gallery" onclick="document.getElementById('licenseBack').click()">
-                        <i class="fas fa-images"></i> اختيار من المعرض
-                    </button>
-                </div>
-                <input type="file" 
-                       id="licenseBack" 
-                       accept="image/*"
-                       style="display: none;"
-                       onchange="handleFileSelect(this, 'licenseBackPreview')"
-                       required>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal for Camera Capture -->
-<div class="modal fade" id="cameraModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">التقاط صورة المستند</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="camera-container">
-                    <div id="cameraView">
-                        <video id="cameraStream" autoplay playsinline></video>
-                        <div class="guide-box">
-                            <div class="corner top-left"></div>
-                            <div class="corner top-right"></div>
-                            <div class="corner bottom-left"></div>
-                            <div class="corner bottom-right"></div>
+                    <div class="registration-section mb-4">
+                        <h6 class="section-title">المستمسكات</h6>
+                        <div class="row g-3">
+                            <!-- هوية - أمامي -->
+                            <div class="col-md-6">
+                                <label class="form-label">صورة الهوية - أمامي</label>
+                                <div class="document-capture" onclick="openCamera('idFront')">
+                                    <img id="idFrontPreview" src="#" alt="">
+                                    <div class="capture-placeholder">
+                                        <i class="fas fa-camera"></i>
+                                        <span>التقط صورة الهوية</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">صورة الهوية - خلفي</label>
+                                <div class="document-capture" onclick="openCamera('idBack')">
+                                    <img id="idBackPreview" src="#" alt="">
+                                    <div class="capture-placeholder">
+                                        <i class="fas fa-camera"></i>
+                                        <span>التقط صورة الهوية</span>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- إجازة السوق - أمامي -->
+                            <div class="col-md-6">
+                                <label class="form-label">إجازة السوق - أمامي</label>
+                                <div class="document-capture" onclick="openCamera('licenseFront')">
+                                    <img id="licenseFrontPreview" src="#" alt="">
+                                    <div class="capture-placeholder">
+                                        <i class="fas fa-camera"></i>
+                                        <span>التقط صورة الإجازة</span>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <!-- إجازة السوق - خلفي -->
+                            <div class="col-md-6">
+                                <label class="form-label">إجازة السوق - خلفي</label>
+                                <div class="document-capture" onclick="openCamera('licenseBack')">
+                                    <img id="licenseBackPreview" src="#" alt="">
+                                    <div class="capture-placeholder">
+                                        <i class="fas fa-camera"></i>
+                                        <span>التقط صورة الإجازة</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="camera-message">ضع المستند داخل المربع</div>
                     </div>
-                    <div class="camera-controls">
-                        <button type="button" class="btn btn-capture" onclick="captureImage()">
-                            <i class="fas fa-camera"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+                    <!-- معلومات السكن -->
+                    <div class="registration-section mb-4">
+                        <h6 class="section-title">معلومات السكن</h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">المحافظة</label>
+                                <select class="form-select" 
+                                        name="province" 
+                                        onchange="loadAreas(this.value)"
+                                        required>
+                                    <option value="">اختر المحافظة</option>
+                                    <!-- سيتم ملء الخيارات بواسطة JavaScript -->
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">المنطقة</label>
+                                <select class="form-select" 
+                                        name="area"
+                                        required>
+                                    <option value="">اختر المنطقة</option>
+                                    <!-- سيتم ملء الخيارات بواسطة JavaScript -->
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">العنوان التفصيلي</label>
+                                <textarea class="form-control" 
+                                          name="address" 
+                                          rows="2"
+                                          required></textarea>
+                            </div>
                         </div>
                     </div>
 
@@ -4451,208 +4295,221 @@ function generateDriverQR(driverData) {
      return qrContainer.firstChild.toDataURL();
  }
 
- // تعريف المتغيرات العامة
+ // متغيرات عامة للكاميرا
 let currentStream = null;
-let currentDocumentId = null;
+let currentCaptureTarget = null;
+let facingMode = 'environment';
 
 // دالة فتح الكاميرا
-async function openCamera(documentId) {
-    currentDocumentId = documentId;
-    const cameraModal = new bootstrap.Modal(document.getElementById('cameraModal'));
-    cameraModal.show();
-
+async function openCamera(targetId) {
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({
+        currentCaptureTarget = targetId;
+        const modal = new bootstrap.Modal(document.getElementById('cameraCaptureModal'));
+        modal.show();
+
+        const constraints = {
             video: {
-                facingMode: 'environment',
+                facingMode: facingMode,
                 width: { ideal: 1920 },
                 height: { ideal: 1080 }
             }
-        });
-        
+        };
+
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
         currentStream = stream;
-        const video = document.getElementById('cameraStream');
+
+        const video = document.getElementById('cameraPreview');
         video.srcObject = stream;
+        await video.play();
+
+        // إضافة مستمعي الأحداث
+        document.getElementById('captureButton').onclick = capturePhoto;
+        document.getElementById('switchCameraButton').onclick = switchCamera;
+
+        // بدء فحص المستند
         startDocumentDetection();
-        
+
     } catch (error) {
         console.error('Error accessing camera:', error);
         Swal.fire({
+            title: 'خطأ!',
+            text: 'فشل في الوصول إلى الكاميرا. يرجى التأكد من السماح باستخدام الكاميرا.',
             icon: 'error',
-            title: 'خطأ في الوصول للكاميرا',
-            text: 'يرجى التأكد من السماح للموقع باستخدام الكاميرا'
+            confirmButtonText: 'حسناً'
         });
     }
 }
 
-// دالة بدء كشف المستند
+// دالة فحص المستند في الإطار
 function startDocumentDetection() {
     if (!currentStream) return;
-    
-    const video = document.getElementById('cameraStream');
+
+    const video = document.getElementById('cameraPreview');
     const guideBox = document.querySelector('.guide-box');
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
-    function detectFrame() {
+    function checkFrame() {
         if (!currentStream) return;
-
+        
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         ctx.drawImage(video, 0, 0);
 
-        // تحليل المنطقة داخل المربع الإرشادي
-        const boxWidth = canvas.width * 0.8;
-        const boxHeight = canvas.height * 0.6;
-        const boxX = (canvas.width - boxWidth) / 2;
-        const boxY = (canvas.height - boxHeight) / 2;
-        
-        const imageData = ctx.getImageData(boxX, boxY, boxWidth, boxHeight);
-        const isDocumentDetected = analyzeImageRegion(imageData);
+        // تحليل الصورة للتحقق من وجود مستند
+        const centerData = ctx.getImageData(
+            Math.floor(canvas.width * 0.25),
+            Math.floor(canvas.height * 0.25),
+            Math.floor(canvas.width * 0.5),
+            Math.floor(canvas.height * 0.5)
+        );
 
-        // تحديث لون المربع الإرشادي
-        guideBox.style.borderColor = isDocumentDetected ? '#4CAF50' : '#FFD700';
-        
-        // تحديث الرسالة
-        const message = document.querySelector('.camera-message');
-        message.textContent = isDocumentDetected ? 'تم اكتشاف المستند - يمكنك التقاط الصورة' : 'ضع المستند داخل المربع';
+        const isDocumentDetected = detectDocument(centerData);
+        guideBox.style.borderColor = isDocumentDetected ? '#4CAF50' : 'rgba(255, 215, 0, 0.5)';
 
-        // استمرار التحليل
-        if (currentStream) {
-            requestAnimationFrame(detectFrame);
-        }
+        requestAnimationFrame(checkFrame);
     }
 
-    detectFrame();
+    checkFrame();
 }
 
-// دالة تحليل منطقة الصورة
-function analyzeImageRegion(imageData) {
-    let brightness = 0;
-    let edges = 0;
-    const data = imageData.data;
+// دالة التحقق من وجود مستند
+function detectDocument(imageData) {
+    let totalBrightness = 0;
+    let totalContrast = 0;
     
-    for (let i = 0; i < data.length; i += 4) {
-        // حساب السطوع
-        const r = data[i];
-        const g = data[i + 1];
-        const b = data[i + 2];
-        brightness += (r + g + b) / 3;
-
-        // كشف الحواف
-        if (i % (imageData.width * 4) < imageData.width * 4 - 4) {
-            const nextR = data[i + 4];
-            const nextG = data[i + 5];
-            const nextB = data[i + 6];
-            
-            const diff = Math.abs(r - nextR) + Math.abs(g - nextG) + Math.abs(b - nextB);
-            if (diff > 100) edges++;
+    for (let i = 0; i < imageData.data.length; i += 4) {
+        const brightness = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3;
+        totalBrightness += brightness;
+        
+        if (i > 0) {
+            const prevBrightness = (imageData.data[i - 4] + imageData.data[i - 3] + imageData.data[i - 2]) / 3;
+            totalContrast += Math.abs(brightness - prevBrightness);
         }
     }
 
-    const avgBrightness = brightness / (imageData.width * imageData.height);
-    const edgeRatio = edges / (imageData.width * imageData.height);
+    const avgBrightness = totalBrightness / (imageData.data.length / 4);
+    const avgContrast = totalContrast / (imageData.data.length / 4);
 
-    return avgBrightness > 127 && edgeRatio > 0.1;
+    return avgBrightness > 100 && avgContrast > 20;
 }
 
 // دالة التقاط الصورة
-async function captureImage() {
-    if (!currentStream || !currentDocumentId) return;
-
-    const video = document.getElementById('cameraStream');
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    ctx.drawImage(video, 0, 0);
+async function capturePhoto() {
+    if (!currentStream || !currentCaptureTarget) return;
 
     try {
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.8));
-        const file = new File([blob], `${currentDocumentId}.jpg`, { type: 'image/jpeg' });
+        const video = document.getElementById('cameraPreview');
+        const canvas = document.createElement('canvas');
+        
+        // ضبط أبعاد الكانفاس لتطابق الفيديو
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        
+        // رسم الإطار الحالي على الكانفاس
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0);
 
-        // تحديث العرض
-        const preview = document.getElementById(`${currentDocumentId}Preview`);
-        const previewContainer = document.getElementById(`${currentDocumentId}PreviewContainer`);
-        const placeholder = previewContainer.querySelector('.upload-placeholder');
+        // تحويل الصورة إلى blob
+        const blob = await new Promise(resolve => {
+            canvas.toBlob(resolve, 'image/jpeg', 0.95);
+        });
 
+        // تحديث المعاينة
+        const preview = document.getElementById(`${currentCaptureTarget}Preview`);
         preview.src = URL.createObjectURL(blob);
         preview.style.display = 'block';
+
+        // إخفاء placeholder
+        const placeholder = preview.parentElement.querySelector('.capture-placeholder');
         if (placeholder) {
             placeholder.style.display = 'none';
         }
 
-        // تحديث input الملف
-        const input = document.getElementById(currentDocumentId);
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-        input.files = dataTransfer.files;
+        // إغلاق الكاميرا
+        closeCamera();
 
-        // إغلاق الكاميرا والنافذة
-        stopCamera();
-        const modal = bootstrap.Modal.getInstance(document.getElementById('cameraModal'));
-        modal.hide();
-
-        showToast('تم التقاط الصورة بنجاح');
+        // عرض رسالة نجاح
+        Swal.fire({
+            title: 'تم!',
+            text: 'تم التقاط الصورة بنجاح',
+            icon: 'success',
+            timer: 1500,
+            showConfirmButton: false
+        });
 
     } catch (error) {
-        console.error('Error capturing image:', error);
-        showToast('حدث خطأ أثناء التقاط الصورة', 'error');
+        console.error('Error capturing photo:', error);
+        Swal.fire({
+            title: 'خطأ!',
+            text: 'حدث خطأ أثناء التقاط الصورة',
+            icon: 'error',
+            confirmButtonText: 'حسناً'
+        });
     }
 }
 
-// دالة إيقاف الكاميرا
-function stopCamera() {
+// دالة تبديل الكاميرا
+async function switchCamera() {
+    facingMode = facingMode === 'environment' ? 'user' : 'environment';
+    
+    if (currentStream) {
+        currentStream.getTracks().forEach(track => track.stop());
+    }
+
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                facingMode: facingMode,
+                width: { ideal: 1920 },
+                height: { ideal: 1080 }
+            }
+        });
+
+        currentStream = stream;
+        const video = document.getElementById('cameraPreview');
+        video.srcObject = stream;
+        await video.play();
+
+    } catch (error) {
+        console.error('Error switching camera:', error);
+        Swal.fire({
+            title: 'خطأ!',
+            text: 'فشل في تبديل الكاميرا',
+            icon: 'error',
+            confirmButtonText: 'حسناً'
+        });
+    }
+}
+
+// دالة إغلاق الكاميرا
+function closeCamera() {
     if (currentStream) {
         currentStream.getTracks().forEach(track => track.stop());
         currentStream = null;
     }
-    currentDocumentId = null;
-}
 
-// دالة معالجة اختيار الملفات
-function handleFileSelect(input, previewId) {
-    if (input.files && input.files[0]) {
-        const file = input.files[0];
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            const preview = document.getElementById(previewId);
-            const previewContainer = preview.parentElement;
-            const placeholder = previewContainer.querySelector('.upload-placeholder');
-
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-            if (placeholder) {
-                placeholder.style.display = 'none';
-            }
-        };
-        
-        reader.readAsDataURL(file);
+    const modal = bootstrap.Modal.getInstance(document.getElementById('cameraCaptureModal'));
+    if (modal) {
+        modal.hide();
     }
+
+    currentCaptureTarget = null;
 }
 
-// دالة إظهار الإشعارات
-function showToast(message, type = 'success') {
-    Swal.fire({
-        title: type === 'success' ? 'تم!' : 'خطأ!',
-        text: message,
-        icon: type,
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true
-    });
-}
+// إضافة مستمع لإغلاق النافذة
+document.getElementById('cameraCaptureModal').addEventListener('hidden.bs.modal', closeCamera);
 
-// مستمعي الأحداث
+// إضافة مستمعي الأحداث عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', function() {
-    const cameraModal = document.getElementById('cameraModal');
-    if (cameraModal) {
-        cameraModal.addEventListener('hidden.bs.modal', stopCamera);
-    }
+    // إضافة مستمعي الأحداث لجميع أزرار التقاط الصور
+    const captureButtons = document.querySelectorAll('.document-capture, .driver-photo-capture');
+    captureButtons.forEach(button => {
+        button.onclick = function() {
+            const targetId = this.querySelector('img').id.replace('Preview', '');
+            openCamera(targetId);
+        };
+    });
 });
  
         </script>
