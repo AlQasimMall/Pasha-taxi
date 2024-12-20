@@ -50,8 +50,6 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     
     <!-- App Scripts -->
@@ -1523,115 +1521,6 @@ img {
     padding: 20px;
 }
     
-
-.camera-container {
-    position: relative;
-    width: 100%;
-    height: 70vh;
-    background: #000;
-    overflow: hidden;
-}
-
-#cameraPreview {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.capture-guide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.guide-box {
-    position: relative;
-    width: 80%;
-    height: 60%;
-    border: 2px solid rgba(255, 215, 0, 0.5);
-    border-radius: 10px;
-}
-
-.corner {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #FFD700;
-}
-
-.guide-text {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 20px;
-}
-
-.camera-controls {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.btn-capture {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background: #FFD700;
-    border: none;
-    color: #000;
-    font-size: 24px;
-    transition: all 0.3s ease;
-}
-
-.btn-switch-camera {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    border: none;
-    color: white;
-    font-size: 20px;
-}
-
-/* أنماط حقول التقاط المستندات */
-.document-capture {
-    width: 100%;
-    height: 200px;
-    border: 2px dashed #ddd;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    overflow: hidden;
-    background: #f8f9fa;
-    position: relative;
-}
-
-.capture-placeholder {
-    text-align: center;
-    color: #666;
-}
-
-.capture-placeholder i {
-    font-size: 2rem;
-    color: #FFD700;
-    margin-bottom: 10px;
-}
     </style>
 </head>
 <body>
@@ -2298,50 +2187,69 @@ img {
                     <div class="registration-section mb-4">
                         <h6 class="section-title">المستمسكات</h6>
                         <div class="row g-3">
-                            <!-- هوية - أمامي -->
                             <div class="col-md-6">
-                                <label class="form-label">صورة الهوية - أمامي</label>
-                                <div class="document-capture" onclick="openCamera('idFront')">
+                                <label class="form-label">صورة الهوية الوجه الأمامي</label>
+                                <div class="document-upload" onclick="document.getElementById('idFront').click()">
+                                    <div class="upload-placeholder">
+                                        <i class="fas fa-id-card"></i>
+                                        <span>اضغط للرفع</span>
+                                    </div>
                                     <img id="idFrontPreview" src="#" alt="">
-                                    <div class="capture-placeholder">
-                                        <i class="fas fa-camera"></i>
-                                        <span>التقط صورة الهوية</span>
-                                    </div>
                                 </div>
+                                <input type="file" 
+                                       id="idFront" 
+                                       accept="image/*"
+                                       style="display: none;"
+                                       onchange="previewDocument(this, 'idFrontPreview')"
+                                       required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">صورة الهوية - خلفي</label>
-                                <div class="document-capture" onclick="openCamera('idBack')">
+                                <label class="form-label">صورة الهوية الوجه الخلفي</label>
+                                <div class="document-upload" onclick="document.getElementById('idBack').click()">
+                                    <div class="upload-placeholder">
+                                        <i class="fas fa-id-card"></i>
+                                        <span>اضغط للرفع</span>
+                                    </div>
                                     <img id="idBackPreview" src="#" alt="">
-                                    <div class="capture-placeholder">
-                                        <i class="fas fa-camera"></i>
-                                        <span>التقط صورة الهوية</span>
-                                    </div>
                                 </div>
+                                <input type="file" 
+                                       id="idBack" 
+                                       accept="image/*"
+                                       style="display: none;"
+                                       onchange="previewDocument(this, 'idBackPreview')"
+                                       required>
                             </div>
-                
-                            <!-- إجازة السوق - أمامي -->
                             <div class="col-md-6">
-                                <label class="form-label">إجازة السوق - أمامي</label>
-                                <div class="document-capture" onclick="openCamera('licenseFront')">
+                                <label class="form-label">إجازة السوق الوجه الأمامي</label>
+                                <div class="document-upload" onclick="document.getElementById('licenseFront').click()">
+                                    <div class="upload-placeholder">
+                                        <i class="fas fa-id-card"></i>
+                                        <span>اضغط للرفع</span>
+                                    </div>
                                     <img id="licenseFrontPreview" src="#" alt="">
-                                    <div class="capture-placeholder">
-                                        <i class="fas fa-camera"></i>
-                                        <span>التقط صورة الإجازة</span>
-                                    </div>
                                 </div>
+                                <input type="file" 
+                                       id="licenseFront" 
+                                       accept="image/*"
+                                       style="display: none;"
+                                       onchange="previewDocument(this, 'licenseFrontPreview')"
+                                       required>
                             </div>
-                
-                            <!-- إجازة السوق - خلفي -->
                             <div class="col-md-6">
-                                <label class="form-label">إجازة السوق - خلفي</label>
-                                <div class="document-capture" onclick="openCamera('licenseBack')">
-                                    <img id="licenseBackPreview" src="#" alt="">
-                                    <div class="capture-placeholder">
-                                        <i class="fas fa-camera"></i>
-                                        <span>التقط صورة الإجازة</span>
+                                <label class="form-label">إجازة السوق الوجه الخلفي</label>
+                                <div class="document-upload" onclick="document.getElementById('licenseBack').click()">
+                                    <div class="upload-placeholder">
+                                        <i class="fas fa-id-card"></i>
+                                        <span>اضغط للرفع</span>
                                     </div>
+                                    <img id="licenseBackPreview" src="#" alt="">
                                 </div>
+                                <input type="file" 
+                                       id="licenseBack" 
+                                       accept="image/*"
+                                       style="display: none;"
+                                       onchange="previewDocument(this, 'licenseBackPreview')"
+                                       required>
                             </div>
                         </div>
                     </div>
@@ -4216,8 +4124,8 @@ document.addEventListener('DOMContentLoaded', initializeForms);
                 const qrContainer = document.createElement('div');
                 new QRCode(qrContainer, {
                     text: JSON.stringify(qrData),
-                    width: 200, // تقليل الحجم
-                    height: 200,
+                    width: 20, // تقليل الحجم
+                    height: 20,
                     colorDark: "#000000",
                     colorLight: "#ffffff",
                     correctLevel: QRCode.CorrectLevel.L, // استخدام مستوى تصحيح منخفض للتوافق مع الأجهزة المحمولة
@@ -4294,224 +4202,70 @@ function generateDriverQR(driverData) {
      });
      return qrContainer.firstChild.toDataURL();
  }
-
- // متغيرات عامة للكاميرا
-let currentStream = null;
-let currentCaptureTarget = null;
-let facingMode = 'environment';
-
-// دالة فتح الكاميرا
-async function openCamera(targetId) {
-    try {
-        currentCaptureTarget = targetId;
-        const modal = new bootstrap.Modal(document.getElementById('cameraCaptureModal'));
-        modal.show();
-
-        const constraints = {
-            video: {
-                facingMode: facingMode,
-                width: { ideal: 1920 },
-                height: { ideal: 1080 }
-            }
-        };
-
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        currentStream = stream;
-
-        const video = document.getElementById('cameraPreview');
-        video.srcObject = stream;
-        await video.play();
-
-        // إضافة مستمعي الأحداث
-        document.getElementById('captureButton').onclick = capturePhoto;
-        document.getElementById('switchCameraButton').onclick = switchCamera;
-
-        // بدء فحص المستند
-        startDocumentDetection();
-
-    } catch (error) {
-        console.error('Error accessing camera:', error);
-        Swal.fire({
-            title: 'خطأ!',
-            text: 'فشل في الوصول إلى الكاميرا. يرجى التأكد من السماح باستخدام الكاميرا.',
-            icon: 'error',
-            confirmButtonText: 'حسناً'
-        });
-    }
-}
-
-// دالة فحص المستند في الإطار
-function startDocumentDetection() {
-    if (!currentStream) return;
-
-    const video = document.getElementById('cameraPreview');
-    const guideBox = document.querySelector('.guide-box');
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-
-    function checkFrame() {
-        if (!currentStream) return;
-        
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        ctx.drawImage(video, 0, 0);
-
-        // تحليل الصورة للتحقق من وجود مستند
-        const centerData = ctx.getImageData(
-            Math.floor(canvas.width * 0.25),
-            Math.floor(canvas.height * 0.25),
-            Math.floor(canvas.width * 0.5),
-            Math.floor(canvas.height * 0.5)
-        );
-
-        const isDocumentDetected = detectDocument(centerData);
-        guideBox.style.borderColor = isDocumentDetected ? '#4CAF50' : 'rgba(255, 215, 0, 0.5)';
-
-        requestAnimationFrame(checkFrame);
-    }
-
-    checkFrame();
-}
-
-// دالة التحقق من وجود مستند
-function detectDocument(imageData) {
-    let totalBrightness = 0;
-    let totalContrast = 0;
+ function submitDriverRegistration() {
+    const form = document.getElementById('driverRegistrationForm');
     
-    for (let i = 0; i < imageData.data.length; i += 4) {
-        const brightness = (imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2]) / 3;
-        totalBrightness += brightness;
-        
-        if (i > 0) {
-            const prevBrightness = (imageData.data[i - 4] + imageData.data[i - 3] + imageData.data[i - 2]) / 3;
-            totalContrast += Math.abs(brightness - prevBrightness);
-        }
+    // التحقق من صحة البيانات أولاً
+    if (!validateForm(form)) {
+        return;
     }
-
-    const avgBrightness = totalBrightness / (imageData.data.length / 4);
-    const avgContrast = totalContrast / (imageData.data.length / 4);
-
-    return avgBrightness > 100 && avgContrast > 20;
-}
-
-// دالة التقاط الصورة
-async function capturePhoto() {
-    if (!currentStream || !currentCaptureTarget) return;
-
-    try {
-        const video = document.getElementById('cameraPreview');
-        const canvas = document.createElement('canvas');
-        
-        // ضبط أبعاد الكانفاس لتطابق الفيديو
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        
-        // رسم الإطار الحالي على الكانفاس
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0);
-
-        // تحويل الصورة إلى blob
-        const blob = await new Promise(resolve => {
-            canvas.toBlob(resolve, 'image/jpeg', 0.95);
-        });
-
-        // تحديث المعاينة
-        const preview = document.getElementById(`${currentCaptureTarget}Preview`);
-        preview.src = URL.createObjectURL(blob);
-        preview.style.display = 'block';
-
-        // إخفاء placeholder
-        const placeholder = preview.parentElement.querySelector('.capture-placeholder');
-        if (placeholder) {
-            placeholder.style.display = 'none';
-        }
-
-        // إغلاق الكاميرا
-        closeCamera();
-
-        // عرض رسالة نجاح
-        Swal.fire({
-            title: 'تم!',
-            text: 'تم التقاط الصورة بنجاح',
-            icon: 'success',
-            timer: 1500,
-            showConfirmButton: false
-        });
-
-    } catch (error) {
-        console.error('Error capturing photo:', error);
-        Swal.fire({
-            title: 'خطأ!',
-            text: 'حدث خطأ أثناء التقاط الصورة',
-            icon: 'error',
-            confirmButtonText: 'حسناً'
-        });
-    }
-}
-
-// دالة تبديل الكاميرا
-async function switchCamera() {
-    facingMode = facingMode === 'environment' ? 'user' : 'environment';
     
-    if (currentStream) {
-        currentStream.getTracks().forEach(track => track.stop());
-    }
+    // معالجة التسجيل
+    processRegistration(new FormData(form));
+}
 
+async function processRegistration(formData) {
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-            video: {
-                facingMode: facingMode,
-                width: { ideal: 1920 },
-                height: { ideal: 1080 }
-            }
-        });
-
-        currentStream = stream;
-        const video = document.getElementById('cameraPreview');
-        video.srcObject = stream;
-        await video.play();
-
+        // معالجة البيانات على مراحل
+        const basicInfo = await saveBasicInfo(formData);
+        const documents = await saveDocuments(formData);
+        
+        await finalizeRegistration(basicInfo, documents);
+        
+        showSuccessMessage();
     } catch (error) {
-        console.error('Error switching camera:', error);
-        Swal.fire({
-            title: 'خطأ!',
-            text: 'فشل في تبديل الكاميرا',
-            icon: 'error',
-            confirmButtonText: 'حسناً'
-        });
+        showErrorMessage(error);
     }
 }
-
-// دالة إغلاق الكاميرا
-function closeCamera() {
-    if (currentStream) {
-        currentStream.getTracks().forEach(track => track.stop());
-        currentStream = null;
-    }
-
-    const modal = bootstrap.Modal.getInstance(document.getElementById('cameraCaptureModal'));
-    if (modal) {
-        modal.hide();
-    }
-
-    currentCaptureTarget = null;
-}
-
-// إضافة مستمع لإغلاق النافذة
-document.getElementById('cameraCaptureModal').addEventListener('hidden.bs.modal', closeCamera);
-
-// إضافة مستمعي الأحداث عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', function() {
-    // إضافة مستمعي الأحداث لجميع أزرار التقاط الصور
-    const captureButtons = document.querySelectorAll('.document-capture, .driver-photo-capture');
-    captureButtons.forEach(button => {
-        button.onclick = function() {
-            const targetId = this.querySelector('img').id.replace('Preview', '');
-            openCamera(targetId);
+function optimizeImage(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                // تقليل حجم الصورة
+                const MAX_WIDTH = 800;
+                const MAX_HEIGHT = 600;
+                let width = img.width;
+                let height = img.height;
+                
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                canvas.toBlob((blob) => {
+                    resolve(blob);
+                }, 'image/jpeg', 0.7);
+            };
+            img.src = e.target.result;
         };
+        reader.readAsDataURL(file);
     });
-});
- 
+}
         </script>
     </main>
     <!-- ربط ملف الجافا سكريبت -->
