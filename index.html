@@ -88,11 +88,12 @@
 
        /* تحديثات الخريطة */
 #map {
-    height: 65vh; /* ارتفاع مناسب للخريطة */
-    min-height: 100px; /* حد أدنى للارتفاع */
+    height: 50vh; /* ارتفاع مناسب للخريطة */
+    min-height: 1px; /* حد أدنى للارتفاع */
     width: 100%; /* تغطية العرض بالكامل */
-    border-radius: 10px; /* تقليل تقويس الحواف */
-    margin: 2rem auto; /* إضافة مسافة من الأعلى والأسفل وتوسيط الخريطة */
+    border-radius: 20px; /* تقليل تقويس الحواف */
+    margin: 0auto;
+    margin: 3rem auto; /* إضافة مسافة من الأعلى والأسفل وتوسيط الخريطة */
     box-shadow: 0 10px 20px rgba(141, 16, 16, 0.1); /* تخفيف الظلال */
     border: 1px solid var(--secondary-color); /* تحسين الحدود */
     z-index: 1; /* التحكم في طبقة العرض */
@@ -105,11 +106,11 @@
     display: flex;
     flex-direction: column; /* ترتيب العناصر عموديًا */
     gap: 2rem; /* مسافة بين العناصر */
-    padding: 1rem; /* حشوة داخلية للحاوية */
+    padding: 0rem; /* حشوة داخلية للحاوية */
 }
 
 .app-header {
-    margin-bottom: 2rem; /* مسافة بين شريط التايتل والخريطة */
+    margin-bottom: 3rem; /* مسافة بين شريط التايتل والخريطة */
 }
 
         /* تحسين المسافة بين الخريطة والعناصر الأخرى */
@@ -263,13 +264,13 @@
             flex-wrap: nowrap;
             gap: 0.5rem;
             /* تقليل الفجوة بين العناصر */
-            overflow-x: auto;
-            padding: 0.0rem 0;
+            overflow-x: 0auto;
+            padding: 1.0rem 0;
             /* تقليل الحشوة الرأسية */
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
-            white-space: nowrap;
-            margin: 0 auto;
+            white-space: 1nowrap;
+            margin: 0auto;
             max-width: 100%;
         }
 
@@ -401,17 +402,10 @@
         }
 
         /* إزالة الفراغات من أي عنصر رئيسي */
-        .container,
-        .row,
-        .navbar,
-        .location-filter,
-        .tools,
-        #map {
-            margin: 0 !important;
-            padding: 0 !important;
-            width: 100%;
-        }
-
+        
+        
+       
+     
        
 
         /* تحسين التنسيق ليكون متناسقًا */
