@@ -4073,11 +4073,42 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-       document.addEventListener('DOMContentLoaded', () => {
-    if (!window.mapInitialized) {
-        window.mapInitialized = true;
-        initMap();
-    }
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize map if not already initialized
+            if (!window.mapInitialized) {
+                window.mapInitialized = true;
+                initMap();
+            }
+        
+            // Add click handlers for location chips
+            const locationChips = document.querySelectorAll('.location-chip');
+            locationChips.forEach((chip) => {
+                chip.addEventListener('click', () => {
+                    locationChips.forEach((c) => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    const location = chip.dataset.location;
+                    loadDrivers(location);
+                });
+            });
+        
+            // Set initial active state for 'all' chip
+            const allChip = document.querySelector('.location-chip[data-location="all"]');
+            if (allChip) {
+                allChip.classList.add('active');
+            }
+        
+            // Load all drivers immediately
+            loadDrivers('all');
+        
+            // Also load drivers when Firebase is ready
+            firebase.database().ref().once('value')
+                .then(() => {
+                    loadDrivers('all');
+                })
+                .catch(error => {
+                    console.error('Error initializing Firebase:', error);
+                });
+        });
 
     const locationChips = document.querySelectorAll('.location-chip');
     locationChips.forEach((chip) => {
@@ -4090,7 +4121,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     loadDrivers(); // استدعاء التحميل الأولي للسائقين.
-});
+
 
    // قائمة المحافظات والمناطق
    const iraqProvinces = {
@@ -4623,25 +4654,43 @@ function optimizeImage(file) {
 }
 
 
-// افترض أن الخريطة محددة في متغير map
-function showDriverLocation(driverLat, driverLng) {
-    // قم بتعطيل أي أحداث أخرى قد تعيد التركيز إلى الموقع الحالي
-    map.setView([driverLat, driverLng], 15); // 15 هو مستوى التكبير المناسب
+
+function displayAllDrivers() {
+    const drivers = getAllDrivers(); // قم باستدعاء البيانات
+    const grid = document.getElementById('driversGrid');
+    grid.innerHTML = ''; // تنظيف الشبكة
+    drivers.forEach(driver => {
+        const card = createDriverCard(driver); // قم بإنشاء البطاقة
+        grid.appendChild(card);
+    });
 }
 
-// عند النقر على موقع السائق
-document.querySelector("#driverButton").addEventListener("click", () => {
-    const driverLat = 33.3152; // مثال على خطوط الطول
-    const driverLng = 44.3661; // مثال على خطوط العرض
-    showDriverLocation(driverLat, driverLng);
+document.addEventListener('DOMContentLoaded', function () {
+    displayAllDrivers(); // استدعاء الدالة التي تعرض جميع السائقين
+    document.querySelector('.location-chip[data-location="all"]').classList.add('active'); // تفعيل فلتر "الكل"
 });
-if (navigator.geolocation) {
-    navigator.geolocation.clearWatch(watchId); // تعطيل المراقبة
+function displayAllDrivers() {
+    const drivers = getAllDrivers(); // استدعاء البيانات
+    const grid = document.getElementById('driversGrid');
+    grid.innerHTML = ''; // تنظيف المحتوى
+    drivers.forEach(driver => {
+        const card = createDriverCard(driver); // إنشاء بطاقة لكل سائق
+        grid.appendChild(card);
+    });
 }
-ReactDOM.render(
-  React.createElement(Navigation),
-  document.getElementById('navigation-root')
-);
+document.querySelectorAll('.location-chip').forEach(chip => {
+    chip.addEventListener('click', function () {
+        document.querySelectorAll('.location-chip').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        const location = this.getAttribute('data-location');
+        if (location === 'all') {
+            displayAllDrivers(); // عرض كل السائقين
+        } else {
+            filterDrivers(location); // تصفية السائقين بناءً على الموقع
+        }
+    });
+});
+
         </script>
     </main>
     <!-- ربط ملف الجافا سكريبت -->
