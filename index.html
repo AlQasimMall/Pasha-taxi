@@ -71,7 +71,7 @@
             --accent-color: #FF4136;
             --success-color: #2ECC40;
             --info-color: #39CCCC;
-            --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --card-shadow: 0 8px 30px rgba(0,0,0,0.12);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -86,45 +86,67 @@
             /* قلل الحشوة الجانبية */
         }
 
-       /* تحديثات الخريطة */
-       :root {
-        --map-height: 40vh; /* ارتفاع الخريطة */
-        --map-min-height: 50px; /* الحد الأدنى لارتفاع الخريطة */
-        --map-margin-top: 3rem; /* المسافة بين شريط التايتل والخريطة */
-        --map-margin-bottom: 1rem; /* المسافة بين الخريطة والفلاتر */
-        --map-border-radius: 20px; /* تقويس حواف الخريطة */
-        --map-shadow: 0 10px 20px rgba(141, 16, 16, 0.1); /* ظل الخريطة */
-        --filter-margin-top: 1rem; /* المسافة بين الفلاتر والخريطة */
-        --filter-margin-bottom: 1rem; /* المسافة تحت الفلاتر */
-        --filter-gap: 0.5rem; /* الفجوة بين عناصر الفلاتر */
-        --header-margin-bottom: 2rem; /* المسافة بين شريط التايتل والخريطة */
-    }
-    
-    /* تحديث الخريطة */
-    #map {
-        height: var(--map-height); /* ارتفاع الخريطة */
-        min-height: var(--map-min-height); /* الحد الأدنى للارتفاع */
-        width: 100%; /* عرض الخريطة */
-        border-radius: var(--map-border-radius); /* تقويس الحواف */
-        margin: var(--map-margin-top) auto var(--map-margin-bottom); /* المسافات حول الخريطة */
-        box-shadow: var(--map-shadow); /* الظل */
-        border: 1px solid var(--secondary-color); /* الحدود */
-        z-index: 1;
-        position: relative;
-        background: linear-gradient(135deg, #0e7583, #80deea); /* تدرج الخلفية */
-    }
+        /* تحديثات الخريطة */
+        :root {
+            --map-height: 40vh;
+            /* ارتفاع الخريطة */
+            --map-min-height: 50px;
+            /* الحد الأدنى لارتفاع الخريطة */
+            --map-margin-top: 3rem;
+            /* المسافة بين شريط التايتل والخريطة */
+            --map-margin-bottom: 1rem;
+            /* المسافة بين الخريطة والفلاتر */
+            --map-border-radius: 20px;
+            /* تقويس حواف الخريطة */
+            --map-shadow: 0 10px 20px rgba(141, 16, 16, 0.1);
+            /* ظل الخريطة */
+            --filter-margin-top: 1rem;
+            /* المسافة بين الفلاتر والخريطة */
+            --filter-margin-bottom: 1rem;
+            /* المسافة تحت الفلاتر */
+            --filter-gap: 0.5rem;
+            /* الفجوة بين عناصر الفلاتر */
+            --header-margin-bottom: 2rem;
+            /* المسافة بين شريط التايتل والخريطة */
+        }
 
-/* المسافة بين الخريطة والعناصر الأخرى */
-.container {
-    display: flex;
-    flex-direction: column; /* ترتيب العناصر عموديًا */
-    gap: 2rem; /* مسافة بين العناصر */
-    padding: 0rem; /* حشوة داخلية للحاوية */
-}
+        /* تحديث الخريطة */
+        #map {
+            height: var(--map-height);
+            /* ارتفاع الخريطة */
+            min-height: var(--map-min-height);
+            /* الحد الأدنى للارتفاع */
+            width: 100%;
+            /* عرض الخريطة */
+            border-radius: var(--map-border-radius);
+            /* تقويس الحواف */
+            margin: var(--map-margin-top) auto var(--map-margin-bottom);
+            /* المسافات حول الخريطة */
+            box-shadow: var(--map-shadow);
+            /* الظل */
+            border: 1px solid var(--secondary-color);
+            /* الحدود */
+            z-index: 1;
+            position: relative;
+            background: linear-gradient(135deg, #0e7583, #80deea);
+            /* تدرج الخلفية */
+        }
 
-.app-header {
-    margin-bottom: 3rem; /* مسافة بين شريط التايتل والخريطة */
-}
+        /* المسافة بين الخريطة والعناصر الأخرى */
+        .container {
+            display: flex;
+            flex-direction: column;
+            /* ترتيب العناصر عموديًا */
+            gap: 2rem;
+            /* مسافة بين العناصر */
+            padding: 0rem;
+            /* حشوة داخلية للحاوية */
+        }
+
+        .app-header {
+            margin-bottom: 3rem;
+            /* مسافة بين شريط التايتل والخريطة */
+        }
 
         /* تحسين المسافة بين الخريطة والعناصر الأخرى */
         .container {
@@ -135,7 +157,7 @@
         }
 
         /* تحسين شريط التايتل */
-       
+
         /* اللوجو واسم التطبيق */
         .app-logo {
             font-size: 1.2rem;
@@ -181,7 +203,7 @@
             color: var(--primary-color);
         }
 
-       
+
 
         /* اللوجو واسم التطبيق */
         .app-logo {
@@ -415,11 +437,11 @@
         }
 
         /* إزالة الفراغات من أي عنصر رئيسي */
-        
-        
-       
-     
-       
+
+
+
+
+
 
         /* تحسين التنسيق ليكون متناسقًا */
         .navbar {
@@ -1850,23 +1872,54 @@
 
         /* شريط الأدوات الجانبي */
         /* شريط الأدوات الجانبي */
+        :root {
+            --side-nav-height-top: -0%;
+            /* المسافة من الأعلى */
+            --side-nav-height-bottom: 0%;
+            /* المسافة من الأسفل */
+            --side-nav-width: 200px;
+            /* عرض الشريط الجانبي */
+            --side-nav-border-radius: 40px;
+            /* تقويس الحواف */
+            --side-nav-bg-color: var(--secondary-color);
+            /* لون خلفية الشريط */
+            --side-nav-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+            /* ظل الشريط */
+            --backdrop-bg-color: rgba(252, 252, 252, 0);
+            /* لون خلفية التمويه */
+        }
+
+        /* الشريط الجانبي */
         .side-nav {
             position: fixed;
-            top: 0;
+            top: var(--side-nav-height-top);
+            /* المسافة من الأعلى */
+            bottom: var(--side-nav-height-bottom);
+            /* المسافة من الأسفل */
             right: 0;
-            height: 100%;
-            width: 280px;
-            background: var(--secondary-color);
+            /* ظهور الشريط على اليمين */
+            height: calc(100% - var(--side-nav-height-top) - var(--side-nav-height-bottom));
+            /* ارتفاع ديناميكي */
+            width: var(--side-nav-width);
+            /* عرض الشريط */
+            background: var(--side-nav-bg-color);
+            /* لون الخلفية */
             transform: translateX(100%);
+            /* إخفاء الشريط افتراضيًا */
             transition: transform 0.3s ease-in-out;
+            /* تأثير عند الفتح والإغلاق */
             z-index: 9999;
-            /* أعلى قيمة لضمان الظهور فوق جميع العناصر */
-            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+            /* ضمان الظهور فوق جميع العناصر */
+            box-shadow: var(--side-nav-shadow);
+            /* الظل */
+            border-radius: var(--side-nav-border-radius) 0 0 var(--side-nav-border-radius);
+            /* تقويس الحواف اليمنى فقط */
         }
 
         /* عند الفتح */
         .side-nav.open {
             transform: translateX(0);
+            /* عرض الشريط */
         }
 
         /* الخلفية الشفافة */
@@ -1876,13 +1929,19 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: var(--backdrop-bg-color);
             /* خلفية سوداء شفافة */
             z-index: 9998;
-            /* أقل قليلاً من شريط الأدوات */
+            /* أقل قليلاً من الشريط الجانبي */
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
+        }
+
+        /* عند تفعيل الخلفية */
+        .nav-backdrop.open {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* عند الفتح */
@@ -2534,17 +2593,17 @@
                     <input type="number" id="tripCount" class="form-control mb-2" placeholder="أدخل عدد المشاوير"
                         min="1">
 
-                     <small id="driverCardInfo" style="color: #ffffff;"> نوع الواجــــهة</small>
+                    <small id="driverCardInfo" style="color: #ffffff;"> نوع الواجــــهة</small>
 
-                        <input type="text" id="tripDestination" class="form-control mb-2" placeholder="أدخل الوجهة">
+                    <input type="text" id="tripDestination" class="form-control mb-2" placeholder="أدخل الوجهة">
 
-                        <small id="driverCardInfo" style="color: #ffffff;"> نوع الرحـــله</small>
-                        <select id="tripType" class="form-control mb-3">
-                            <option value="ذهاب">ذهاب</option>
-                            <option value="ذهاب وعودة">ذهاب وعودة</option>
-                        </select>
+                    <small id="driverCardInfo" style="color: #ffffff;"> نوع الرحـــله</small>
+                    <select id="tripType" class="form-control mb-3">
+                        <option value="ذهاب">ذهاب</option>
+                        <option value="ذهاب وعودة">ذهاب وعودة</option>
+                    </select>
 
-                        <button class="btn btn-success w-100" onclick="confirmTrip()">تأكيد المشوار</button>
+                    <button class="btn btn-success w-100" onclick="confirmTrip()">تأكيد المشوار</button>
                 </div>
                 <!-- منطقة الرسائل -->
                 <div id="chatMessages" class="chat-messages d-none"></div>
