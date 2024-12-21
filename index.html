@@ -1520,6 +1520,189 @@ img {
     max-width: 500px;
     padding: 20px;
 }
+
+/* Navigation Styles */
+.side-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 280px;
+    background: var(--secondary-color);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1050;
+    padding-top: 60px;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+}
+
+.side-nav.open {
+    transform: translateX(0);
+}
+
+.side-nav-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.side-nav-title {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.side-nav-close {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.side-nav-close:hover {
+    background: rgba(255,215,0,0.1);
+}
+
+.side-nav-items {
+    padding: 1rem;
+}
+
+.side-nav-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.side-nav-item:hover {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.side-nav-item i {
+    margin-left: 1rem;
+    font-size: 1.2rem;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 65px;
+    background: var(--secondary-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1040;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.bottom-nav-item i {
+    font-size: 1.3rem;
+    margin-bottom: 0.2rem;
+}
+
+.bottom-nav-item span {
+    font-size: 0.8rem;
+}
+
+.bottom-nav-item:hover {
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.nav-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1060;
+    background: var(--primary-color);
+    color: var(--secondary-color);
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.nav-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(255,215,0,0.3);
+}
+
+.nav-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1045;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.nav-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* تعديلات التصميم المتجاوب */
+@media (max-width: 768px) {
+    .side-nav {
+        width: 100%;
+    }
+    
+    .bottom-nav-item span {
+        font-size: 0.7rem;
+    }
+}
+
+/* تعديل الهوامش للمحتوى الرئيسي */
+.main-content {
+    padding-bottom: 70px; /* لتجنب تداخل المحتوى مع شريط التنقل السفلي */
+}
+
+/* إضافة تأثيرات حركية */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.side-nav.open {
+    animation: slideIn 0.3s ease forwards;
+}
     
     </style>
 </head>
@@ -2309,46 +2492,101 @@ img {
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDGpAHia_wEmrhnmYjrPf1n1TrAzwEMiAI",
-            authDomain: "messageemeapp.firebaseapp.com",
-            databaseURL: "https://messageemeapp-default-rtdb.firebaseio.com",
-            projectId: "messageemeapp",
-            storageBucket: "messageemeapp.appspot.com",
-            messagingSenderId: "255034474844",
-            appId: "1:255034474844:web:5e3b7a6bc4b2fb94cc4199"
-        };
+        <!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
 
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        const storage = firebase.storage();
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDGpAHia_wEmrhnmYjrPf1n1TrAzwEMiAI",
+        authDomain: "messageemeapp.firebaseapp.com",
+        databaseURL: "https://messageemeapp-default-rtdb.firebaseio.com",
+        projectId: "messageemeapp",
+        storageBucket: "messageemeapp.appspot.com",
+        messagingSenderId: "255034474844",
+        appId: "1:255034474844:web:5e3b7a6bc4b2fb94cc4199"
+    };
 
-        let map;
-        let markers = [];
-        let userMarker;
-        let userLocation = null;
-        let markerLayer;
-        let isLoadingDrivers = false; // للتحكم في حالة تحميل البيانات
-let isViewingDriverLocation = false; // لتعطيل تحديث موقع المستخدم عند عرض موقع السائق
-let currentDriverId = null;
-let currentChatDriverId = null;
-let userId;
+  // Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
-// التحقق من وجود معرف في localStorage
-if (!localStorage.getItem('userId')) {
-    userId = generateUUID(); // توليد معرف جديد
-    localStorage.setItem('userId', userId);
-} else {
-    userId = localStorage.getItem('userId');
-}
+const database = firebase.database();
+const storage = firebase.storage();
+const messaging = firebase.messaging();
 
-function generateUUID() {
-    return 'xxxx-xxxx-4xxx-yxxx'.replace(/[xy]/g, function(c) {
-        const r = Math.random() * 16 | 0;
-        const v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
+// Request notification permission
+messaging.requestPermission()
+    .then(() => {
+        return messaging.getToken({ 
+            vapidKey: 'BI9cpoewcZa1ftyZ_bGjO0GYa4_cT0HNja4YFd6FwLwHg5c0gQ5iSj_MJZRhMxKdgJ0-d-_rEXcpSQ_cx7GqCSc' 
+        }); // استبدل YOUR_PUBLIC_VAPID_KEY بمفتاحك العام الصحيح
+    })
+    .then((token) => {
+        console.log('Token received:', token);
+        // Save the token to the database
+        database.ref('tokens/' + userId).set({ token: token });
+    })
+    .catch((error) => {
+        console.error('Error requesting notification permission:', error);
     });
-}
+
+// Handle incoming messages
+messaging.onMessage((payload) => {
+    console.log('Notification received:', payload);
+    new Notification(payload.notification.title, {
+        body: payload.notification.body,
+        icon: payload.notification.icon
+    });
+});
+
+
+    // Initialize user ID
+    let userId;
+    if (!localStorage.getItem('userId')) {
+        userId = generateUUID();
+        localStorage.setItem('userId', userId);
+    } else {
+        userId = localStorage.getItem('userId');
+    }
+
+    // Generate unique user ID
+    function generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            const r = (Math.random() * 16) | 0,
+                v = c === 'x' ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+        });
+    }
+
+    // Other application-specific logic
+    let map;
+    let markers = [];
+    let userMarker;
+    let userLocation = null;
+    let markerLayer;
+    let isLoadingDrivers = false; // للتحكم في حالة تحميل البيانات
+    let isViewingDriverLocation = false; // لتعطيل تحديث موقع المستخدم عند عرض موقع السائق
+    let currentDriverId = null;
+    let currentChatDriverId = null;
+
+    // Example: Fetch drivers from database
+    function fetchDrivers() {
+        if (isLoadingDrivers) return;
+        isLoadingDrivers = true;
+
+        database.ref('drivers').once('value', (snapshot) => {
+            const drivers = snapshot.val();
+            console.log(drivers);
+            isLoadingDrivers = false;
+        });
+    }
+
+    fetchDrivers(); // Load drivers on page load
+
 
 
 let currentDriverImage = ''; // متغير لصورة السائق
@@ -4391,6 +4629,27 @@ function optimizeImage(file) {
         reader.readAsDataURL(file);
     });
 }
+
+
+// افترض أن الخريطة محددة في متغير map
+function showDriverLocation(driverLat, driverLng) {
+    // قم بتعطيل أي أحداث أخرى قد تعيد التركيز إلى الموقع الحالي
+    map.setView([driverLat, driverLng], 15); // 15 هو مستوى التكبير المناسب
+}
+
+// عند النقر على موقع السائق
+document.querySelector("#driverButton").addEventListener("click", () => {
+    const driverLat = 33.3152; // مثال على خطوط الطول
+    const driverLng = 44.3661; // مثال على خطوط العرض
+    showDriverLocation(driverLat, driverLng);
+});
+if (navigator.geolocation) {
+    navigator.geolocation.clearWatch(watchId); // تعطيل المراقبة
+}
+ReactDOM.render(
+  React.createElement(Navigation),
+  document.getElementById('navigation-root')
+);
         </script>
     </main>
     <!-- ربط ملف الجافا سكريبت -->
