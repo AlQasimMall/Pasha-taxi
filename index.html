@@ -862,9 +862,9 @@ img {
 
         .toast-container {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1050;
+            top: 30px;
+            right: 30px;
+            z-index: 1000;
         }
 
         .custom-toast {
@@ -1525,15 +1525,14 @@ img {
 .side-nav {
     position: fixed;
     top: 0;
-    right: 0;
-    height: 100%;
+    right: -280px; /* يبدأ مخفياً */
     width: 280px;
-    background: var(--secondary-color);
-    transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 1050;
-    padding-top: 60px;
-    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    height: 100%;
+    background: #fff;
+    z-index: 1000;
+    transition: 0.3s;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+    direction: rtl;
 }
 
 .side-nav.open {
@@ -1541,8 +1540,9 @@ img {
 }
 
 .side-nav-header {
-    padding: 1.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 20px;
+    background: var(--secondary-color);
+    color: var(--primary-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1703,6 +1703,53 @@ img {
 .side-nav.open {
     animation: slideIn 0.3s ease forwards;
 }
+/* شريط الأدوات الجانبي */
+/* شريط الأدوات الجانبي */
+.side-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 280px;
+    background: var(--secondary-color);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 9999; /* أعلى قيمة لضمان الظهور فوق جميع العناصر */
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* عند الفتح */
+.side-nav.open {
+    transform: translateX(0);
+}
+
+/* الخلفية الشفافة */
+.nav-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* خلفية سوداء شفافة */
+    z-index: 9998; /* أقل قليلاً من شريط الأدوات */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+/* عند الفتح */
+.nav-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* الفلاتر */
+.location-filter {
+    position: relative;
+    z-index: 1000; /* أقل من الخلفية والشريط الجانبي */
+}
+
+
     
     </style>
 </head>
@@ -1723,9 +1770,51 @@ img {
                             <span>ataxiPash</span>
                         </a>
                         <!-- أيقونة البحث بجانب الاسم -->
-                        <
-                        </a>
-                    <
+                        <div class="side-nav" id="sideNav">
+                            <div class="side-nav-header">
+                                <h2 class="side-nav-title">تاكسي العراق</h2>
+                                <button class="side-nav-close" onclick="toggleSideNav()">×</button>
+                            </div>
+                            <div class="side-nav-items">
+                                <a href="/" class="side-nav-item"><i class="fas fa-home"></i> الرئيسية</a>
+                                <a href="/drivers" class="side-nav-item"><i class="fas fa-users"></i> السائقين</a>
+                                <a href="/trips" class="side-nav-item"><i class="fas fa-car"></i> الرحلات</a>
+                                <a href="/map" class="side-nav-item"><i class="fas fa-map"></i> الخريطة</a>
+                                <a href="/notifications" class="side-nav-item"><i class="fas fa-bell"></i> الإشعارات</a>
+                                <a href="/messages" class="side-nav-item"><i class="fas fa-envelope"></i> الرسائل</a>
+                                <a href="/settings" class="side-nav-item"><i class="fas fa-cog"></i> الإعدادات</a>
+                            </div>
+                        </div>
+                    
+                        <!-- شريط الأدوات السفلي -->
+                        <div class="bottom-nav">
+                            <a href="/" class="bottom-nav-item">
+                                <i class="fas fa-home"></i>
+                                <span>الرئيسية</span>
+                            </a>
+                            <a href="/explore" class="bottom-nav-item">
+                                <i class="fas fa-compass"></i>
+                                <span>استكشاف</span>
+                            </a>
+                            <a href="/favorites" class="bottom-nav-item">
+                                <i class="fas fa-star"></i>
+                                <span>المفضلة</span>
+                            </a>
+                            <a href="/trips" class="bottom-nav-item">
+                                <i class="fas fa-car"></i>
+                                <span>الرحلات</span>
+                            </a>
+                        </div>
+                    
+                        <!-- زر فتح الشريط الجانبي -->
+                        <button class="nav-toggle" onclick="toggleSideNav()">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    
+                        <!-- كود الـ Backdrop للشريط الجانبي -->
+                        <div class="nav-backdrop" id="navBackdrop" onclick="toggleSideNav()"></div>
+                    </body>
+                    
             
                     <!-- الأدوات الأخرى (التنبيهات، حسابي) -->
                     <div class="tools d-flex align-items-center">
@@ -4690,6 +4779,17 @@ document.querySelectorAll('.location-chip').forEach(chip => {
         }
     });
 });
+
+function toggleSideNav() {
+    const sideNav = document.getElementById('sideNav');
+    const navBackdrop = document.getElementById('navBackdrop');
+    const body = document.body;
+
+    // Toggle الشريط الجانبي
+    sideNav.classList.toggle('open');
+    navBackdrop.classList.toggle('show');
+    body.classList.toggle('side-nav-open'); // إضافة/إزالة تعطيل التمرير
+}
 
         </script>
     </main>
