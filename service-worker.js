@@ -107,7 +107,7 @@ firebase.initializeApp(firebaseConfig);
 // تهيئة الإشعارات
 const messaging = firebase.messaging();
 messaging.getToken({ vapidKey: 'BI9cpoewcZa1ftyZ_bGjO0GYa4_cT0HNja4YFd6FwLwHg5c0gQ5iSj_MJZRhMxKdgJ0-d-_rEXcpSQ_cx7GqCSc' });
-.then((currentToken) => {
+then((currentToken) => {
   if (currentToken) {
     console.log('Token:', currentToken);
     // أرسل التوكن إلى السيرفر الخاص بك لتخزينه
