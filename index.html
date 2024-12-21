@@ -268,7 +268,7 @@
     border: 1px solid var(--primary-color); /* تقليل سمك الحدود */
     background: #fff;
     font-size: 0.5rem; /* تصغير حجم النص */
-    font-weight: 800;
+    font-weight: 1000;
     display: inline-flex;
     align-items: center;
     gap: 0.8rem; /* تقليل الفجوة بين الأيقونة والنص */
@@ -1748,28 +1748,6 @@ img {
     position: relative;
     z-index: 1000; /* أقل من الخلفية والشريط الجانبي */
 }
-.nav-toggle {
-    position: absolute; /* لجعل الموضع النسبي للشريط */
-    top: 10px; /* المسافة من أعلى الشريط */
-    right: 10px; /* المسافة من الجانب الأيمن */
-    background-color: var(--primary-color); /* لون الخلفية */
-    color: var(--secondary-color); /* لون النص */
-    width: 25px; /* عرض الزر */
-    height: 25px; /* ارتفاع الزر */
-    border: none; /* إزالة الحدود */
-    border-radius: 50%; /* جعل الزر دائريًا */
-    display: flex; /* لتوسيط الأيقونة */
-    align-items: center; /* لتوسيط الأيقونة عموديًا */
-    justify-content: center; /* لتوسيط الأيقونة أفقيًا */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* إضافة ظل */
-    cursor: pointer; /* لتغيير المؤشر عند التمرير */
-    transition: transform 0.3s ease; /* تأثير الانتقال */
-}
-
-.nav-toggle:hover {
-    transform: scale(1); /* تكبير الزر قليلاً عند التمرير */
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); /* تحسين الظل */
-}
 
 
     
@@ -1778,16 +1756,11 @@ img {
 <body>
     <!-- Header -->
     <nav class="navbar navbar-expand-lg navbar-dark app-header fixed-top">
-        
         <div class="container">
             <a class="app-logo navbar-brand" href="#">
                 <i class="fas fa-taxi"></i>
                 تاكسي العراق
             </a>
-            <!-- زر فتح الشريط الجانبي -->
-                        <button class="nav-toggle" onclick="toggleSideNav()">
-                            <i class="fas fa-bars"></i>
-                        </button>
             <nav class="navbar app-header fixed-top">
                 <div class="container d-flex justify-content-between align-items-center">
                     <!-- اللوجو واسم التطبيق مع أيقونة البحث -->
@@ -1833,7 +1806,10 @@ img {
                             </a>
                         </div>
                     
-                        
+                        <!-- زر فتح الشريط الجانبي -->
+                        <button class="nav-toggle" onclick="toggleSideNav()">
+                            <i class="fas fa-bars"></i>
+                        </button>
                     
                         <!-- كود الـ Backdrop للشريط الجانبي -->
                         <div class="nav-backdrop" id="navBackdrop" onclick="toggleSideNav()"></div>
