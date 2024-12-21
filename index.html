@@ -87,19 +87,32 @@
         }
 
        /* تحديثات الخريطة */
-#map {
-    height: 50vh; /* ارتفاع مناسب للخريطة */
-    min-height: 1px; /* حد أدنى للارتفاع */
-    width: 100%; /* تغطية العرض بالكامل */
-    border-radius: 20px; /* تقليل تقويس الحواف */
-    margin: 0auto;
-    margin: 3rem auto; /* إضافة مسافة من الأعلى والأسفل وتوسيط الخريطة */
-    box-shadow: 0 10px 20px rgba(141, 16, 16, 0.1); /* تخفيف الظلال */
-    border: 1px solid var(--secondary-color); /* تحسين الحدود */
-    z-index: 1; /* التحكم في طبقة العرض */
-    position: relative; /* تحديد الموضع */
-    background: linear-gradient(135deg, #0e7583, #80deea); /* خلفية بتدرج لوني */
-}
+       :root {
+        --map-height: 40vh; /* ارتفاع الخريطة */
+        --map-min-height: 50px; /* الحد الأدنى لارتفاع الخريطة */
+        --map-margin-top: 3rem; /* المسافة بين شريط التايتل والخريطة */
+        --map-margin-bottom: 1rem; /* المسافة بين الخريطة والفلاتر */
+        --map-border-radius: 20px; /* تقويس حواف الخريطة */
+        --map-shadow: 0 10px 20px rgba(141, 16, 16, 0.1); /* ظل الخريطة */
+        --filter-margin-top: 1rem; /* المسافة بين الفلاتر والخريطة */
+        --filter-margin-bottom: 1rem; /* المسافة تحت الفلاتر */
+        --filter-gap: 0.5rem; /* الفجوة بين عناصر الفلاتر */
+        --header-margin-bottom: 2rem; /* المسافة بين شريط التايتل والخريطة */
+    }
+    
+    /* تحديث الخريطة */
+    #map {
+        height: var(--map-height); /* ارتفاع الخريطة */
+        min-height: var(--map-min-height); /* الحد الأدنى للارتفاع */
+        width: 100%; /* عرض الخريطة */
+        border-radius: var(--map-border-radius); /* تقويس الحواف */
+        margin: var(--map-margin-top) auto var(--map-margin-bottom); /* المسافات حول الخريطة */
+        box-shadow: var(--map-shadow); /* الظل */
+        border: 1px solid var(--secondary-color); /* الحدود */
+        z-index: 1;
+        position: relative;
+        background: linear-gradient(135deg, #0e7583, #80deea); /* تدرج الخلفية */
+    }
 
 /* المسافة بين الخريطة والعناصر الأخرى */
 .container {
