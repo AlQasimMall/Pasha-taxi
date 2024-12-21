@@ -913,30 +913,7 @@
             filter: brightness(1.1);
         }
 
-        .floating-action-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            color: var(--secondary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: var(--card-shadow);
-            transition: var(--transition);
-            z-index: 1000;
-            border: none;
-        }
-
-        .floating-action-btn:hover {
-            transform: scale(0.1) rotate(90deg);
-            box-shadow: 0 8px 25px rgb(238, 237, 234);
-        }
+       
 
         .loading-spinner {
             position: fixed;
@@ -1975,6 +1952,38 @@
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
             /* تحسين الظل */
         }
+
+        /* أنماط زر إضافة السائق */
+.add-driver-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* مسافة بين الأيقونة والنص */
+    padding: 0.5rem 1rem; /* حشوة داخلية */
+    background-color: var(--primary-color); /* لون الخلفية الأساسي */
+    color: #fff; /* لون النص */
+    border: none; /* إزالة الإطار */
+    border-radius: 50px; /* تقويس الحواف */
+    font-size: 1rem; /* حجم النص */
+    cursor: pointer; /* مؤشر التفاعل */
+    transition: all 0.3s ease-in-out; /* تأثير عند التحويم */
+    text-align: left;
+    width: 100%; /* ليظهر بعرض الزر الأصلي */
+}
+
+.add-driver-btn:hover {
+    
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* إضافة ظل */
+}
+
+.add-driver-btn i {
+    font-size: 1.2rem; /* حجم الأيقونة */
+    transition: transform 0.3s ease; /* تأثير تكبير الأيقونة */
+}
+
+.add-driver-btn:hover i {
+    transform: scale(1.1); /* تكبير الأيقونة عند التحويم */
+}
+
     </style>
 </head>
 
@@ -2008,17 +2017,15 @@
                             <div class="side-nav-items">
                                 <a href="/" class="side-nav-item"><i class="fas fa-home"></i> الرئيسية</a>
                                 <a href="/drivers" class="side-nav-item"><i class="fas fa-users"></i> السائقين</a>
+                                <!-- زر الإضافة تحت السائقين -->
+                                <button class="add-driver-btn side-nav-item" onclick="showAddDriverModal()">
+                                    <i class="fas fa-user-plus"></i> إضافة سائق
+                                </button>
                                 <a href="/trips" class="side-nav-item"><i class="fas fa-car"></i> الرحلات</a>
                                 <a href="/map" class="side-nav-item"><i class="fas fa-map"></i> الخريطة</a>
                                 <a href="/notifications" class="side-nav-item"><i class="fas fa-bell"></i> الإشعارات</a>
                                 <a href="/messages" class="side-nav-item"><i class="fas fa-envelope"></i> الرسائل</a>
                                 <a href="/settings" class="side-nav-item"><i class="fas fa-cog"></i> الإعدادات</a>
-                                <!-- Add Driver Button -->
-                                <button class="floating-action-btn" onclick="showAddDriverModal()">
-                                    <i class="fas fa-user-plus"></i> <!-- تم تغيير الأيقونة إلى أيقونة جديدة -->
-                                </button>
-
-
                             </div>
                         </div>
 
