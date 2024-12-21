@@ -91,3 +91,28 @@ self.addEventListener('message', function(event) {
     self.skipWaiting();
   }
 });
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDGpAHia_wEmrhnmYjrPf1n1TrAzwEMiAI",
+  authDomain: "messageemeapp.firebaseapp.com",
+  databaseURL: "https://messageemeapp-default-rtdb.firebaseio.com",
+  projectId: "messageemeapp",
+  storageBucket: "messageemeapp.appspot.com",
+  messagingSenderId: "255034474844",
+  appId: "1:255034474844:web:5e3b7a6bc4b2fb94cc4199"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+// تهيئة الإشعارات
+const messaging = firebase.messaging();
+messaging.getToken({ vapidKey: 'YOUR_PUBLIC_VAPID_KEY' }).then((currentToken) => {
+  if (currentToken) {
+    console.log('Token:', currentToken);
+    // أرسل التوكن إلى السيرفر الخاص بك لتخزينه
+  } else {
+    console.log('No registration token available.');
+  }
+}).catch((err) => {
+  console.error('Error while retrieving token:', err);
+});
