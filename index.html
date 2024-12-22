@@ -60,6 +60,8 @@
 
     <!-- App Scripts -->
     <script src="firebase-config.js"></script>
+    <script src="firebase-messaging-sw.js"></script>
+    
     <script src="script.js"></script>
 
 
@@ -71,7 +73,7 @@
             --accent-color: #FF4136;
             --success-color: #2ECC40;
             --info-color: #39CCCC;
-            --card-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -152,201 +154,205 @@
             background: var(--secondary-color) !important;
             color: var(--primary-color) !important;
         }
+
         /* Registration Modal Styles */
-.modal-content {
-    background-color: #1a1a1a !important;
-    border: 2px solid #FFD700 !important;
-    border-radius: 20px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-}
+        .modal-content {
+            background-color: #1a1a1a !important;
+            border: 2px solid #FFD700 !important;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
 
-.modal-header {
-    background-color: #000000 !important;
-    border-bottom: 2px solid #FFD700 !important;
-    padding: 1.5rem;
-}
+        .modal-header {
+            background-color: #000000 !important;
+            border-bottom: 2px solid #FFD700 !important;
+            padding: 1.5rem;
+        }
 
-.modal-title {
-    color: #FFD700 !important;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-}
+        .modal-title {
+            color: #FFD700 !important;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
 
-.btn-close {
-    color: #FFD700 !important;
-    opacity: 1 !important;
-    filter: brightness(0) invert(1) sepia(1) saturate(10000%) hue-rotate(300deg);
-}
+        .btn-close {
+            color: #FFD700 !important;
+            opacity: 1 !important;
+            filter: brightness(0) invert(1) sepia(1) saturate(10000%) hue-rotate(300deg);
+        }
 
-.registration-section {
-    background-color: #242424 !important;
-    border: 1px solid #FFD700 !important;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
+        .registration-section {
+            background-color: #242424 !important;
+            border: 1px solid #FFD700 !important;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
 
-.section-title {
-    color: #FFD700 !important;
-    border-bottom: 2px solid #FFD700;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    font-weight: bold;
-}
+        .section-title {
+            color: #FFD700 !important;
+            border-bottom: 2px solid #FFD700;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
 
-/* Form Controls */
-.form-label {
-    color: #FFFFFF !important;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
+        /* Form Controls */
+        .form-label {
+            color: #FFFFFF !important;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
 
-.form-control, .form-select {
-    background-color: #333333 !important;
-    border: 1px solid #FFD700 !important;
-    color: #FFFFFF !important;
-    border-radius: 10px;
-}
+        .form-control,
+        .form-select {
+            background-color: #333333 !important;
+            border: 1px solid #FFD700 !important;
+            color: #FFFFFF !important;
+            border-radius: 10px;
+        }
 
-.form-control:focus, .form-select:focus {
-    background-color: #444444 !important;
-    border-color: #FFD700 !important;
-    box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25) !important;
-    color: #FFFFFF !important;
-}
+        .form-control:focus,
+        .form-select:focus {
+            background-color: #444444 !important;
+            border-color: #FFD700 !important;
+            box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25) !important;
+            color: #FFFFFF !important;
+        }
 
-.form-control::placeholder {
-    color: rgba(255, 255, 255, 0.6) !important;
-}
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
 
-/* Upload Containers */
-.user-photo-upload, .driver-photo-upload {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 2px dashed #FFD700 !important;
-    background-color: #242424 !important;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+        /* Upload Containers */
+        .user-photo-upload,
+        .driver-photo-upload {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px dashed #FFD700 !important;
+            background-color: #242424 !important;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-.upload-placeholder {
-    text-align: center;
-    color: #FFD700 !important;
-}
+        .upload-placeholder {
+            text-align: center;
+            color: #FFD700 !important;
+        }
 
-.upload-placeholder i {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    color: #FFD700 !important;
-}
+        .upload-placeholder i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #FFD700 !important;
+        }
 
-/* Terms Checkbox */
-.form-check-label {
-    color: #FFFFFF !important;
-}
+        /* Terms Checkbox */
+        .form-check-label {
+            color: #FFFFFF !important;
+        }
 
-.form-check-input {
-    border-color: #FFD700 !important;
-}
+        .form-check-input {
+            border-color: #FFD700 !important;
+        }
 
-.form-check-input:checked {
-    background-color: #FFD700 !important;
-    border-color: #FFD700 !important;
-}
+        .form-check-input:checked {
+            background-color: #FFD700 !important;
+            border-color: #FFD700 !important;
+        }
 
-/* Submit Button */
-.btn-primary {
-    background-color: #FFD700 !important;
-    border-color: #FFD700 !important;
-    color: #000000 !important;
-    font-weight: bold;
-    padding: 0.75rem 2rem;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-}
+        /* Submit Button */
+        .btn-primary {
+            background-color: #FFD700 !important;
+            border-color: #FFD700 !important;
+            color: #000000 !important;
+            font-weight: bold;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
 
-.btn-primary:hover {
-    background-color: #ccac00 !important;
-    border-color: #ccac00 !important;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
-}
+        .btn-primary:hover {
+            background-color: #ccac00 !important;
+            border-color: #ccac00 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
 
-/* Account Type Cards */
-.account-type-card {
-    background-color: #242424 !important;
-    border: 2px solid #FFD700 !important;
-    border-radius: 15px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+        /* Account Type Cards */
+        .account-type-card {
+            background-color: #242424 !important;
+            border: 2px solid #FFD700 !important;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-.account-type-card:hover {
-    transform: translateY(-5px);
-    background-color: #333333 !important;
-    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
-}
+        .account-type-card:hover {
+            transform: translateY(-5px);
+            background-color: #333333 !important;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
 
-.account-type-card h6 {
-    color: #FFD700 !important;
-    margin: 15px 0;
-    font-weight: bold;
-}
+        .account-type-card h6 {
+            color: #FFD700 !important;
+            margin: 15px 0;
+            font-weight: bold;
+        }
 
-.account-type-card p {
-    color: #FFFFFF !important;
-}
+        .account-type-card p {
+            color: #FFFFFF !important;
+        }
 
-.account-type-card .small {
-    color: rgba(255, 255, 255, 0.8) !important;
-}
+        .account-type-card .small {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
 
-.icon-container {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto;
-    background-color: #FFD700 !important;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        .icon-container {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            background-color: #FFD700 !important;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.icon-container i {
-    color: #000000 !important;
-    font-size: 2rem;
-}
+        .icon-container i {
+            color: #000000 !important;
+            font-size: 2rem;
+        }
 
-/* Document Upload Sections */
-.document-upload {
-    border: 2px dashed #FFD700 !important;
-    background-color: #242424 !important;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+        /* Document Upload Sections */
+        .document-upload {
+            border: 2px dashed #FFD700 !important;
+            background-color: #242424 !important;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-.document-upload:hover {
-    background-color: #333333 !important;
-    border-color: #FFD700 !important;
-}
+        .document-upload:hover {
+            background-color: #333333 !important;
+            border-color: #FFD700 !important;
+        }
 
-/* Links */
-.modal-body a {
-    color: #FFD700 !important;
-    text-decoration: none;
-}
+        /* Links */
+        .modal-body a {
+            color: #FFD700 !important;
+            text-decoration: none;
+        }
 
-.modal-body a:hover {
-    color: #ccac00 !important;
-    text-decoration: underline;
-}
+        .modal-body a:hover {
+            color: #ccac00 !important;
+            text-decoration: underline;
+        }
 
         /* تحديثات الخريطة */
         :root {
@@ -520,91 +526,92 @@
             }
         }
 
-.account-type-card {
-    background-color: #000000;
-    border: 2px solid #FFD700;
-    border-radius: 15px;
-    padding: 2rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
+        .account-type-card {
+            background-color: #000000;
+            border: 2px solid #FFD700;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
 
-.account-type-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2);
-    background-color: #1a1a1a;
-}
+        .account-type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2);
+            background-color: #1a1a1a;
+        }
 
-.account-type-card .icon-container {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 20px;
-    background: #FFD700;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
+        .account-type-card .icon-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: #FFD700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
 
-.account-type-card:hover .icon-container {
-    transform: scale(1.1);
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-}
+        .account-type-card:hover .icon-container {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
 
-.account-type-card .icon-container i {
-    font-size: 3rem;
-    color: #000000;
-}
+        .account-type-card .icon-container i {
+            font-size: 3rem;
+            color: #000000;
+        }
 
-.account-type-card h6 {
-    color: #FFD700;
-    font-size: 1.3rem;
-    margin: 15px 0;
-    font-weight: bold;
-}
+        .account-type-card h6 {
+            color: #FFD700;
+            font-size: 1.3rem;
+            margin: 15px 0;
+            font-weight: bold;
+        }
 
-.account-type-card .small {
-    color: #FFFFFF;
-    font-size: 1rem;
-    line-height: 1.5;
-}
+        .account-type-card .small {
+            color: #FFFFFF;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
 
-#profileModal .modal-content {
-    background-color: #000000;
-    border: 2px solid #FFD700;
-    border-radius: 20px;
-}
+        #profileModal .modal-content {
+            background-color: #000000;
+            border: 2px solid #FFD700;
+            border-radius: 20px;
+        }
 
-#profileModal .modal-header {
-    border-bottom: 1px solid #FFD700;
-    padding: 1.5rem;
-}
+        #profileModal .modal-header {
+            border-bottom: 1px solid #FFD700;
+            padding: 1.5rem;
+        }
 
-#profileModal .modal-title {
-    color: #FFD700;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: center;
-    width: 100%;
-}
+        #profileModal .modal-title {
+            color: #FFD700;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            width: 100%;
+        }
 
-#profileModal .modal-body {
-    padding: 2rem;
-}
+        #profileModal .modal-body {
+            padding: 2rem;
+        }
 
-#profileModal .btn-close {
-    color: #FFD700;
-    opacity: 1;
-    transition: all 0.3s ease;
-}
+        #profileModal .btn-close {
+            color: #FFD700;
+            opacity: 1;
+            transition: all 0.3s ease;
+        }
 
-#profileModal .btn-close:hover {
-    transform: rotate(90deg);
-}
+        #profileModal .btn-close:hover {
+            transform: rotate(90deg);
+        }
+
         /* تحسين التفاعلات لجعل الخريطة أكثر جاذبية */
         #map:hover {
             transform: scale(1.02);
@@ -677,12 +684,12 @@
             text-align: center;
             margin: 5px;
         }
-        
+
         .location-chip * {
             background-color: transparent !important;
             color: #FFFFFF !important;
         }
-        
+
         .location-chip i {
             color: #FFD700 !important;
             font-size: 1.1rem;
@@ -2420,268 +2427,354 @@
         }
 
         /* تنسيق النوافذ المنبثقة */
-.dark-popup {
-    background-color: #1a1a1a !important;
-    color: #FFFFFF !important;
-    border: 2px solid #FFD700 !important;
-}
+        .dark-popup {
+            background-color: #1a1a1a !important;
+            color: #FFFFFF !important;
+            border: 2px solid #FFD700 !important;
+        }
 
-.text-white {
-    color: #FFFFFF !important;
-}
+        .text-white {
+            color: #FFFFFF !important;
+        }
 
-.swal-button-custom {
-    background-color: #FFD700 !important;
-    color: #000000 !important;
-    border: none !important;
-    font-weight: bold !important;
-}
+        .swal-button-custom {
+            background-color: #FFD700 !important;
+            color: #000000 !important;
+            border: none !important;
+            font-weight: bold !important;
+        }
 
-.swal-button-custom:hover {
-    background-color: #FFC800 !important;
-    transform: translateY(-2px);
-}
+        .swal-button-custom:hover {
+            background-color: #FFC800 !important;
+            transform: translateY(-2px);
+        }
 
-.swal-button-cancel-custom {
-    background-color: #333333 !important;
-    color: #FFFFFF !important;
-    border: 1px solid #FFD700 !important;
-}
+        .swal-button-cancel-custom {
+            background-color: #333333 !important;
+            color: #FFFFFF !important;
+            border: 1px solid #FFD700 !important;
+        }
 
-.swal-button-cancel-custom:hover {
-    background-color: #444444 !important;
-    transform: translateY(-2px);
-}
+        .swal-button-cancel-custom:hover {
+            background-color: #444444 !important;
+            transform: translateY(-2px);
+        }
 
-/* تنسيق Popup الخريطة */
-.custom-popup {
-    background-color: #000000 !important;
-    border: 2px solid #FFD700 !important;
-    border-radius: 10px !important;
-    color: #FFFFFF !important;
-}
+        /* تنسيق Popup الخريطة */
+        .custom-popup {
+            background-color: #000000 !important;
+            border: 2px solid #FFD700 !important;
+            border-radius: 10px !important;
+            color: #FFFFFF !important;
+        }
 
-.custom-popup .leaflet-popup-content-wrapper {
-    background-color: #000000 !important;
-    color: #FFFFFF !important;
-    border-radius: 10px !important;
-}
+        .custom-popup .leaflet-popup-content-wrapper {
+            background-color: #000000 !important;
+            color: #FFFFFF !important;
+            border-radius: 10px !important;
+        }
 
-.custom-popup .leaflet-popup-content {
-    color: #FFFFFF !important;
-    margin: 0 !important;
-    padding: 10px !important;
-}
+        .custom-popup .leaflet-popup-content {
+            color: #FFFFFF !important;
+            margin: 0 !important;
+            padding: 10px !important;
+        }
 
-.custom-popup .leaflet-popup-tip {
-    background-color: #000000 !important;
-    border: 2px solid #FFD700 !important;
-}
+        .custom-popup .leaflet-popup-tip {
+            background-color: #000000 !important;
+            border: 2px solid #FFD700 !important;
+        }
 
-.user-photo-upload {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 2px dashed #FFD700;
-    margin: 0 auto;
-    cursor: pointer;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #1a1a1a;
-}
+        .user-photo-upload {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px dashed #FFD700;
+            margin: 0 auto;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1a;
+        }
 
-.user-photo-upload img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-}
+        .user-photo-upload img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
 
-.user-photo-upload .upload-placeholder {
-    text-align: center;
-    color: #FFD700;
-}
+        .user-photo-upload .upload-placeholder {
+            text-align: center;
+            color: #FFD700;
+        }
 
-.user-photo-upload .upload-placeholder i {
-    font-size: 2rem;
-    margin-bottom: 10px;
-}
+        .user-photo-upload .upload-placeholder i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
 
-.registration-section {
-    background: #1a1a1a;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #FFD700;
-}
+        .registration-section {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #FFD700;
+        }
 
-.section-title {
-    color: #FFD700;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #FFD700;
-}
+        .section-title {
+            color: #FFD700;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #FFD700;
+        }
 
-.form-control, .form-select {
-    background-color: #333;
-    border: 1px solid #FFD700;
-    color: #fff;
-}
+        .form-control,
+        .form-select {
+            background-color: #333;
+            border: 1px solid #FFD700;
+            color: #fff;
+        }
 
-.form-control:focus, .form-select:focus {
-    background-color: #444;
-    border-color: #FFD700;
-    box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
-    color: #fff;
-}
+        .form-control:focus,
+        .form-select:focus {
+            background-color: #444;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+            color: #fff;
+        }
 
-.form-check-label {
-    color: #fff;
-}
+        .form-check-label {
+            color: #fff;
+        }
 
-.form-check-input {
-    border-color: #FFD700;
-}
+        .form-check-input {
+            border-color: #FFD700;
+        }
 
-.form-check-input:checked {
-    background-color: #FFD700;
-    border-color: #FFD700;
-}
+        .form-check-input:checked {
+            background-color: #FFD700;
+            border-color: #FFD700;
+        }
 
-.btn-primary {
-    background-color: #FFD700;
-    border-color: #FFD700;
-    color: #000;
-}
+        .btn-primary {
+            background-color: #FFD700;
+            border-color: #FFD700;
+            color: #000;
+        }
 
-.btn-primary:hover {
-    background-color: #ccac00;
-    border-color: #ccac00;
-    color: #000;
-}
+        .btn-primary:hover {
+            background-color: #ccac00;
+            border-color: #ccac00;
+            color: #000;
+        }
 
-.modal-content {
-    background-color: #1a1a1a;
-    border: 2px solid #FFD700;
-    border-radius: 15px;
-}
+        .modal-content {
+            background-color: #1a1a1a;
+            border: 2px solid #FFD700;
+            border-radius: 15px;
+        }
 
-.modal-header {
-    border-bottom: 1px solid #FFD700;
-    padding: 1.5rem;
-}
+        .modal-header {
+            border-bottom: 1px solid #FFD700;
+            padding: 1.5rem;
+        }
 
-.modal-title {
-    color: #FFD700;
-    font-weight: bold;
-}
+        .modal-title {
+            color: #FFD700;
+            font-weight: bold;
+        }
 
-.btn-close {
-    color: #FFD700;
-}
+        .btn-close {
+            color: #FFD700;
+        }
 
-.registration-section {
-    background-color: #242424;
-    border: 1px solid #FFD700;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
+        .registration-section {
+            background-color: #242424;
+            border: 1px solid #FFD700;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
 
-.section-title {
-    color: #FFD700;
-    border-bottom: 2px solid #FFD700;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-}
+        .section-title {
+            color: #FFD700;
+            border-bottom: 2px solid #FFD700;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
 
-.form-label {
-    color: #FFFFFF;
-}
+        .form-label {
+            color: #FFFFFF;
+        }
 
-.form-control, .form-select {
-    background-color: #333;
-    border: 1px solid #FFD700;
-    color: #FFFFFF;
-}
+        .form-control,
+        .form-select {
+            background-color: #333;
+            border: 1px solid #FFD700;
+            color: #FFFFFF;
+        }
 
-.form-control:focus, .form-select:focus {
-    background-color: #444;
-    border-color: #FFD700;
-    box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
-    color: #FFFFFF;
-}
+        .form-control:focus,
+        .form-select:focus {
+            background-color: #444;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 0.2rem rgba(255, 215, 0, 0.25);
+            color: #FFFFFF;
+        }
 
-.form-check-label {
-    color: #FFFFFF;
-}
+        .form-check-label {
+            color: #FFFFFF;
+        }
 
-.form-check-input {
-    border-color: #FFD700;
-}
+        .form-check-input {
+            border-color: #FFD700;
+        }
 
-.form-check-input:checked {
-    background-color: #FFD700;
-    border-color: #FFD700;
-}
+        .form-check-input:checked {
+            background-color: #FFD700;
+            border-color: #FFD700;
+        }
 
-.btn-primary {
-    background-color: #FFD700;
-    border-color: #FFD700;
-    color: #000000;
-    font-weight: bold;
-}
+        .btn-primary {
+            background-color: #FFD700;
+            border-color: #FFD700;
+            color: #000000;
+            font-weight: bold;
+        }
 
-.btn-primary:hover {
-    background-color: #ccac00;
-    border-color: #ccac00;
-    color: #000000;
-    transform: translateY(-2px);
-}
+        .btn-primary:hover {
+            background-color: #ccac00;
+            border-color: #ccac00;
+            color: #000000;
+            transform: translateY(-2px);
+        }
 
-/* Account Type Cards */
-.account-type-card {
-    background-color: #242424;
-    border: 2px solid #FFD700;
-    border-radius: 15px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+        /* Account Type Cards */
+        .account-type-card {
+            background-color: #242424;
+            border: 2px solid #FFD700;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-.account-type-card:hover {
-    transform: translateY(-5px);
-    background-color: #333;
-    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
-}
+        .account-type-card:hover {
+            transform: translateY(-5px);
+            background-color: #333;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
 
-.account-type-card h6 {
-    color: #FFD700;
-    margin: 15px 0;
-}
+        .account-type-card h6 {
+            color: #FFD700;
+            margin: 15px 0;
+        }
 
-.account-type-card p {
-    color: #FFFFFF;
-}
+        .account-type-card p {
+            color: #FFFFFF;
+        }
 
-.icon-container {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto;
-    background: #FFD700;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        .icon-container {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            background: #FFD700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.icon-container i {
-    color: #000000;
-}
+        .icon-container i {
+            color: #000000;
+        }
+
+        /* Notification Styles */
+        .notification-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #000000;
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 300px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            color: #FFFFFF;
+        }
+
+        .notification-content {
+            margin-right: 20px;
+        }
+
+        .notification-title {
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+
+        .notification-body {
+            font-size: 0.9rem;
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            color: #FFD700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+
+        .notification-close:hover {
+            color: #FFF;
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+
+        .animate__animated {
+            animation-duration: 0.5s;
+            animation-fill-mode: both;
+        }
+
+        .animate__fadeInRight {
+            animation-name: fadeInRight;
+        }
+
+        .animate__fadeOutRight {
+            animation-name: fadeOutRight;
+        }
     </style>
 </head>
 
@@ -3484,7 +3577,8 @@
                         <div class="row g-3">
                             <div class="col-12">
                                 <div class="text-center mb-3">
-                                    <div class="user-photo-upload" onclick="document.getElementById('userPhoto').click()">
+                                    <div class="user-photo-upload"
+                                        onclick="document.getElementById('userPhoto').click()">
                                         <img id="userPhotoPreview" src="#" alt="">
                                         <div class="upload-placeholder">
                                             <i class="fas fa-camera"></i>
@@ -3547,7 +3641,8 @@
                     <div class="form-check mb-3">
                         <input class="form-check-input" type="checkbox" name="terms" id="terms" required>
                         <label class="form-check-label" for="terms">
-                            أوافق على <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">الشروط والأحكام</a>
+                            أوافق على <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">الشروط
+                                والأحكام</a>
                         </label>
                     </div>
 
@@ -5784,108 +5879,392 @@
         body.classList.toggle('side-nav-open'); // إضافة/إزالة تعطيل التمرير
     }
     function openUserRegistration() {
-    const profileModal = bootstrap.Modal.getInstance(document.getElementById('profileModal'));
-    profileModal.hide();
+        const profileModal = bootstrap.Modal.getInstance(document.getElementById('profileModal'));
+        profileModal.hide();
 
-    const userModal = new bootstrap.Modal(document.getElementById('userRegistrationModal'));
-    userModal.show();
-}
+        const userModal = new bootstrap.Modal(document.getElementById('userRegistrationModal'));
+        userModal.show();
+    }
 
-// دالة معاينة الصورة الشخصية
-function previewUserPhoto(input) {
-    const preview = document.getElementById('userPhotoPreview');
-    const placeholder = input.parentElement.querySelector('.upload-placeholder');
+    // دالة معاينة الصورة الشخصية
+    function previewUserPhoto(input) {
+        const preview = document.getElementById('userPhotoPreview');
+        const placeholder = input.parentElement.querySelector('.upload-placeholder');
 
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-            placeholder.style.display = 'none';
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                placeholder.style.display = 'none';
+            }
+            reader.readAsDataURL(input.files[0]);
         }
-        reader.readAsDataURL(input.files[0]);
+    }
+
+    // دالة معالجة تسجيل المستخدم
+    async function handleUserRegistration(event) {
+        event.preventDefault();
+        showLoading();
+
+        try {
+            const formData = new FormData(event.target);
+
+            // التحقق من تطابق كلمات المرور
+            if (formData.get('password') !== formData.get('confirmPassword')) {
+                throw new Error('كلمات المرور غير متطابقة');
+            }
+
+            // التحقق من الموافقة على الشروط والأحكام
+            if (!formData.get('terms')) {
+                throw new Error('يجب الموافقة على الشروط والأحكام');
+            }
+
+            // إنشاء معرف فريد للمستخدم
+            const userId = `USER${Date.now()}`;
+
+            // رفع الصورة الشخصية
+            let photoUrl = null;
+            const photoFile = document.getElementById('userPhoto').files[0];
+            if (photoFile) {
+                const imageRef = storage.ref(`users/${userId}/${Date.now()}_${photoFile.name}`);
+                const uploadTask = await imageRef.put(photoFile);
+                photoUrl = await uploadTask.ref.getDownloadURL();
+            }
+
+            // إعداد بيانات المستخدم
+            const userData = {
+                id: userId,
+                fullName: formData.get('fullName'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                province: formData.get('province'),
+                area: formData.get('area'),
+                address: formData.get('address'),
+                photoUrl: photoUrl,
+                createdAt: firebase.database.ServerValue.TIMESTAMP
+            };
+
+            // حفظ البيانات في Firebase
+            await database.ref('users').child(userId).set(userData);
+
+            // إغلاق النافذة وإظهار رسالة النجاح
+            const modal = bootstrap.Modal.getInstance(document.getElementById('userRegistrationModal'));
+            modal.hide();
+
+            Swal.fire({
+                title: 'تم التسجيل بنجاح!',
+                text: 'مرحباً بك في تطبيق تاكسي العراق',
+                icon: 'success',
+                confirmButtonColor: '#FFD700',
+                confirmButtonText: 'تم'
+            });
+
+        } catch (error) {
+            console.error('Registration error:', error);
+            Swal.fire({
+                title: 'خطأ!',
+                text: error.message || 'حدث خطأ أثناء التسجيل',
+                icon: 'error',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'حسناً'
+            });
+        } finally {
+            hideLoading();
+        }
+    }
+
+    // إضافة مستمع الحدث لنموذج التسجيل
+    document.addEventListener('DOMContentLoaded', function () {
+        const userRegistrationForm = document.getElementById('userRegistrationForm');
+        if (userRegistrationForm) {
+            userRegistrationForm.addEventListener('submit', handleUserRegistration);
+        }
+    });
+//اعدادات التنبيه بن السائق في الجوار
+
+class LocationNotificationSystem {
+    constructor() {
+        this.database = firebase.database();
+        this.NOTIFICATION_DISTANCE = 500; // المسافة بالأمتار التي عندها يتم إرسال الإشعار
+        this.notificationSent = new Set(); // لتجنب تكرار الإشعارات
+        this.activeWatches = new Map(); // لتتبع مراقبة المواقع النشطة
+    }
+
+    // حساب المسافة بين نقطتين
+    calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371e3; // نصف قطر الأرض بالأمتار
+        const φ1 = lat1 * Math.PI / 180;
+        const φ2 = lat2 * Math.PI / 180;
+        const Δφ = (lat2 - lat1) * Math.PI / 180;
+        const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+        const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c;
+    }
+
+    // تحديث موقع السائق
+    async updateDriverLocation(driverId, latitude, longitude) {
+        try {
+            const locationUpdate = {
+                latitude,
+                longitude,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            };
+
+            // تحديث موقع السائق في قاعدة البيانات
+            await this.database.ref(`drivers/${driverId}/location`).set(locationUpdate);
+
+            // تحديث موقع السائق على الخريطة إذا كان موجوداً
+            if (window.map && window.markerLayer) {
+                const driverMarker = window.markerLayer.getLayers().find(
+                    layer => layer.options.driverId === driverId
+                );
+
+                if (driverMarker) {
+                    driverMarker.setLatLng([latitude, longitude]);
+                }
+            }
+
+            // التحقق من الرحلات النشطة
+            this.checkActiveTrips(driverId, { latitude, longitude });
+        } catch (error) {
+            console.error('Error updating driver location:', error);
+            showToast('حدث خطأ في تحديث الموقع', 'error');
+        }
+    }
+
+    // التحقق من الرحلات النشطة
+    async checkActiveTrips(driverId, driverLocation) {
+        try {
+            const tripsRef = this.database.ref('trips');
+            const activeTrips = await tripsRef
+                .orderByChild('driverId')
+                .equalTo(driverId)
+                .once('value');
+
+            activeTrips.forEach(snapshot => {
+                const trip = snapshot.val();
+                if (trip.status === 'active' && trip.pickupLocation) {
+                    const distance = this.calculateDistance(
+                        driverLocation.latitude,
+                        driverLocation.longitude,
+                        trip.pickupLocation.latitude,
+                        trip.pickupLocation.longitude
+                    );
+
+                    if (distance <= this.NOTIFICATION_DISTANCE && !this.notificationSent.has(trip.id)) {
+                        this.sendArrivalNotification(trip.userId, trip.id, driverId);
+                        this.notificationSent.add(trip.id);
+                    }
+                }
+            });
+        } catch (error) {
+            console.error('Error checking active trips:', error);
+        }
+    }
+
+    // إرسال إشعار الوصول
+    async sendArrivalNotification(userId, tripId, driverId) {
+        try {
+            // الحصول على معلومات السائق
+            const driverSnapshot = await this.database.ref(`drivers/${driverId}`).once('value');
+            const driver = driverSnapshot.val();
+
+            // الحصول على token المستخدم
+            const userTokenSnapshot = await this.database.ref(`users/${userId}/notificationToken`).once('value');
+            const userToken = userTokenSnapshot.val();
+
+            if (userToken) {
+                const notification = {
+                    title: "السائق في انتظارك!",
+                    body: `${driver.name} وصل إلى موقعك وهو في انتظارك الآن.`,
+                    icon: driver.imageUrl || '/default-driver-icon.png'
+                };
+
+                // تحديث حالة الرحلة
+                await this.database.ref(`trips/${tripId}`).update({
+                    driverArrived: true,
+                    arrivalTime: firebase.database.ServerValue.TIMESTAMP
+                });
+
+                // إظهار الإشعار في واجهة المستخدم
+                this.showInAppNotification(notification);
+
+                // إرسال إشعار عبر FCM إذا كان متاحاً
+                if (firebase.messaging && userToken) {
+                    try {
+                        const message = {
+                            token: userToken,
+                            notification: notification,
+                            data: {
+                                tripId: tripId,
+                                driverId: driverId,
+                                type: 'driver_arrival'
+                            }
+                        };
+
+                        await firebase.messaging().send(message);
+                    } catch (fcmError) {
+                        console.error('Error sending FCM notification:', fcmError);
+                    }
+                }
+
+                // محاولة إرسال إشعار محلي
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    new Notification(notification.title, {
+                        body: notification.body,
+                        icon: notification.icon
+                    });
+                }
+            }
+        } catch (error) {
+            console.error('Error sending arrival notification:', error);
+        }
+    }
+
+    // إظهار إشعار في واجهة المستخدم
+    showInAppNotification(notification) {
+        const toast = document.createElement('div');
+        toast.className = 'notification-toast animate__animated animate__fadeInRight';
+        toast.innerHTML = `
+        <div class="notification-content">
+            <div class="notification-title">${notification.title}</div>
+            <div class="notification-body">${notification.body}</div>
+        </div>
+        <button class="notification-close" onclick="this.parentElement.remove()">×</button>
+    `;
+
+        document.body.appendChild(toast);
+
+        // تشغيل صوت الإشعار
+        const audio = new Audio('/https://github.com/AlQasimMall/Pasha-taxi/blob/main/%D8%A7%D9%84%D9%87%D8%A7%D8%AA%D9%81-%D8%A7%D9%84%D8%AB%D8%A7%D8%A8%D8%AA.mp3');
+        audio.play().catch(error => console.log('Could not play notification sound:', error));
+
+        // إزالة الإشعار بعد 5 ثواني
+        setTimeout(() => {
+            toast.classList.replace('animate__fadeInRight', 'animate__fadeOutRight');
+            setTimeout(() => toast.remove(), 300);
+        }, 5000);
+    }
+
+    // بدء تتبع موقع السائق
+    startDriverLocationUpdates(driverId) {
+        if (!navigator.geolocation) {
+            showToast('خدمة تحديد الموقع غير متوفرة في متصفحك', 'error');
+            return null;
+        }
+
+        const watchId = navigator.geolocation.watchPosition(
+            (position) => {
+                this.updateDriverLocation(
+                    driverId,
+                    position.coords.latitude,
+                    position.coords.longitude
+                );
+            },
+            (error) => {
+                console.error('Geolocation error:', error);
+                showToast('حدث خطأ في تحديد موقعك', 'error');
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+        );
+
+        this.activeWatches.set(driverId, watchId);
+        return watchId;
+    }
+
+    // إيقاف تتبع موقع السائق
+    stopDriverLocationUpdates(driverId) {
+        const watchId = this.activeWatches.get(driverId);
+        if (watchId) {
+            navigator.geolocation.clearWatch(watchId);
+            this.activeWatches.delete(driverId);
+        }
     }
 }
 
-// دالة معالجة تسجيل المستخدم
-async function handleUserRegistration(event) {
-    event.preventDefault();
-    showLoading();
+// إنشاء نسخة عامة من نظام الإشعارات
+const locationNotificationSystem = new LocationNotificationSystem();
 
+// دوال مساعدة للتعامل مع الإشعارات
+async function requestNotificationPermission() {
+    if ('Notification' in window) {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+            showToast('تم تفعيل الإشعارات بنجاح');
+        } else {
+            showToast('لم يتم السماح بالإشعارات', 'warning');
+        }
+    }
+}
+
+// تحديث دالة قبول الرحلة
+async function acceptTrip(tripId, driverId) {
     try {
-        const formData = new FormData(event.target);
-        
-        // التحقق من تطابق كلمات المرور
-        if (formData.get('password') !== formData.get('confirmPassword')) {
-            throw new Error('كلمات المرور غير متطابقة');
-        }
+        showLoading();
 
-        // التحقق من الموافقة على الشروط والأحكام
-        if (!formData.get('terms')) {
-            throw new Error('يجب الموافقة على الشروط والأحكام');
-        }
-
-        // إنشاء معرف فريد للمستخدم
-        const userId = `USER${Date.now()}`;
-
-        // رفع الصورة الشخصية
-        let photoUrl = null;
-        const photoFile = document.getElementById('userPhoto').files[0];
-        if (photoFile) {
-            const imageRef = storage.ref(`users/${userId}/${Date.now()}_${photoFile.name}`);
-            const uploadTask = await imageRef.put(photoFile);
-            photoUrl = await uploadTask.ref.getDownloadURL();
-        }
-
-        // إعداد بيانات المستخدم
-        const userData = {
-            id: userId,
-            fullName: formData.get('fullName'),
-            email: formData.get('email'),
-            phone: formData.get('phone'),
-            province: formData.get('province'),
-            area: formData.get('area'),
-            address: formData.get('address'),
-            photoUrl: photoUrl,
-            createdAt: firebase.database.ServerValue.TIMESTAMP
-        };
-
-        // حفظ البيانات في Firebase
-        await database.ref('users').child(userId).set(userData);
-
-        // إغلاق النافذة وإظهار رسالة النجاح
-        const modal = bootstrap.Modal.getInstance(document.getElementById('userRegistrationModal'));
-        modal.hide();
-
-        Swal.fire({
-            title: 'تم التسجيل بنجاح!',
-            text: 'مرحباً بك في تطبيق تاكسي العراق',
-            icon: 'success',
-            confirmButtonColor: '#FFD700',
-            confirmButtonText: 'تم'
+        // تحديث حالة الرحلة
+        await database.ref(`trips/${tripId}`).update({
+            status: 'active',
+            acceptedAt: firebase.database.ServerValue.TIMESTAMP
         });
+
+        // بدء تتبع موقع السائق
+        const watchId = locationNotificationSystem.startDriverLocationUpdates(driverId);
+
+        if (watchId) {
+            localStorage.setItem(`watchId_${tripId}`, watchId);
+            showToast('تم قبول الرحلة وبدء تتبع الموقع');
+        } else {
+            showToast('تم قبول الرحلة ولكن تعذر تتبع الموقع', 'warning');
+        }
 
     } catch (error) {
-        console.error('Registration error:', error);
-        Swal.fire({
-            title: 'خطأ!',
-            text: error.message || 'حدث خطأ أثناء التسجيل',
-            icon: 'error',
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'حسناً'
-        });
+        console.error('Error accepting trip:', error);
+        showToast('حدث خطأ أثناء قبول الرحلة', 'error');
     } finally {
         hideLoading();
     }
 }
 
-// إضافة مستمع الحدث لنموذج التسجيل
-document.addEventListener('DOMContentLoaded', function() {
-    const userRegistrationForm = document.getElementById('userRegistrationForm');
-    if (userRegistrationForm) {
-        userRegistrationForm.addEventListener('submit', handleUserRegistration);
+// تحديث دالة إنهاء الرحلة
+async function endTrip(tripId, driverId) {
+    try {
+        showLoading();
+
+        // تحديث حالة الرحلة
+        await database.ref(`trips/${tripId}`).update({
+            status: 'completed',
+            completedAt: firebase.database.ServerValue.TIMESTAMP
+        });
+
+        // إيقاف تتبع موقع السائق
+        locationNotificationSystem.stopDriverLocationUpdates(driverId);
+        localStorage.removeItem(`watchId_${tripId}`);
+
+        showToast('تم إنهاء الرحلة بنجاح');
+    } catch (error) {
+        console.error('Error ending trip:', error);
+        showToast('حدث خطأ أثناء إنهاء الرحلة', 'error');
+    } finally {
+        hideLoading();
     }
+}
+
+// طلب أذونات الإشعارات عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+    requestNotificationPermission();
 });
+
 
 </script>
 </main>
