@@ -79,11 +79,79 @@
             margin: 1;
             padding: 1;
             box-sizing: border-box;
+            color: #FFFFFF;
         }
 
-        .container {
-            padding: 0rem;
-            /* قلل الحشوة الجانبية */
+        /* Set white text color for specific elements */
+        .driver-name,
+        .driver-info:not(.location-chip):not(.driver-status),
+        .driver-bio,
+        .driver-details,
+        .modal-title,
+        .text-muted,
+        .chat-messages,
+        .chat-body,
+        .stat-value:not(.location-chip),
+        .stat-label:not(.location-chip),
+        .driver-meta:not(.location-chip),
+        .search-result-item .driver-info,
+        .registration-section,
+        .form-label,
+        .modal-body p {
+            color: #FFFFFF !important;
+        }
+
+        /* Preserve original location chip styles */
+        .location-chip {
+            background-color: #000000 !important;
+            border: 2px solid #FFD700 !important;
+            color: #FFFFFF !important;
+        }
+
+        .location-chip:hover,
+        .location-chip.active {
+            background-color: #1a1a1a !important;
+            color: #FFFFFF !important;
+            border-color: #FFD700 !important;
+        }
+
+        .location-chip i {
+            color: #FFD700 !important;
+        }
+
+        /* Preserve driver status styles */
+        .driver-status {
+            background: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .status-active {
+            color: var(--success-color) !important;
+        }
+
+        .status-inactive {
+            color: var(--accent-color) !important;
+        }
+
+        /* Additional preservation rules for specific components */
+        .search-input,
+        .form-control {
+            color: #000000 !important;
+        }
+
+        .modal-header,
+        .modal-footer {
+            border-color: rgba(255, 215, 0, 0.2) !important;
+        }
+
+        /* Keep original colors for action buttons */
+        .action-btn.primary {
+            background: var(--primary-color) !important;
+            color: var(--secondary-color) !important;
+        }
+
+        .action-btn.secondary {
+            background: var(--secondary-color) !important;
+            color: var(--primary-color) !important;
         }
 
         /* تحديثات الخريطة */
@@ -271,7 +339,8 @@
 
         /* تحديث حاوية الفلاتر مع التثبيت */
         .location-filter {
-            background: rgb(255, 255, 255);
+            background-color: #1a1a1a;
+            /* اللون الجديد */
             padding: 0;
             /* إزالة الحشوة */
             border-radius: 10px;
@@ -311,26 +380,34 @@
 
         /* تحسين أزرار الفلتر */
         .location-chip {
-            padding: 0.0rem 0.0rem;
-            /* تقليل الحشوات الداخلية */
-            border-radius: 15px;
-            /* تقليل التقويس */
-            border: 1px solid var(--primary-color);
-            /* تقليل سمك الحدود */
-            background: #fff;
-            font-size: 0.5rem;
-            /* تصغير حجم النص */
-            font-weight: 800;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            background-color: #000000 !important;
+            border: 2px solid #FFD700 !important;
+            font-size: 1rem;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.8rem;
-            /* تقليل الفجوة بين الأيقونة والنص */
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             flex-shrink: 0;
-            color: var(--secondary-color);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            /* تقليل الظلال */
+            color: #FFFFFF !important;
+            box-shadow: 0 2px 5px rgba(255, 215, 0, 0.2);
+            min-width: 100px;
+            text-align: center;
+            margin: 5px;
+        }
+        
+        .location-chip * {
+            background-color: transparent !important;
+            color: #FFFFFF !important;
+        }
+        
+        .location-chip i {
+            color: #FFD700 !important;
+            font-size: 1.1rem;
         }
 
         /* تحسين الأيقونات */
@@ -344,8 +421,9 @@
         /* تحسين حالة التحويم والتنشيط */
         .location-chip:hover,
         .location-chip.active {
-            background: var(--primary-color);
-            color: #fff;
+            background-color: #1a1a1a;
+            /* اللون الجديد */
+            color: #312f2f;
             transform: translateY(-1px);
             /* تخفيف الارتفاع عند التحويم */
             box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
@@ -353,7 +431,7 @@
 
         .location-chip:hover i,
         .location-chip.active i {
-            color: #fff;
+            color: #f5f0f0;
             transform: scale(1.1);
             /* تأثير تكبير بسيط */
         }
@@ -365,18 +443,21 @@
         }
 
         .location-chips::-webkit-scrollbar-track {
-            background: rgba(241, 241, 241, 0.8);
+            background-color: #1a1a1a;
+            /* اللون الجديد */
             border-radius: 10px;
         }
 
         .location-chips::-webkit-scrollbar-thumb {
-            background: var(--primary-color);
+            background-color: #1a1a1a;
+            /* اللون الجديد */
             border-radius: 10px;
             border: none;
         }
 
         .location-chips::-webkit-scrollbar-thumb:hover {
-            background: #e5c100;
+            background-color: #1a1a1a;
+            /* اللون الجديد */
         }
 
         /* تحسين التجاوب مع شاشات الهواتف */
@@ -431,9 +512,8 @@
             width: 100%;
             height: 100%;
             overflow-x: hidden;
-            /* منع التمرير الأفقي */
-            background-color: #fff;
-            /* لون الخلفية الافتراضي */
+            background-color: #1a1a1a;
+            /* اللون الجديد */
         }
 
         /* إزالة الفراغات من أي عنصر رئيسي */
@@ -460,14 +540,7 @@
         }
 
 
-        .driver-card {
-            margin: 0;
-            /* أزل الفراغات الخارجية */
-            padding: 0rem;
-            /* حشوة داخلية بسيطة */
-            gap: 0.0rem;
-            /* فراغ بسيط بين العناصر داخل البطاقة */
-        }
+
 
         .drivers-grid {
             gap: 1rem;
@@ -529,9 +602,6 @@
                 padding: 0.5rem;
             }
 
-            .driver-card {
-                margin-bottom: 1rem;
-            }
 
             .location-chip {
                 font-size: 1rem;
@@ -572,7 +642,9 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            box-sizing: border-box;
+            overflow-x: hidden;
+            background-color: #1a1a1a;
+            /* اللون الجديد */
         }
 
         /* ضبط الحاوية الرئيسية لتغطي العرض بالكامل */
@@ -584,12 +656,7 @@
         }
 
         /* إزالة الهوامش من البطاقات أو أي عنصر إضافي */
-        .driver-card {
-            margin: 0;
-            padding: 0.0rem;
-            /* حشوة بسيطة داخلية للبطاقة */
-            box-sizing: border-box;
-        }
+
 
 
         /* تفاعل أفضل للهواتف */
@@ -598,9 +665,6 @@
                 padding: 0.5rem;
             }
 
-            .driver-card {
-                margin-bottom: 1rem;
-            }
 
             .location-chip {
                 font-size: 1rem;
@@ -636,7 +700,8 @@
 
         /* تحسين شريط التايتل */
         .app-header {
-            background: var(--secondary-color);
+            background-color: #1a1a1a;
+            /* اللون الجديد */
             height: 50px;
             /* تقليل الارتفاع */
             padding: 0 0rem;
@@ -732,10 +797,6 @@
                 padding: 0.5rem;
             }
 
-            .driver-card {
-                margin-bottom: 1rem;
-            }
-
             .location-chip {
                 font-size: 1rem;
                 padding: 0.8rem;
@@ -760,7 +821,8 @@
 
         /* إضافة تأثير التثبيت عند التمرير */
         .location-filter.sticky {
-            background: rgba(255, 255, 255, 0.98);
+            background-color: #1a1a1a;
+            /* اللون الجديد */
             box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
         }
 
@@ -795,19 +857,16 @@
         }
 
 
-        .driver-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
-            transition: var(--transition);
-            position: relative;
-            border: 1px solid rgba(0, 0, 0, 0.08);
-        }
+
 
         .driver-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.89);
+            box-shadow: 0 12px 40px rgba(250, 243, 243, 0.89);
+        }
+
+        body {
+            color: #FFFFFF;
+            /* تغيير لون النص إلى الأبيض */
         }
 
         .driver-image-container {
@@ -823,18 +882,6 @@
             transition: var(--transition);
         }
 
-        .driver-status {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(4px);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
 
         .status-active {
             color: var(--success-color);
@@ -2041,6 +2088,117 @@
             transform: scale(1.1);
             /* تكبير الأيقونة عند التحويم */
         }
+
+        .driver-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .driver-card {
+            margin: 0;
+            /* أزل الفراغات الخارجية */
+            padding: 0rem;
+            /* حشوة داخلية بسيطة */
+            gap: 0.0rem;
+            /* فراغ بسيط بين العناصر داخل البطاقة */
+        }
+
+        .driver-card {
+            margin-bottom: 1rem;
+        }
+
+        .driver-card {
+            margin: 0;
+            padding: 0.0rem;
+            /* حشوة بسيطة داخلية للبطاقة */
+            box-sizing: border-box;
+        }
+
+        .driver-card {
+            margin-bottom: 1rem;
+        }
+
+        .driver-card {
+            margin-bottom: 1rem;
+        }
+
+        .driver-card {
+            background-color: #000000;
+            /* اللون الجديد */
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+            border: 1px solid rgb(228, 212, 212);
+        }
+
+        /* تنسيق النوافذ المنبثقة */
+.dark-popup {
+    background-color: #1a1a1a !important;
+    color: #FFFFFF !important;
+    border: 2px solid #FFD700 !important;
+}
+
+.text-white {
+    color: #FFFFFF !important;
+}
+
+.swal-button-custom {
+    background-color: #FFD700 !important;
+    color: #000000 !important;
+    border: none !important;
+    font-weight: bold !important;
+}
+
+.swal-button-custom:hover {
+    background-color: #FFC800 !important;
+    transform: translateY(-2px);
+}
+
+.swal-button-cancel-custom {
+    background-color: #333333 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #FFD700 !important;
+}
+
+.swal-button-cancel-custom:hover {
+    background-color: #444444 !important;
+    transform: translateY(-2px);
+}
+
+/* تنسيق Popup الخريطة */
+.custom-popup {
+    background-color: #000000 !important;
+    border: 2px solid #FFD700 !important;
+    border-radius: 10px !important;
+    color: #FFFFFF !important;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+    background-color: #000000 !important;
+    color: #FFFFFF !important;
+    border-radius: 10px !important;
+}
+
+.custom-popup .leaflet-popup-content {
+    color: #FFFFFF !important;
+    margin: 0 !important;
+    padding: 10px !important;
+}
+
+.custom-popup .leaflet-popup-tip {
+    background-color: #000000 !important;
+    border: 2px solid #FFD700 !important;
+}
     </style>
 </head>
 
@@ -3222,13 +3380,13 @@
                 }).addTo(markerLayer);
 
                 const popupContent = `
-                <div style="text-align: center; font-family: 'Segoe UI', sans-serif; min-width: 200px;">
+                <div style="text-align: center; font-family: 'Segoe UI', sans-serif; min-width: 200px; background: #000000; border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
                     <div class="driver-popup-header" style="margin-bottom: 10px;">
                         <img src="${driver.imageUrl || 'default-avatar.png'}" 
                              alt="صورة السائق" 
                              style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #FFD700; 
                              margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-                        <h5 style="color: #333; font-weight: bold; margin: 8px 0;">${driver.name}</h5>
+                        <h5 style="color: #FFFFFF; font-weight: bold; margin: 8px 0;">${driver.name}</h5>
                     </div>
                     
                     <div class="driver-popup-stats" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 15px;">
@@ -3236,17 +3394,17 @@
                             <div style="font-weight: bold; color: #FFD700;">
                                 <i class="fas fa-star"></i> ${driver.rating ? driver.rating.toFixed(1) : '5.0'}
                             </div>
-                            <div style="font-size: 0.8rem; color: #666;">التقييم</div>
+                            <div style="font-size: 0.8rem; color: #FFFFFF;">التقييم</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="font-weight: bold; color: #333;">
+                            <div style="font-weight: bold; color: #FFD700;">
                                 <i class="fas fa-route"></i> ${driver.trips || 0}
                             </div>
-                            <div style="font-size: 0.8rem; color: #666;">الرحلات</div>
+                            <div style="font-size: 0.8rem; color: #FFFFFF;">الرحلات</div>
                         </div>
                     </div>
                     
-                    <div class="driver-popup-info" style="margin-bottom: 15px; text-align: right;">
+                    <div class="driver-popup-info" style="margin-bottom: 15px; text-align: right; color: #FFFFFF;">
                         <p style="margin: 5px 0;">
                             <i class="fas fa-car" style="color: #FFD700; margin-left: 5px;"></i>
                             ${driver.carType} - ${driver.carModel}
@@ -3260,7 +3418,7 @@
                             ${driver.phone}
                         </p>
                     </div>
-
+            
                     <div class="driver-popup-actions" style="display: grid; grid-template-columns: 1fr; gap: 8px;">
                         <button onclick="openChatWindow('${driverId}')" 
                                 style="background: #FFD700; color: #333; border: none; padding: 8px 15px; 
@@ -3273,6 +3431,7 @@
                     </div>
                 </div>
             `;
+
 
                 driverMarker.bindPopup(popupContent, {
                     maxWidth: 300,
@@ -3475,60 +3634,60 @@
         const distance = userLocation ? calculateDistance(userLocation, driver.coordinates) : null;
 
         return `
-        <div class="driver-card animate__animated animate__fadeIn">
-            <div class="driver-image-container">
-                <img src="${driver.imageUrl}" alt="${driver.name}" class="driver-image">
-                <div class="driver-status ${driver.active ? 'status-active' : 'status-inactive'}" 
-                     onclick="toggleDriverStatus('${key}', ${driver.active})">
-                    ${driver.active ? 'متاح' : 'مشغول'}
-                </div>
-            </div>
-            <div class="driver-info">
-                <h5 class="driver-name">${driver.name}</h5>
-                <div class="driver-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">
-                            <i class="fas fa-star" style="color: #FFD700;"></i>
-                            ${driver.rating.toFixed(1)}
-                        </div>
-                        <div class="stat-label">التقييم</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">
-                            <i class="fas fa-route"></i>
-                            ${driver.trips}
-                        </div>
-                        <div class="stat-label">الرحلات</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">
-                            ${distance ? distance.toFixed(1) : '--'}
-                        </div>
-                        <div class="stat-label">كم</div>
+            <div class="driver-card animate__animated animate__fadeIn" style="background-color: #000000; color: #FFFFFF; border-radius: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); overflow: hidden;">
+                <div class="driver-image-container" style="position: relative;">
+                    <img src="${driver.imageUrl}" alt="${driver.name}" class="driver-image" style="width: 100%; height: 200px; object-fit: cover; border-bottom: 3px solid #FFD700;">
+                    <div class="driver-status ${driver.active ? 'status-active' : 'status-inactive'}" 
+                         onclick="toggleDriverStatus('${key}', ${driver.active})"
+                         style="position: absolute; top: 10px; right: 10px; padding: 5px 10px; border-radius: 20px; background: rgba(255, 255, 255, 0.8); font-weight: bold; color: ${driver.active ? '#2ECC40' : '#FF4136'};">
+                        ${driver.active ? 'متاح' : 'مشغول'}
                     </div>
                 </div>
-                <div class="text-muted">
-                    <p class="mb-2">
-                        <i class="fas fa-car me-2"></i>
-                        ${driver.carType} ${driver.carModel}
-                    </p>
-                    <p class="mb-0">
-                        <i class="fas fa-map-marker-alt me-2"></i>
-                        ${driver.location}
-                    </p>
+                <div class="driver-info" style="padding: 15px;">
+                    <h5 class="driver-name" style="font-size: 1.2rem; font-weight: bold; margin-bottom: 10px; color: #FFD700;">${driver.name}</h5>
+                    <div class="driver-stats" style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <div class="stat-item" style="text-align: center;">
+                            <div class="stat-value" style="font-weight: bold; color: #FFD700;">
+                                <i class="fas fa-star"></i> ${driver.rating.toFixed(1)}
+                            </div>
+                            <div class="stat-label" style="font-size: 0.8rem; color: #FFFFFF;">التقييم</div>
+                        </div>
+                        <div class="stat-item" style="text-align: center;">
+                            <div class="stat-value" style="font-weight: bold; color: #FFFFFF;">
+                                <i class="fas fa-route"></i> ${driver.trips}
+                            </div>
+                            <div class="stat-label" style="font-size: 0.8rem; color: #FFFFFF;">الرحلات</div>
+                        </div>
+                        <div class="stat-item" style="text-align: center;">
+                            <div class="stat-value" style="font-weight: bold; color: #FFFFFF;">
+                                ${distance ? distance.toFixed(1) : '--'}
+                            </div>
+                            <div class="stat-label" style="font-size: 0.8rem; color: #FFFFFF;">كم</div>
+                        </div>
+                    </div>
+                    <div class="text-muted" style="color: #FFFFFF; margin-bottom: 15px;">
+                        <p class="mb-2">
+                            <i class="fas fa-car me-2" style="color: #FFD700;"></i>
+                            ${driver.carType} ${driver.carModel}
+                        </p>
+                        <p class="mb-0">
+                            <i class="fas fa-map-marker-alt me-2" style="color: #FFD700;"></i>
+                            ${driver.location}
+                        </p>
+                    </div>
+                </div>
+                <div class="driver-actions" style="display: flex; justify-content: space-between; padding: 10px;">
+                    <button class="action-btn primary" onclick="bookDriver('${key}')" 
+                            style="background: #FFD700; color: #333; padding: 10px 20px; border-radius: 20px; border: none; cursor: pointer; font-weight: bold; transition: all 0.3s;">
+                        <i class="fas fa-taxi"></i> حجز
+                    </button>
+                    <button class="action-btn secondary" onclick="openChatWindow('${key}')" 
+                            style="background: #333; color: #FFD700; padding: 10px 20px; border-radius: 20px; border: 1px solid #FFD700; cursor: pointer; font-weight: bold; transition: all 0.3s;">
+                        <i class="fas fa-comment"></i> مراسلة
+                    </button>
                 </div>
             </div>
-            <div class="driver-actions">
-                <button class="action-btn primary" onclick="bookDriver('${key}')">
-                    <i class="fas fa-taxi"></i>
-                    حجز
-                </button>
-                <button class="action-btn secondary" onclick="openChatWindow('${key}')">
-                    <i class="fas fa-comment"></i> مراسلة
-                </button>
-            </div>
-        </div>
-    `;
+        `;
     }
 
 
