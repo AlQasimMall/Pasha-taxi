@@ -29,7 +29,7 @@ async initialize() {
     try {
         // محاولة تسجيل Service Worker
         if ('serviceWorker' in navigator) {
-            this.swRegistration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+            this.swRegistration = await navigator.serviceWorker.register('/https://alqasimmall.github.io/firebase-messaging-sw.js', {
                 scope: '/firebase-cloud-messaging-push-scope'
             });
             console.log('Service Worker registered successfully:', this.swRegistration);
