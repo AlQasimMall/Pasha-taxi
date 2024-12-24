@@ -1,4 +1,5 @@
-// التكوين الأساسي
+// في ملف firebase-config.js
+
 const firebaseConfig = {
     apiKey: "AIzaSyDGpAHia_wEmrhnmYjrPf1n1TrAzwEMiAI",
     authDomain: "messageemeapp.firebaseapp.com",
@@ -9,20 +10,18 @@ const firebaseConfig = {
     appId: "1:255034474844:web:5e3b7a6bc4b2fb94cc4199"
 };
 
-// تهيئة Firebase (فقط إذا لم تكن مهيأة)
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
+// تهيئة Firebase
+firebase.initializeApp(firebaseConfig);
 
-// تهيئة الخدمات
+// تهيئة خدمات Firebase
 const database = firebase.database();
 const storage = firebase.storage();
 const messaging = firebase.messaging();
 
-// تكوين FCM
+// تكوين FCM مع مفتاح VAPID
 messaging.usePublicVapidKey('BI9cpoewcZa1ftyZ_bGjO0GYa4_cT0HNja4YFd6FwLwHg5c0gQ5iSj_MJZRhMxKdgJ0-d-_rEXcpSQ_cx7GqCSc');
 
-// تحديث token الإشعارات
+// دالة لتحديث token الإشعارات للمستخدم
 async function updateNotificationToken(userId) {
     try {
         const permission = await Notification.requestPermission();
@@ -36,7 +35,7 @@ async function updateNotificationToken(userId) {
     }
 }
 
-// استماع لتحديثات الـ token
+// الاستماع لتحديثات الـ token
 messaging.onTokenRefresh(async () => {
     try {
         const token = await messaging.getToken();
@@ -49,20 +48,24 @@ messaging.onTokenRefresh(async () => {
     }
 });
 
-// معالجة الإشعارات
+// معالجة الإشعارات عندما يكون التطبيق مفتوحاً
 messaging.onMessage((payload) => {
     console.log('تم استلام إشعار:', payload);
+    
+    // إنشاء وإظهار الإشعار
     const notification = payload.notification;
-    if (window.locationNotificationSystem) {
-        window.locationNotificationSystem.showInAppNotification({
-            title: notification.title,
-            body: notification.body,
-            icon: notification.icon
-        });
-    }
+    locationNotificationSystem.showInAppNotification({
+        title: notification.title,
+        body: notification.body,
+        icon: notification.icon
+    });
+
+    // تشغيل صوت الإشعار
+    const audio = new Audio('/notification-sound.mp3');
+    audio.play().catch(error => console.log('لا يمكن تشغيل صوت الإشعار:', error));
 });
 
-// التحقق من صلاحيات الموقع
+// دالة للتحقق من صلاحيات الموقع
 async function checkLocationPermission() {
     if ('permissions' in navigator) {
         try {
@@ -76,7 +79,7 @@ async function checkLocationPermission() {
     return !!navigator.geolocation;
 }
 
-// تسجيل Service Worker
+// تحديث Service Worker للإشعارات في الخلفية
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/firebase-messaging-sw.js')
         .then((registration) => {
@@ -88,9 +91,11 @@ if ('serviceWorker' in navigator) {
         });
 }
 
-// جعل المتغيرات والدوال متاحة عالمياً
-window.firebaseDb = database;
-window.firebaseStorage = storage;
-window.firebaseMessaging = messaging;
-window.updateNotificationToken = updateNotificationToken;
-window.checkLocationPermission = checkLocationPermission;
+// تصدير المتغيرات والدوال
+export {
+    database,
+    storage,
+    messaging,
+    updateNotificationToken,
+    checkLocationPermission
+};
