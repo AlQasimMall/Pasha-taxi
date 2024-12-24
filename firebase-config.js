@@ -1,5 +1,4 @@
-// في ملف firebase-config.js
-
+// التكوين الأساسي
 const firebaseConfig = {
     apiKey: "AIzaSyDGpAHia_wEmrhnmYjrPf1n1TrAzwEMiAI",
     authDomain: "messageemeapp.firebaseapp.com",
@@ -10,18 +9,20 @@ const firebaseConfig = {
     appId: "1:255034474844:web:5e3b7a6bc4b2fb94cc4199"
 };
 
-// تهيئة Firebase
-firebase.initializeApp(firebaseConfig);
+// تهيئة Firebase (فقط إذا لم تكن مهيأة)
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 
-// تهيئة خدمات Firebase
+// تهيئة الخدمات
 const database = firebase.database();
 const storage = firebase.storage();
 const messaging = firebase.messaging();
 
-// تكوين FCM مع مفتاح VAPID
+// تكوين FCM
 messaging.usePublicVapidKey('BI9cpoewcZa1ftyZ_bGjO0GYa4_cT0HNja4YFd6FwLwHg5c0gQ5iSj_MJZRhMxKdgJ0-d-_rEXcpSQ_cx7GqCSc');
 
-// دالة لتحديث token الإشعارات للمستخدم
+// تحديث token الإشعارات
 async function updateNotificationToken(userId) {
     try {
         const permission = await Notification.requestPermission();
@@ -35,7 +36,7 @@ async function updateNotificationToken(userId) {
     }
 }
 
-// الاستماع لتحديثات الـ token
+// استماع لتحديثات الـ token
 messaging.onTokenRefresh(async () => {
     try {
         const token = await messaging.getToken();
@@ -48,24 +49,20 @@ messaging.onTokenRefresh(async () => {
     }
 });
 
-// معالجة الإشعارات عندما يكون التطبيق مفتوحاً
+// معالجة الإشعارات
 messaging.onMessage((payload) => {
     console.log('تم استلام إشعار:', payload);
-    
-    // إنشاء وإظهار الإشعار
     const notification = payload.notification;
-    locationNotificationSystem.showInAppNotification({
-        title: notification.title,
-        body: notification.body,
-        icon: notification.icon
-    });
-
-    // تشغيل صوت الإشعار
-    const audio = new Audio('/notification-sound.mp3');
-    audio.play().catch(error => console.log('لا يمكن تشغيل صوت الإشعار:', error));
+    if (window.locationNotificationSystem) {
+        window.locationNotificationSystem.showInAppNotification({
+            title: notification.title,
+            body: notification.body,
+            icon: notification.icon
+        });
+    }
 });
 
-// دالة للتحقق من صلاحيات الموقع
+// التحقق من صلاحيات الموقع
 async function checkLocationPermission() {
     if ('permissions' in navigator) {
         try {
@@ -79,7 +76,7 @@ async function checkLocationPermission() {
     return !!navigator.geolocation;
 }
 
-// تحديث Service Worker للإشعارات في الخلفية
+// تسجيل Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/firebase-messaging-sw.js')
         .then((registration) => {
@@ -91,11 +88,9 @@ if ('serviceWorker' in navigator) {
         });
 }
 
-// تصدير المتغيرات والدوال
-export {
-    database,
-    storage,
-    messaging,
-    updateNotificationToken,
-    checkLocationPermission
-};
+// جعل المتغيرات والدوال متاحة عالمياً
+window.firebaseDb = database;
+window.firebaseStorage = storage;
+window.firebaseMessaging = messaging;
+window.updateNotificationToken = updateNotificationToken;
+window.checkLocationPermission = checkLocationPermission;
