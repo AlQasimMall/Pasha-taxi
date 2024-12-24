@@ -127,23 +127,3 @@ messaging.getToken({ vapidKey: 'BI9cpoewcZa1ftyZ_bGjO0GYa4_cT0HNja4YFd6FwLwHg5c0
     .catch((err) => {
         console.error('Error while retrieving token:', err);
     });
-    self.addEventListener('install', function(event) {
-        event.waitUntil(
-            caches.open(CACHE_NAME).then(function(cache) {
-                try {
-                    console.log('Cache opened successfully');
-                    return cache.addAll(urlsToCache);
-                } catch (error) {
-                    console.error('Error caching files:', error);
-                }
-            })
-        );
-    });
-    const notificationOptions = {
-        body: payload.notification.body,
-        icon: payload.notification.icon || '/default-icon.png',
-        badge: '/pngwing.com.png',
-        tag: payload.data?.notificationId || 'default',
-        data: payload.data
-    };
-        
