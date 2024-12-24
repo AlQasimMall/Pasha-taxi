@@ -25,16 +25,24 @@ class NotificationHandler {
       this.hasPermission = false;
   }
 
-  async initialize() {
-      try {
-          await this.checkNotificationSupport();
-          await this.requestPermission();
-          await this.setupMessaging();
-      } catch (error) {
-          console.error('Notification initialization error:', error);
-          this.handlePermissionError(error);
-      }
-  }
+async initialize() {
+    try {
+        // محاولة تسجيل Service Worker
+        if ('serviceWorker' in navigator) {
+            this.swRegistration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+                scope: '/firebase-cloud-messaging-push-scope'
+            });
+            console.log('Service Worker registered successfully:', this.swRegistration);
+        }
+
+        await this.checkNotificationSupport();
+        await this.requestPermission();
+        await this.setupMessaging();
+    } catch (error) {
+        console.error('Notification initialization error:', error);
+        this.handlePermissionError(error);
+    }
+}
 
   async checkNotificationSupport() {
       if (!('Notification' in window)) {
@@ -60,22 +68,24 @@ class NotificationHandler {
   }
 
   async setupMessaging() {
-      if (!this.hasPermission) return;
+    if (!this.hasPermission) return;
 
-      try {
-          const token = await this.messaging.getToken({
-              vapidKey: 'BI9cpoewcZa1ftyZ_bGjO0GYa4_cT0HNja4YFd6FwLwHg5c0gQ5iSj_MJZRhMxKdgJ0-d-_rEXcpSQ_cx7GqCSc'
-          });
+    try {
+        const token = await this.messaging.getToken({
+            vapidKey: 'BI9cpoewcZa1ftyZ_bGjO0GYa4_cT0HNja4YFd6FwLwHg5c0gQ5iSj_MJZRhMxKdgJ0-d-_rEXcpSQ_cx7GqCSc',
+            serviceWorkerRegistration: this.swRegistration
+        });
 
-          if (token) {
-              await this.saveTokenToDatabase(token);
-              this.setupMessageHandler();
-          }
-      } catch (error) {
-          console.error('Error getting messaging token:', error);
-          throw error;
-      }
-  }
+        if (token) {
+            console.log('FCM Token:', token);
+            await this.saveTokenToDatabase(token);
+        }
+    } catch (error) {
+        console.error('Error getting messaging token:', error);
+        throw error;
+    }
+}
+
 
   async saveTokenToDatabase(token) {
       if (!userId) return;
