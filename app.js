@@ -2829,4 +2829,107 @@ self.addEventListener('install', function(event) {
       })
     );
   });
-  
+  // إضافة هذا الكود في ملف app.js
+class NotificationTester {
+    constructor() {
+        this.messaging = firebase.messaging();
+        this.initialized = false;
+    }
+
+    async testNotifications() {
+        try {
+            // التحقق من دعم الإشعارات
+            if (!('Notification' in window)) {
+                throw new Error('المتصفح لا يدعم الإشعارات');
+            }
+
+            // طلب الإذن
+            const permission = await Notification.requestPermission();
+            console.log('حالة إذن الإشعارات:', permission);
+
+            if (permission !== 'granted') {
+                throw new Error('لم يتم منح إذن الإشعارات');
+            }
+
+            // الحصول على التوكن
+            const token = await this.messaging.getToken({
+                vapidKey: 'BI9cpoewcZa1ftyZ_bGjO0GYa4_cT0HNja4YFd6FwLwHg5c0gQ5iSj_MJZRhMxKdgJ0-d-_rEXcpSQ_cx7GqCSc'
+            });
+
+            console.log('تم الحصول على التوكن:', token);
+
+            // حفظ التوكن في قاعدة البيانات
+            await this.saveTokenToDatabase(token);
+
+            // إرسال إشعار تجريبي
+            this.showTestNotification();
+
+            return {
+                success: true,
+                token: token,
+                message: 'تم إعداد الإشعارات بنجاح'
+            };
+
+        } catch (error) {
+            console.error('خطأ في اختبار الإشعارات:', error);
+            return {
+                success: false,
+                error: error.message
+            };
+        }
+    }
+
+    async saveTokenToDatabase(token) {
+        try {
+            const userId = localStorage.getItem('userId') || 'anonymous';
+            await firebase.database().ref(`fcm_tokens/${userId}`).set({
+                token: token,
+                lastUpdated: firebase.database.ServerValue.TIMESTAMP,
+                device: {
+                    userAgent: navigator.userAgent,
+                    platform: navigator.platform
+                }
+            });
+            console.log('تم حفظ التوكن في قاعدة البيانات');
+        } catch (error) {
+            console.error('خطأ في حفظ التوكن:', error);
+        }
+    }
+
+    showTestNotification() {
+        const notification = new Notification('اختبار الإشعارات', {
+            body: 'هذا إشعار تجريبي للتأكد من عمل النظام',
+            icon: '/pngwing.com.png',
+            badge: '/pngwing.com.png'
+        });
+
+        notification.onclick = () => {
+            console.log('تم النقر على الإشعار التجريبي');
+            window.focus();
+            notification.close();
+        };
+    }
+}
+
+// إضافة زر اختبار في واجهة المستخدم
+function addTestButton() {
+    const button = document.createElement('button');
+    button.className = 'btn btn-primary position-fixed bottom-0 end-0 m-3';
+    button.innerHTML = '<i class="fas fa-bell me-2"></i>اختبار الإشعارات';
+    
+    button.onclick = async () => {
+        const tester = new NotificationTester();
+        const result = await tester.testNotifications();
+        
+        if (result.success) {
+            showToast('تم إعداد الإشعارات بنجاح', 'success');
+        } else {
+            showToast(result.error, 'error');
+        }
+    };
+    
+    document.body.appendChild(button);
+}
+
+// تشغيل الاختبار عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', addTestButton);
