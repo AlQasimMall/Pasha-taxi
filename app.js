@@ -2816,3 +2816,17 @@ document.querySelectorAll('.location-chip').forEach(chip => {
       }
   });
 });
+
+self.addEventListener('install', function(event) {
+    event.waitUntil(
+      caches.open(CACHE_NAME).then(function(cache) {
+        try {
+          console.log('Opened cache');
+          return cache.addAll(urlsToCache);
+        } catch (error) {
+          console.error('Error caching files:', error);
+        }
+      })
+    );
+  });
+  
