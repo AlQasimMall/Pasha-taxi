@@ -30,7 +30,7 @@ async initialize() {
         // محاولة تسجيل Service Worker
         if ('serviceWorker' in navigator) {
           this.swRegistration = await navigator.serviceWorker.register('https://alqasimmall.github.io/Pasha-taxi/firebase-messaging-sw.js', {
-            scope: '/'
+            scope: '/Pasha-taxi/'
         });
         
             console.log('Service Worker registered successfully:', this.swRegistration);
