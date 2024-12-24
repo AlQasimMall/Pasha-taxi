@@ -2707,3 +2707,13 @@ body {
 .animate__fadeOutRight {
     animation-name: fadeOutRight;
 }
+
+.required::after {
+    content: ' *';
+    color: red;
+}
+
+#locationPickerMap {
+    border-radius: 8px;
+    border: 2px solid #ddd;
+}

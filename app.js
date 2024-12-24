@@ -71,21 +71,22 @@ async initialize() {
     if (!this.hasPermission) return;
 
     try {
-        const token = await this.messaging.getToken({
+        // استخدام Service Worker المسجل
+        await this.messaging.getToken({
             vapidKey: 'BI9cpoewcZa1ftyZ_bGjO0GYa4_cT0HNja4YFd6FwLwHg5c0gQ5iSj_MJZRhMxKdgJ0-d-_rEXcpSQ_cx7GqCSc',
             serviceWorkerRegistration: this.swRegistration
         });
 
-        if (token) {
-            console.log('FCM Token:', token);
-            await this.saveTokenToDatabase(token);
-        }
+        // إعداد معالج الرسائل
+        this.messaging.onMessage((payload) => {
+            console.log('Received foreground message:', payload);
+            this.showNotification(payload);
+        });
     } catch (error) {
-        console.error('Error getting messaging token:', error);
+        console.error('Error setting up messaging:', error);
         throw error;
     }
 }
-
 
   async saveTokenToDatabase(token) {
       if (!userId) return;
